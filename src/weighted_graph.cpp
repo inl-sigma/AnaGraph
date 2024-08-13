@@ -6,49 +6,33 @@
 
 #include <spdlog/spdlog.h>
 
-#include <any>
 #include <fstream>
-#include <memory>
 #include <unordered_map>
 #include <unordered_set>
 
-template <typename T>
-WeightedNode<T>::WeightedNode() {
+WeightedNode::WeightedNode() {
     id = UNUSED_ID;
     adjacents = std::unordered_map<int, double>();
 }
 
-template <typename T>
-WeightedNode<T>::WeightedNode(int id) {
+WeightedNode::WeightedNode(int id) {
     setId(id);
     adjacents = std::unordered_map<int, double>();
 }
 
-template <typename T>
-WeightedNode<T>::WeightedNode(int id, T attributes) {
-    setId(id);
-    setAttributes(attributes);
-    adjacents = std::unordered_map<int, double>();
-}
-
-template <typename T>
-WeightedNode<T>& WeightedNode<T>::operator=(const WeightedNode<T>& node) {
+WeightedNode& WeightedNode::operator=(const WeightedNode& node) {
     id = node.id;
-    attributes = node.attributes;
     adjacents = node.adjacents;
     return *this;
 }
 
-template <typename T>
-const int WeightedNode<T>::UNUSED_ID = -1;
+const int WeightedNode::UNUSED_ID = -1;
 
-template <typename T>
-int WeightedNode<T>::getId() const{
+int WeightedNode::getId() const{
     return id;
 }
 
-template <typename T>
-void WeightedNode<T>::setId(int id) {
+void WeightedNode::setId(int id) {
     if (id < 0) {
         spdlog::warn("setId: negative id({}) detected, use clear() to reset node", id);
     } else {
@@ -56,23 +40,19 @@ void WeightedNode<T>::setId(int id) {
     }
 }
 
-template <typename T>
-bool WeightedNode<T>::isUsed() const {
+bool WeightedNode::isUsed() const {
     return id != UNUSED_ID;
 }
 
-template <typename T>
-const std::unordered_map<int, double>& WeightedNode<T>::getAdjacents() const {
+const std::unordered_map<int, double>& WeightedNode::getAdjacents() const {
     return adjacents;
 }
 
-template <typename T>
-void WeightedNode<T>::setAdjacent(int adjacent, double weight) {
+void WeightedNode::setAdjacent(int adjacent, double weight) {
     adjacents[adjacent] = weight;
 }
 
-template <typename T>
-void WeightedNode<T>::updateAdjacent(int adjacent, double weight) {
+void WeightedNode::updateAdjacent(int adjacent, double weight) {
     if (!adjacents.contains(adjacent)) {
         spdlog::debug("updateAdjacent: adding edge between {} and {}", id, adjacent);
         adjacents[adjacent] = weight;
@@ -82,75 +62,44 @@ void WeightedNode<T>::updateAdjacent(int adjacent, double weight) {
     }
 }
 
-template <typename T>
-void WeightedNode<T>::removeAdjacent(int adjacent) {
+void WeightedNode::removeAdjacent(int adjacent) {
     adjacents.erase(adjacent);
 }
 
-template <typename T>
-T WeightedNode<T>::getAttributes() const {
-    if (attributes == nullptr) {
-        throw std::runtime_error("nullptr dereference: Attributes not set");
-    } else {
-        return *attributes;
-    }
-}
-
-template <typename T>
-std::shared_ptr<T> WeightedNode<T>::getAttributesPtr() const {
-    if (attributes == nullptr) {
-        spdlog::warn("Attributes not set");
-    }
-    return attributes;
-}
-
-template <typename T>
-void WeightedNode<T>::setAttributes(T attributes){
-    this->attributes = std::make_shared<T>(attributes);
-}
-
-template <typename T>
-void WeightedNode<T>::clear() {
+void WeightedNode::clear() {
     id = UNUSED_ID;
     adjacents.clear();
-    attributes.reset();
 }
 
-template <typename T>
-WeightedGraph<T>::WeightedGraph() {
+WeightedGraph::WeightedGraph() {
     usedNodes = std::unordered_set<int>();
-    nodes = std::vector<WeightedNode<T>>();
+    nodes = std::vector<WeightedNode>();
 }
 
-template <typename T>
-WeightedGraph<T>::WeightedGraph(std::string filePath, FileExtension extName) {
+WeightedGraph::WeightedGraph(std::string filePath, FileExtension extName) {
     usedNodes = std::unordered_set<int>();
     readGraph(filePath, extName);
 }
 
-template <typename T>
-WeightedGraph<T>& WeightedGraph<T>::operator=(const WeightedGraph<T>& graph) {
+WeightedGraph& WeightedGraph::operator=(const WeightedGraph& graph) {
     usedNodes = graph.usedNodes;
     nodes = graph.nodes;
     return *this;
 }
 
-template <typename T>
-WeightedNode<T> WeightedGraph<T>::getNode(int id) const {
+WeightedNode WeightedGraph::getNode(int id) const {
     return nodes[id];
 }
 
-template <typename T>
-void WeightedGraph<T>::setNode(int id) {
+void WeightedGraph::setNode(int id) {
     if (id >= static_cast<int>(nodes.size())) {
         nodes.resize(id + 1);
     }
-    nodes[id] = WeightedNode<T>(id);
+    nodes[id] = WeightedNode(id);
     usedNodes.insert(id);
 }
 
-template <typename T>
-void WeightedGraph<T>::setNode(WeightedNode<T> &node) {
+void WeightedGraph::setNode(WeightedNode &node) {
     // If the ID is not initialized, add it to the end
     const int nodeId = (!node.isUsed()) ? nodes.size() : node.getId();
     if (static_cast<int>(nodeId >= static_cast<int>(nodes.size()))) {
@@ -160,14 +109,12 @@ void WeightedGraph<T>::setNode(WeightedNode<T> &node) {
     usedNodes.insert(nodeId);
 }
 
-template <typename T>
-void WeightedGraph<T>::removeNode(int id) {
+void WeightedGraph::removeNode(int id) {
     nodes[id].clear();
     usedNodes.erase(id);
 }
 
-template <typename T>
-void WeightedGraph<T>::addEdge(int src, int dst, double weight) {
+void WeightedGraph::addEdge(int src, int dst, double weight) {
     const int maxId = std::max(src, dst);
     if (maxId >= static_cast<int>(nodes.size())) {
         setNode(maxId);
@@ -181,8 +128,7 @@ void WeightedGraph<T>::addEdge(int src, int dst, double weight) {
     nodes[dst].updateAdjacent(src, weight);
 }
 
-template <typename T>
-void WeightedGraph<T>::removeEdge(int src, int dst) {
+void WeightedGraph::removeEdge(int src, int dst) {
     const int maxId = std::max(src, dst);
     if (maxId >= static_cast<int>(nodes.size())) {
         throw std::out_of_range("Node does not exist");
@@ -191,8 +137,7 @@ void WeightedGraph<T>::removeEdge(int src, int dst) {
     nodes[dst].removeAdjacent(src);
 }
 
-template <typename T>
-double WeightedGraph<T>::getWeight(int src, int dst) const {
+double WeightedGraph::getWeight(int src, int dst) const {
     const int maxId = std::max(src, dst);
     if (maxId >= static_cast<int>(nodes.size())) {
         throw std::out_of_range("Node does not exist");
@@ -206,8 +151,7 @@ double WeightedGraph<T>::getWeight(int src, int dst) const {
     }
 }
 
-template <typename T>
-void WeightedGraph<T>::setWeight(int src, int dst, double weight) {
+void WeightedGraph::setWeight(int src, int dst, double weight) {
     const int maxId = std::max(src, dst);
     if (maxId >= static_cast<int>(nodes.size())) {
         throw std::out_of_range("Node does not exist, use setNode() instead");
@@ -216,8 +160,7 @@ void WeightedGraph<T>::setWeight(int src, int dst, double weight) {
     nodes[dst].setAdjacent(src, weight);
 }
 
-template <typename T>
-void WeightedGraph<T>::addWeight(int src, int dst, double weight) {
+void WeightedGraph::addWeight(int src, int dst, double weight) {
     const int maxId = std::max(src, dst);
     if (maxId >= static_cast<int>(nodes.size())) {
         throw std::out_of_range("Node does not exist");
@@ -226,23 +169,21 @@ void WeightedGraph<T>::addWeight(int src, int dst, double weight) {
     nodes[dst].updateAdjacent(src, weight);
 }
 
-template <typename T>
-const std::unordered_map<int, double>& WeightedGraph<T>::getAdjacents(int id) const {
+const std::unordered_map<int, double>& WeightedGraph::getAdjacents(int id) const {
     if (id >= static_cast<int>(nodes.size())) {
         throw std::out_of_range("Node does not exist");
     }
     return nodes[id].getAdjacents();
 }
 
-template <typename T>
-WeightedGraph<T> WeightedGraph<T>::getSubgraph(std::unordered_set<int> indices) const {
-    WeightedGraph<T> subgraph;
+WeightedGraph WeightedGraph::getSubgraph(std::unordered_set<int> indices) const {
+    WeightedGraph subgraph;
     // copy necessary nodes
     for (auto idx : indices) {
         if (idx >= static_cast<int>(nodes.size())) {
             throw std::out_of_range("Node does not exist");
         }
-        WeightedNode<T> node = nodes[idx];
+        WeightedNode node = nodes[idx];
         subgraph.setNode(node);
     }
     
@@ -258,8 +199,7 @@ WeightedGraph<T> WeightedGraph<T>::getSubgraph(std::unordered_set<int> indices) 
     return subgraph;
 }
 
-template <typename T>
-void WeightedGraph<T>::organize() {
+void WeightedGraph::organize() {
     spdlog::debug("called organize");
 
     spdlog::debug("clear usedNodes");
@@ -284,7 +224,7 @@ void WeightedGraph<T>::organize() {
         auto &oldNode = nodes[newId];
 
         // set the new id
-        auto newNode = WeightedNode<T>(newId);
+        auto newNode = WeightedNode(newId);
 
         // set the adjacents
         for (auto [oldAdj, weight] : oldNode.getAdjacents()) {
@@ -295,11 +235,6 @@ void WeightedGraph<T>::organize() {
             }
         }
 
-        // set the attributes
-        if (oldNode.getAttributesPtr() != nullptr) {
-            newNode.setAttributes(*oldNode.getAttributesPtr());
-        }
-
         nodes[newId] = newNode;
     }
 
@@ -308,23 +243,11 @@ void WeightedGraph<T>::organize() {
     nodes.resize(idMap.size());
 }
 
-template <typename T>
-T WeightedGraph<T>::getAttributes(int id) const {
-    return nodes[id].getAttributes();
-}
-
-template <typename T>
-void WeightedGraph<T>::setAttributes(int id, T attributes) {
-    nodes[id].setAttributes(attributes);
-}
-
-template <typename T>
-size_t WeightedGraph<T>::size() const {
+size_t WeightedGraph::size() const {
     return usedNodes.size();
 }
 
-template <typename T>
-void WeightedGraph<T>::readGraph(std::string filePath, FileExtension extName) {
+void WeightedGraph::readGraph(std::string filePath, FileExtension extName) {
     switch (extName) {
     case FileExtension::TXT: {
         TextGraphParser parser;
@@ -348,15 +271,13 @@ void WeightedGraph<T>::readGraph(std::string filePath, FileExtension extName) {
     }
 }
 
-template <typename T>
-void WeightedGraph<T>::readGraphHelper(std::string filePath, IGraphParser &parser) {
+void WeightedGraph::readGraphHelper(std::string filePath, IGraphParser &parser) {
     for (auto &[src, dst, weight] : parser.parseWeightedGraph(filePath)) {
         addEdge(src, dst, weight);
     }
 }
 
-template <typename T>
-void WeightedGraph<T>::writeGraph(std::string filePath, FileExtension extName) const {
+void WeightedGraph::writeGraph(std::string filePath, FileExtension extName) const {
     // convert the graph to a list of edges
     // note : implement as function in weighted_graph.hpp if needed
     std::vector<WeightedEdgeObject> edges;
@@ -394,16 +315,6 @@ void WeightedGraph<T>::writeGraph(std::string filePath, FileExtension extName) c
     }
 }
 
-template <typename T>
-void WeightedGraph<T>::writeGraphHelper(std::string filePath, IGraphWriter &writer, std::vector<WeightedEdgeObject> edges) const {
+void WeightedGraph::writeGraphHelper(std::string filePath, IGraphWriter &writer, std::vector<WeightedEdgeObject> edges) const {
     writer.writeWeightedGraph(filePath, edges);
 }
-
-// Explicit instantiation
-template class WeightedNode<int>;
-template class WeightedNode<std::string>;
-template class WeightedNode<std::any>;
-
-template class WeightedGraph<int>;
-template class WeightedGraph<std::string>;
-template class WeightedGraph<std::any>;

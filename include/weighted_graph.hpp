@@ -19,11 +19,9 @@
  * The weightedNode class provides a way to represent a weighted node using an adjacency list.
  * It supports adding adjacent nodes and accessing the attributes of the node.
  */
-template <typename T>
-class WeightedNode : public IWeightedNode<T> {
+class WeightedNode : public IWeightedNode {
 private:
     int id; /**< The id of the node */
-    std::shared_ptr<T> attributes; /**< The attributes of the node */
     std::unordered_map<int, double> adjacents; /**< The adjacent nodes of the node */
 
 public:
@@ -40,23 +38,16 @@ public:
     WeightedNode(int id);
 
     /**
-     * @brief Constructs a weightedNode object with the specified id and attributes.
-     * @param id The id of the node.
-     * @param attributes The attributes of the node.
-     */
-    WeightedNode(int id, T attributes);
-
-    /**
      * @brief Copy constructor for the weightedNode object.
      */
-    WeightedNode(const WeightedNode<T> &node) 
-        : id(node.id), attributes(node.attributes), adjacents(node.adjacents) {
+    WeightedNode(const WeightedNode &node) 
+        : id(node.id), adjacents(node.adjacents) {
     }
 
     /**
      * @brief Assignment operator for the weightedNode object.
      */
-    WeightedNode<T>& operator=(const WeightedNode<T>& node);
+    WeightedNode& operator=(const WeightedNode& node);
 
     /**
      * @brief Get the id of the node.
@@ -105,28 +96,6 @@ public:
     void removeAdjacent(int adjacent) override;
 
     /**
-     * @brief Get the attribute of the node.
-     * @return A pointer to the attribute of the node.
-     * 
-     * This method is used to access the attribute of a node.
-     */
-    T getAttributes() const override;
-
-    /**
-     * @brief Get the attributes of the node.
-     * @return A pointer to the attributes of the node.
-     * 
-     * @note This method is used to modify the attribute of a node. if used for read-only, use getAttributes() instead.
-     */
-    std::shared_ptr<T> getAttributesPtr() const override;
-
-    /**
-     * @brief Set the attributes of the node.
-     * @param attribute The attributes of the node.
-     */
-    void setAttributes(T attributes) override;
-
-    /**
      * @brief Clear the attributes of the node.
      */
     void clear() override;
@@ -140,10 +109,9 @@ public:
  * The WeightedGraph class provides a way to represent a weighted graph using an adjacency list.
  * It supports adding edges between vertices and accessing the adjacency list of a node.
  */
-template <typename T>
-class WeightedGraph : public IWeightedGraph<T> {
+class WeightedGraph : public IWeightedGraph {
 private:
-    std::vector<WeightedNode<T>> nodes; /**< The adjacency list representing the graph. */
+    std::vector<WeightedNode> nodes; /**< The adjacency list representing the graph. */
     std::unordered_set<int> usedNodes; /**< The set of used nodes. */
 
 public:
@@ -161,14 +129,14 @@ public:
     /**
      * @brief Copy constructor for the WeightedGraph object.
      */
-    WeightedGraph(const WeightedGraph<T> &graph) 
+    WeightedGraph(const WeightedGraph &graph) 
         : nodes(graph.nodes), usedNodes(graph.usedNodes) {
     }
 
     /**
      * @brief Assignment operator for the WeightedGraph object.
      */
-    WeightedGraph<T>& operator=(const WeightedGraph<T>& graph);
+    WeightedGraph& operator=(const WeightedGraph& graph);
 
     /** 
      * @brief Get the attributes of a node.
@@ -179,7 +147,7 @@ public:
      * 
      * This method is used to access the attributes of a node.
      */
-    WeightedNode<T> getNode(int id) const;
+    WeightedNode getNode(int id) const;
 
     /**
      * @brief Set a node to the graph.
@@ -193,7 +161,7 @@ public:
      * 
      * @todo override interface method after implementing the method
      */
-    void setNode(WeightedNode<T> &node);
+    void setNode(WeightedNode &node);
 
     /**
      * @brief Remove a node from the graph.
@@ -255,7 +223,7 @@ public:
      * @param indices The indices of the nodes to include in the subgraph
      * @return A subgraph of the graph
      */
-    WeightedGraph<T> getSubgraph(std::unordered_set<int> indices) const;
+    WeightedGraph getSubgraph(std::unordered_set<int> indices) const;
 
     /**
      * @brief Organize the graph.
@@ -264,20 +232,6 @@ public:
      * It can be used to delete unnecessary nodes.
      */
     void organize();
-
-    /**
-     * @brief Get the attributes of the nodes. 
-     * @param id The id of the node to get the attributes of
-     * @return A vector of the attributes of the nodes
-     */
-    T getAttributes(int id) const override;
-
-    /**
-     * @brief Set the attributes of the nodes.
-     * @param id The id of the node to set the attributes of
-     * @param attribute The attributes of the nodes
-     */
-    void setAttributes(int id, T attributes) override;
 
     /**
      * @brief Get the number of nodes in the graph.
