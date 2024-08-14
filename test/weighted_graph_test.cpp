@@ -7,21 +7,21 @@
 #include <string>
 
 TEST(WeightedGraphTest, GetNode) {
-    WeightedGraph<int> graph;
+    WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
 
-    const WeightedNode<int>& node1 = graph.getNode(0);
+    const WeightedNode& node1 = graph.getNode(0);
     EXPECT_EQ(node1.getId(), 0);
-    const WeightedNode<int>& node2 = graph.getNode(1);
+    const WeightedNode& node2 = graph.getNode(1);
     EXPECT_EQ(node2.getId(), 1);
-    const WeightedNode<int>& node3 = graph.getNode(2);
+    const WeightedNode& node3 = graph.getNode(2);
     EXPECT_EQ(node3.getId(), 2);
 }
 
 TEST(WeightedGraphTest, SetNode) {
-    WeightedGraph<int> graph;
+    WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -30,7 +30,7 @@ TEST(WeightedGraphTest, SetNode) {
 }
 
 TEST(WeightedGraphTest, RemoveNode) {
-    WeightedGraph<int> graph;
+    WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -42,7 +42,7 @@ TEST(WeightedGraphTest, RemoveNode) {
 TEST(WeightedGraphTest, AddEdge) {
     spdlog::set_level(spdlog::level::debug);
 
-    WeightedGraph<int> graph;
+    WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -57,7 +57,7 @@ TEST(WeightedGraphTest, AddEdge) {
 }
 
 TEST(WeightedGraphTest, RemoveEdge) {
-    WeightedGraph<int> graph;
+    WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -72,7 +72,7 @@ TEST(WeightedGraphTest, RemoveEdge) {
 
 TEST(WeightedGraphTest, GetAdjacents) {
     spdlog::set_level(spdlog::level::debug);
-    WeightedGraph<int> graph;
+    WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -91,7 +91,7 @@ TEST(WeightedGraphTest, GetAdjacents) {
 
 TEST(WeightedGraphTest, GetSubgraph) {
     spdlog::set_level(spdlog::level::debug);
-    WeightedGraph<int> graph;
+    WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -103,7 +103,7 @@ TEST(WeightedGraphTest, GetSubgraph) {
 
     std::unordered_set<int> indices = {0, 1, 3};
     spdlog::debug("create subgraph");
-    WeightedGraph<int> subgraph = graph.getSubgraph(indices);
+    WeightedGraph subgraph = graph.getSubgraph(indices);
 
     spdlog::debug("calculate subgraph size");
     EXPECT_EQ(subgraph.size(), 3);
@@ -115,7 +115,7 @@ TEST(WeightedGraphTest, GetSubgraph) {
 
 TEST(WeightedGraphTest, Organize) {
     spdlog::set_level(spdlog::level::debug);
-    WeightedGraph<int> graph;
+    WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(2);
     graph.setNode(4);
@@ -134,61 +134,8 @@ TEST(WeightedGraphTest, Organize) {
     EXPECT_THROW(graph.getWeight(2, 4), std::out_of_range);
 }
 
-TEST(WeightedGraphTest, GetAttributes) {
-    WeightedGraph<std::string> graph;
-    graph.setNode(0);
-    graph.setNode(1);
-    graph.setNode(2);
-
-    graph.setAttributes(0, "Node 0");
-    graph.setAttributes(1, "Node 1");
-    graph.setAttributes(2, "Node 2");
-
-    std::string attributes = graph.getAttributes(1);
-    EXPECT_EQ(attributes, "Node 1");
-}
-
-TEST(WeightedGraphTest, SetAttributes) {
-    WeightedGraph<std::string> graph;
-    graph.setNode(0);
-    graph.setNode(1);
-    graph.setNode(2);
-
-    graph.setAttributes(0, "Node 0");
-    graph.setAttributes(1, "Node 1");
-    graph.setAttributes(2, "Node 2");
-
-    graph.setAttributes(1, "Updated Node 1");
-    std::string attributes = graph.getAttributes(1);
-    EXPECT_EQ(attributes, "Updated Node 1");
-}
-
-TEST(WeightedGraphTest, AnyAttributes) {
-    spdlog::set_level(spdlog::level::debug);
-    WeightedGraph<std::any> graph;
-    graph.setNode(0);
-    graph.setNode(1);
-    graph.setNode(2);
-
-    graph.setAttributes(0, 1);
-    graph.setAttributes(1, 2.0);
-    graph.setAttributes(2, std::string("Node 2")); // to avoid casting to char[ ]
-
-    spdlog::debug("get int attributes");
-    int intAttributes = std::any_cast<int>(graph.getAttributes(0));
-    EXPECT_EQ(intAttributes, 1);
-
-    spdlog::debug("get double attributes");
-    double doubleAttributes = std::any_cast<double>(graph.getAttributes(1));
-    EXPECT_DOUBLE_EQ(doubleAttributes, 2.0);
-
-    spdlog::debug("get string attributes");
-    std::string stringAttributes = std::any_cast<std::string>(graph.getAttributes(2));
-    EXPECT_EQ(stringAttributes, "Node 2");
-}
-
 TEST(WeightedGraphTest, ReadGraph) {
-    WeightedGraph<int> graph;
+    WeightedGraph graph;
     graph.readGraph("../../dataset/graph.txt", FileExtension::TXT);
 
     EXPECT_EQ(graph.size(), 6);
@@ -201,7 +148,7 @@ TEST(WeightedGraphTest, ReadGraph) {
 }
 
 TEST(WeightedGraphTest, WriteGraph) {
-    WeightedGraph<int> graph;
+    WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);

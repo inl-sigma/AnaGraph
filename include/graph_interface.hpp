@@ -17,7 +17,6 @@
  * 
  * The INode class provides a way to represent a node in an unweighted graph.
  */
-template <typename T>
 class INode {
 public:
     virtual ~INode() = default;
@@ -61,28 +60,6 @@ public:
     virtual void removeAdjacent(int adjacent) = 0;
 
     /**
-     * @brief Get the attribute of the node.
-     * @return The attribute of the node.
-     * 
-     * This method is used to access the attribute of a node.
-     */
-    virtual T getAttributes() const = 0;
-
-    /**
-     * @brief Set the attribute of the node.
-     * @param attribute The attribute of the node.
-     */
-    virtual void setAttributes(T attributes) = 0;
-
-    /**
-     * @brief Get a pointer to the attribute of the node.
-     * @return A pointer to the attribute of the node.
-     * 
-     * This method is used to modify the attribute of a node.
-     */
-    virtual std::shared_ptr<T> getAttributesPtr() const = 0;
-
-    /**
      * @brief Clear the node.
      * 
      * This method is used to clear the node.
@@ -97,25 +74,26 @@ public:
  * The IGraph class provides a way to represent a graph using an adjacency list.
  * It supports adding edges between nodes and accessing the adjacency list of a node.
  */
-template <typename T>
 class IGraph {
 public:
     virtual ~IGraph() = default;
 
-    /** 
-     * @brief Get the attributes of a node.
-     * @param id The node to get the attributes of
-     * @return A reference to the attributes of the node
-     * 
-     * This method is used to modify the attributes of a node.
-     */
-    virtual INode<T> getNode(int id) const = 0;
+    // TODO : Implement this function
+    // /** 
+    //  * @brief Get the attributes of a node.
+    //  * @param id The node to get the attributes of
+    //  * @return A reference to the attributes of the node
+    //  * 
+    //  * This method is used to modify the attributes of a node.
+    //  */
+    // virtual INode getNode(int id) const = 0;
 
-    /**
-     * @brief Set the node of the graph.
-     * @param node The node to set
-     */
-    virtual void setNode(INode<T> node) = 0;
+    // TODO : Implement this function
+    // /**
+    //  * @brief Set the node of the graph.
+    //  * @param node The node to set
+    //  */
+    // virtual void setNode(INode node) = 0;
 
     /**
      * @brief Remove a node from the graph.
@@ -144,23 +122,17 @@ public:
     virtual const std::unordered_set<int> &getAdjacents(int id) const = 0;
 
     /**
-     * @brief Get the attribute of the nodes.
-     * @param id The id of the node to get the attributes of
-     * @return A vector of the attributes of the nodes
-     */
-    virtual T getAttributes(int id) const = 0;
-
-    /**
      * @brief Get the number of nodes in the graph.
      */
     virtual size_t size() const = 0;
 
-    /**
-     * @brief Get the node of the specific id.
-     * @param id The id of the node
-     * @return The node of the specific id
-     */
-    virtual INode<T> operator[](int id) = 0;
+    // TODO : Implement this function
+    // /**
+    //  * @brief Get the node of the specific id.
+    //  * @param id The id of the node
+    //  * @return The node of the specific id
+    //  */
+    // virtual INode operator[](int id) = 0;
 
     /**
      * @brief Read a graph from a file.
@@ -184,7 +156,6 @@ public:
  * The IWeightedNode class provides a way to represent a node in a weighted graph.
  * It supports adding edges between nodes and accessing the adjacency list of a node.
  */
-template <typename T>
 class IWeightedNode {
 public:
     virtual ~IWeightedNode() = default;
@@ -236,28 +207,6 @@ public:
     virtual void removeAdjacent(int adjacent) = 0;
 
     /**
-     * @brief Get the attribute of the node.
-     * @return The attribute of the node.
-     * 
-     * This method is used to retrieve the attribute of a node.
-     */
-    virtual T getAttributes() const = 0;
-
-    /**
-     * @brief Set the attribute of the node.
-     * @param attribute The attribute of the node.
-     */
-    virtual void setAttributes(T attribute) = 0;
-
-    /**
-     * @brief Get a pointer to the attribute of the node.
-     * @return A pointer to the attribute of the node.
-     * 
-     * This method is used to modify the attribute of a node.
-     */
-    virtual std::shared_ptr<T> getAttributesPtr() const = 0;
-
-    /**
      * @brief Clear the node.
      * 
      * This method is used to clear the node.
@@ -272,7 +221,6 @@ public:
  * The IWeightedGraph class provides a way to represent a weighted graph using an adjacency list.
  * It supports adding edges between nodes and accessing the adjacency list of a node.
  */
-template <typename T>
 class IWeightedGraph {
 public:
     virtual ~IWeightedGraph() = default;
@@ -356,20 +304,6 @@ public:
      * @return A pairs of integers, where the first means the adjacent node and the second means the weight of the edge.
      */
     virtual const std::unordered_map<int, double>& getAdjacents(int id) const = 0;
-
-    /**
-     * @brief Get the attributes of the nodes. 
-     * @param id The id of the node to get the attributes of
-     * @return A vector of the attributes of the nodes
-     */
-    virtual T getAttributes(int id) const = 0;
-
-    /**
-     * @brief Set the attributes of the nodes.
-     * @param id The id of the node to set the attributes of
-     * @param attributes The attributes of the nodes
-     */
-    virtual void setAttributes(int id, T attributes) = 0;
 
     // TODO : Implement this function
     // /**
