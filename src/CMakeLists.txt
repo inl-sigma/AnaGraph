@@ -1,4 +1,9 @@
-add_library(graphcomponents STATIC weighted_graph.cpp graph_parser.cpp graph_writer.cpp)
+add_library(graphcomponents STATIC 
+    weighted_graph.cpp
+    graph_parser.cpp
+    graph_writer.cpp
+    heterogeneous_graph.cpp
+)
 target_link_libraries(graphcomponents PUBLIC spdlog::spdlog)
 target_include_directories(graphcomponents PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(graphcomponents PUBLIC cxx_std_20)
