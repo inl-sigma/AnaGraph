@@ -20,12 +20,12 @@
 template <typename T>
 class WeightedHeteroNode : public IWeightedHeteroNode<T> {
 private:
+    static const int UNUSED_ID; /**< The default value for an unused node */
     WeightedNode weightedNode;
     T attributes;
     bool isAttrEnabled; // todo : implement this for checking if the attributes are initialized
 
 public:
-    static const int UNUSED_ID; /**< The default value for an unused node */
     /**
      * @brief Constructs a weightedNode object.
      */
@@ -138,7 +138,7 @@ public:
 template <typename T>
 class WeightedHeteroGraph : public IWeightedHeteroGraph<T> {
 private:
-    std::vector<int, WeightedHeteroNode<T>> nodes; /**< The nodes of the graph */
+    std::vector<WeightedHeteroNode<T>> nodes; /**< The nodes of the graph */
     std::unordered_set<int> usedNodes; /**< The set of used nodes */
 
 public:
@@ -283,6 +283,8 @@ public:
      * @brief Read a graph from a file.
      * @param filename The name of the file to import the graph from
      * @param extName The extension of the file
+     * 
+     * @todo read graph as a heterogeneous graph, not a weighted graph
      */
     void readGraph(std::string filename, FileExtension extName) override;
 
@@ -290,6 +292,8 @@ public:
      * @brief Write the graph to a file.
      * @param filename The name of the file to export the graph to
      * @param extName The extension of the file
+     * 
+     * @todo write graph as a heterogeneous graph, not a weighted graph
      */
     void writeGraph(std::string filename, FileExtension extName) const override;
 

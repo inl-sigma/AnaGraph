@@ -236,35 +236,14 @@ void WeightedHeteroGraph<T>::organize() {
     for (int oldId = 0; oldId < static_cast<int>(nodes.size()); oldId++) {
         if (nodes[oldId].isUsed()) {
             idMap[oldId] = newId;
+
+            spdlog::debug("update nodes and adjacents");
             nodes[newId] = nodes[oldId];
+            nodes[newId].setId(newId);
+
             usedNodes.insert(newId);
             newId++;
         }
-    }
-
-    // Update the nodes and the adjacents
-    spdlog::debug("update nodes and adjacents");
-    for (int newId = 0; newId < static_cast<int>(idMap.size()); newId++) {
-        auto &oldNode = nodes[newId];
-
-        // set the new id
-        auto newNode = WeightedHeteroNode<T>(newId);
-
-        // set the adjacents
-        for (auto [oldAdj, weight] : oldNode.getAdjacents()) {
-            if (idMap.contains(oldAdj)) {
-                newNode.setAdjacent(idMap[oldAdj], weight);
-            } else {
-                spdlog::warn("Node {} does not exist in the graph", oldAdj);
-            }
-        }
-
-        // set the attributes
-        if (oldNode.getAttributesPtr() != nullptr) {
-            newNode.setAttributes(*oldNode.getAttributesPtr());
-        }
-
-        nodes[newId] = newNode;
     }
 
     // resize the nodes
@@ -314,7 +293,7 @@ void WeightedHeteroGraph<T>::readGraph(std::string filePath, FileExtension extNa
 
 template <typename T>
 void WeightedHeteroGraph<T>::readGraphHelper(std::string filePath, IGraphParser &parser) {
-    for (auto &[src, dst, weight] : parser.parseWeightedHeteroGraph(filePath)) {
+    for (auto &[src, dst, weight] : parser.parseWeightedGraph(filePath)) {
         addEdge(src, dst, weight);
     }
 }
@@ -360,7 +339,7 @@ void WeightedHeteroGraph<T>::writeGraph(std::string filePath, FileExtension extN
 
 template <typename T>
 void WeightedHeteroGraph<T>::writeGraphHelper(std::string filePath, IGraphWriter &writer, std::vector<WeightedEdgeObject> edges) const {
-    writer.writeWeightedHeteroGraph(filePath, edges);
+    writer.writeWeightedGraph(filePath, edges);
 }
 
 // Explicit instantiation
