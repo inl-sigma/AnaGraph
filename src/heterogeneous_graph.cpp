@@ -9,6 +9,9 @@
 #include <any>
 #include <fstream>
 #include <memory>
+#include <set>
+#include <stdexcept>
+#include <string>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -237,12 +240,42 @@ void WeightedHeteroGraph<T>::organize() {
         if (nodes[oldId].isUsed()) {
             idMap[oldId] = newId;
 
-            spdlog::debug("update nodes and adjacents");
+            spdlog::debug("update nodes");
             nodes[newId] = nodes[oldId];
             nodes[newId].setId(newId);
 
+            spdlog::debug("insert newId: {}", newId);
             usedNodes.insert(newId);
             newId++;
+        }
+    }
+
+    // Update the adjacent nodes
+    spdlog::debug("update adjacents");
+    std::set<int> usedNodesSet = std::set<int>(usedNodes.begin(), usedNodes.end());
+    for (const int &id : usedNodesSet) {
+        spdlog::debug("update adjacents for {}", id);
+        auto &newNode = nodes[id];
+
+        auto adjacents = newNode.getAdjacents();
+        std::unordered_map<int, double> newAdjacents = std::unordered_map<int, double>();
+
+        // update the adjacents
+        for (auto &[adj, weight] : adjacents) {
+            spdlog::debug("update adjacent {} from {}", adj, id);
+            newAdjacents[idMap[adj]] = weight;
+        }
+
+        // remove old adjacents
+        for (auto [adj, weight] : adjacents) {
+            spdlog::debug("remove adjacent {} from {}", adj, id);
+            newNode.removeAdjacent(adj);
+        }
+
+        // add new adjacents
+        for (auto &[adj, weight] : newAdjacents) {
+            spdlog::debug("add adjacent {} to {}", adj, id);
+            newNode.setAdjacent(adj, weight);
         }
     }
 
