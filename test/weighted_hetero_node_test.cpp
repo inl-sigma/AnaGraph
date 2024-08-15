@@ -7,7 +7,7 @@
 
 TEST(WeightedHeteroNodeTest, DefaultConstructor) {
     WeightedHeteroNode<int> node1;
-    EXPECT_EQ(node1.getId(), WeightedHeteroNode<int>::UNUSED_ID);
+    EXPECT_TRUE(node1.getId() < 0);
     EXPECT_TRUE(node1.getAdjacents().empty());
 }
 
@@ -81,6 +81,9 @@ TEST(WeightedHeteroNodeTest, SetAndGetAttributes) {
     WeightedHeteroNode<std::string> node2;
     node2.setAttributes("hoge");
     EXPECT_EQ(node2.getAttributes(), "hoge");
+
+    WeightedHeteroNode<int> node3;
+    EXPECT_THROW(node3.getAttributes(), std::runtime_error);
 }
 
 TEST(WeightedHeteroNodeTest, Clear) {
@@ -89,6 +92,7 @@ TEST(WeightedHeteroNodeTest, Clear) {
     node1.setAttributes(10);
     node1.clear();
     EXPECT_FALSE(node1.isUsed());
-    EXPECT_EQ(node1.getId(), WeightedHeteroNode<int>::UNUSED_ID);
+    EXPECT_TRUE(node1.getId() < 0);
     EXPECT_TRUE(node1.getAdjacents().empty());
+    EXPECT_THROW(node1.getAttributes(), std::runtime_error);
 }
