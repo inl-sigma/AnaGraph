@@ -26,7 +26,7 @@ TEST(WeightedGraphTest, SetNode) {
     graph.setNode(1);
     graph.setNode(2);
 
-    EXPECT_EQ(graph.size(), 3);
+    EXPECT_EQ(graph.size(), static_cast<size_t>(3));
 }
 
 TEST(WeightedGraphTest, RemoveNode) {
