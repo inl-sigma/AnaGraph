@@ -17,6 +17,26 @@ TEST(WeightedNodeTest, ConstructorWithId) {
     EXPECT_TRUE(node2.getAdjacents().empty());
 }
 
+TEST(WeightedNodeTest, CopyConstructor) {
+    WeightedNode node1;
+    node1.setId(std::rand());
+    node1.setAdjacent(4, 1.5);
+    WeightedNode node2(node1);
+    EXPECT_EQ(node2.getId(), node1.getId());
+    EXPECT_EQ(node2.getAdjacents(), node1.getAdjacents());
+}
+
+TEST(WeightedNodeTest, MoveConstructor) {
+    WeightedNode node1;
+    node1.setId(0);
+    node1.setAdjacent(4, 1.5);
+    WeightedNode node2(std::move(node1));
+    EXPECT_EQ(node2.getId(), 0);
+    EXPECT_EQ(node2.getAdjacents().at(4), 1.5);
+    EXPECT_FALSE(node1.isUsed());
+    EXPECT_TRUE(node1.getAdjacents().empty());
+}
+
 TEST(WeightedNodeTest, SetAndGetId) {
     WeightedNode node1;
     node1.setId(3);
