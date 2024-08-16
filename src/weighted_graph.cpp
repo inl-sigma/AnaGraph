@@ -120,7 +120,7 @@ void WeightedDigraph::removeNode(int id) {
     usedNodes.erase(id);
 }
 
-std::unordered_set<int> WeightedDigraph::getId() const {
+std::unordered_set<int> WeightedDigraph::getIds() const {
     return usedNodes;
 }
 
@@ -349,8 +349,8 @@ void WeightedGraph::removeNode(int id) {
     digraph.removeNode(id);
 }
 
-std::unordered_set<int> WeightedGraph::getId() const {
-    return digraph.getId();
+std::unordered_set<int> WeightedGraph::getIds() const {
+    return digraph.getIds();
 }
 
 void WeightedGraph::addEdge(int src, int dst, double weight) {
@@ -430,7 +430,7 @@ void WeightedGraph::writeGraph(std::string filePath, FileExtension extName) cons
     // note : implement as function in weighted_graph.hpp if needed
 
     std::vector<WeightedEdgeObject> edges;
-    for (int src : digraph.getId()) {
+    for (int src : digraph.getIds()) {
         for (auto [dst, weight] : getAdjacents(src)) {
             if (src <= dst) {
                 // avoid duplicate edges, only add the edge if src <= dst
