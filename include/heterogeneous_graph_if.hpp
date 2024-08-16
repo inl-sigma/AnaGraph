@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef GRAPH_INTERFACE_HPP
-#define GRAPH_INTERFACE_HPP
+#ifndef HETEROGENEOUS_GRAPH_IF_HPP
+#define HETEROGENEOUS_GRAPH_IF_HPP
 
 #include "graph_utils.hpp"
 
@@ -12,14 +12,15 @@
 #include <vector>
 
 /**
- * @class INode
+ * @class IHeteroNode
  * @brief Represents a node in an unweighted graph.
  * 
- * The INode class provides a way to represent a node in an unweighted graph.
+ * The IHeteroNode class provides a way to represent a node in an unweighted graph.
  */
-class INode {
+template <typename T>
+class IHeteroNode {
 public:
-    virtual ~INode() = default;
+    virtual ~IHeteroNode() = default;
 
     /**
      * @brief Get the id of the node.
@@ -60,6 +61,28 @@ public:
     virtual void removeAdjacent(int adjacent) = 0;
 
     /**
+     * @brief Get the attribute of the node.
+     * @return The attribute of the node.
+     * 
+     * This method is used to access the attribute of a node.
+     */
+    virtual T getAttributes() const = 0;
+
+    /**
+     * @brief Set the attribute of the node.
+     * @param attribute The attribute of the node.
+     */
+    virtual void setAttributes(T attributes) = 0;
+
+    /**
+     * @brief Get a pointer to the attribute of the node.
+     * @return A pointer to the attribute of the node.
+     * 
+     * This method is used to modify the attribute of a node.
+     */
+    virtual std::shared_ptr<T> getAttributesPtr() const = 0;
+
+    /**
      * @brief Clear the node.
      * 
      * This method is used to clear the node.
@@ -68,32 +91,31 @@ public:
 };
 
 /**
- * @class IDigraph
+ * @class IHeteroDigraph
  * @brief Represents a graph data structure.
  * 
- * The IDigraph class provides a way to represent a directed graph using an adjacency list.
+ * The IHeteroDigraph class provides a way to represent a graph using an adjacency list.
  * It supports adding edges between nodes and accessing the adjacency list of a node.
  */
-class IDigraph {
+template <typename T>
+class IHeteroDigraph {
 public:
-    virtual ~IDigraph() = default;
+    virtual ~IHeteroDigraph() = default;
 
-    // TODO : Implement this function
-    // /** 
-    //  * @brief Get the attributes of a node.
-    //  * @param id The node to get the attributes of
-    //  * @return A reference to the attributes of the node
-    //  * 
-    //  * This method is used to modify the attributes of a node.
-    //  */
-    // virtual INode getNode(int id) const = 0;
+    /** 
+     * @brief Get the attributes of a node.
+     * @param id The node to get the attributes of
+     * @return A reference to the attributes of the node
+     * 
+     * This method is used to modify the attributes of a node.
+     */
+    virtual IHeteroNode<T> getNode(int id) const = 0;
 
-    // TODO : Implement this function
-    // /**
-    //  * @brief Set the node of the graph.
-    //  * @param node The node to set
-    //  */
-    // virtual void setNode(INode node) = 0;
+    /**
+     * @brief Set the node of the graph.
+     * @param node The node to set
+     */
+    virtual void setNode(IHeteroNode<T> node) = 0;
 
     /**
      * @brief Remove a node from the graph.
@@ -122,17 +144,23 @@ public:
     virtual const std::unordered_set<int> &getAdjacents(int id) const = 0;
 
     /**
+     * @brief Get the attribute of the nodes.
+     * @param id The id of the node to get the attributes of
+     * @return A vector of the attributes of the nodes
+     */
+    virtual T getAttributes(int id) const = 0;
+
+    /**
      * @brief Get the number of nodes in the graph.
      */
     virtual size_t size() const = 0;
 
-    // TODO : Implement this function
-    // /**
-    //  * @brief Get the node of the specific id.
-    //  * @param id The id of the node
-    //  * @return The node of the specific id
-    //  */
-    // virtual INode operator[](int id) = 0;
+    /**
+     * @brief Get the node of the specific id.
+     * @param id The id of the node
+     * @return The node of the specific id
+     */
+    virtual IHeteroNode<T> operator[](int id) = 0;
 
     /**
      * @brief Read a graph from a file.
@@ -150,32 +178,31 @@ public:
 };
 
 /**
- * @class IGraph
+ * @class IHeteroGraph
  * @brief Represents a graph data structure.
  * 
- * The IGraph class provides a way to represent a graph using an adjacency list.
+ * The IHeteroGraph class provides a way to represent a graph using an adjacency list.
  * It supports adding edges between nodes and accessing the adjacency list of a node.
  */
-class IGraph {
+template <typename T>
+class IHeteroGraph {
 public:
-    virtual ~IGraph() = default;
+    virtual ~IHeteroGraph() = default;
 
-    // TODO : Implement this function
-    // /** 
-    //  * @brief Get the attributes of a node.
-    //  * @param id The node to get the attributes of
-    //  * @return A reference to the attributes of the node
-    //  * 
-    //  * This method is used to modify the attributes of a node.
-    //  */
-    // virtual INode getNode(int id) const = 0;
+    /** 
+     * @brief Get the attributes of a node.
+     * @param id The node to get the attributes of
+     * @return A reference to the attributes of the node
+     * 
+     * This method is used to modify the attributes of a node.
+     */
+    virtual IHeteroNode<T> getNode(int id) const = 0;
 
-    // TODO : Implement this function
-    // /**
-    //  * @brief Set the node of the graph.
-    //  * @param node The node to set
-    //  */
-    // virtual void setNode(INode node) = 0;
+    /**
+     * @brief Set the node of the graph.
+     * @param node The node to set
+     */
+    virtual void setNode(IHeteroNode<T> node) = 0;
 
     /**
      * @brief Remove a node from the graph.
@@ -204,17 +231,23 @@ public:
     virtual const std::unordered_set<int> &getAdjacents(int id) const = 0;
 
     /**
+     * @brief Get the attribute of the nodes.
+     * @param id The id of the node to get the attributes of
+     * @return A vector of the attributes of the nodes
+     */
+    virtual T getAttributes(int id) const = 0;
+
+    /**
      * @brief Get the number of nodes in the graph.
      */
     virtual size_t size() const = 0;
 
-    // TODO : Implement this function
-    // /**
-    //  * @brief Get the node of the specific id.
-    //  * @param id The id of the node
-    //  * @return The node of the specific id
-    //  */
-    // virtual INode operator[](int id) = 0;
+    /**
+     * @brief Get the node of the specific id.
+     * @param id The id of the node
+     * @return The node of the specific id
+     */
+    virtual IHeteroNode<T> operator[](int id) = 0;
 
     /**
      * @brief Read a graph from a file.
@@ -232,15 +265,16 @@ public:
 };
 
 /**
- * @class IWeightedNode
+ * @class IWeightedHeteroNode
  * @brief Represents a node in a weighted graph.
  * 
- * The IWeightedNode class provides a way to represent a node in a weighted graph.
+ * The IWeightedHeteroNode class provides a way to represent a node in a weighted graph.
  * It supports adding edges between nodes and accessing the adjacency list of a node.
  */
-class IWeightedNode {
+template <typename T>
+class IWeightedHeteroNode {
 public:
-    virtual ~IWeightedNode() = default;
+    virtual ~IWeightedHeteroNode() = default;
 
     /**
      * @brief Get the id of the node.
@@ -289,6 +323,20 @@ public:
     virtual void removeAdjacent(int adjacent) = 0;
 
     /**
+     * @brief Get the attribute of the node.
+     * @return The attribute of the node.
+     * 
+     * This method is used to retrieve the attribute of a node.
+     */
+    virtual T getAttributes() const = 0;
+
+    /**
+     * @brief Set the attribute of the node.
+     * @param attribute The attribute of the node.
+     */
+    virtual void setAttributes(T attribute) = 0;
+
+    /**
      * @brief Clear the node.
      * 
      * This method is used to clear the node.
@@ -297,15 +345,16 @@ public:
 };
 
 /**
- * @class IWeightedDigraph
+ * @class IWeightedHeteroDigraph
  * @brief Represents a weighted graph data structure.
  * 
- * The IWeightedDigraph class provides a way to represent a weighted/directed graph using an adjacency list.
+ * The IWeightedHeteroDigraph class provides a way to represent a weighted graph using an adjacency list.
  * It supports adding edges between nodes and accessing the adjacency list of a node.
  */
-class IWeightedDigraph {
+template <typename T>
+class IWeightedHeteroDigraph {
 public:
-    virtual ~IWeightedDigraph() = default;
+    virtual ~IWeightedHeteroDigraph() = default;
 
     // TODO : Implement this function
     // /** 
@@ -315,7 +364,7 @@ public:
     //  * 
     //  * This method is used to access the attributes of a node.
     //  */
-    // virtual IWeightedNode<T> getNode(int id) const = 0;
+    // virtual IWeightedHeteroNode<T> getNode(int id) const = 0;
 
     /**
      * @brief Set a node to the graph.
@@ -328,7 +377,7 @@ public:
     //  * @brief Set a node to the graph.
     //  * @param node The node to add
     //  */
-    // virtual void setNode(IWeightedNode<T> &node) = 0;
+    // virtual void setNode(IWeightedHeteroNode<T> &node) = 0;
 
     /**
      * @brief Remove a node from the graph.
@@ -387,13 +436,27 @@ public:
      */
     virtual const std::unordered_map<int, double>& getAdjacents(int id) const = 0;
 
+    /**
+     * @brief Get the attributes of the nodes. 
+     * @param id The id of the node to get the attributes of
+     * @return A vector of the attributes of the nodes
+     */
+    virtual T getAttributes(int id) const = 0;
+
+    /**
+     * @brief Set the attributes of the nodes.
+     * @param id The id of the node to set the attributes of
+     * @param attributes The attributes of the nodes
+     */
+    virtual void setAttributes(int id, T attributes) = 0;
+
     // TODO : Implement this function
     // /**
     //  * @brief Get the node of the specific id.
     //  * @param id The id of the node
     //  * @return The node of the specific id
     //  */
-    // virtual IWeightedNode<T>& operator[](int id) = 0;
+    // virtual IWeightedHeteroNode<T>& operator[](int id) = 0;
 
     /**
      * @brief Get the number of nodes in the graph.
@@ -416,15 +479,16 @@ public:
 };
 
 /**
- * @class IWeightedGraph
+ * @class IWeightedHeteroGraph
  * @brief Represents a weighted graph data structure.
  * 
- * The IWeightedGraph class provides a way to represent a weighted graph using an adjacency list.
+ * The IWeightedHeteroGraph class provides a way to represent a weighted graph using an adjacency list.
  * It supports adding edges between nodes and accessing the adjacency list of a node.
  */
-class IWeightedGraph {
+template <typename T>
+class IWeightedHeteroGraph {
 public:
-    virtual ~IWeightedGraph() = default;
+    virtual ~IWeightedHeteroGraph() = default;
 
     // TODO : Implement this function
     // /** 
@@ -434,7 +498,7 @@ public:
     //  * 
     //  * This method is used to access the attributes of a node.
     //  */
-    // virtual IWeightedNode<T> getNode(int id) const = 0;
+    // virtual IWeightedHeteroNode<T> getNode(int id) const = 0;
 
     /**
      * @brief Set a node to the graph.
@@ -447,7 +511,7 @@ public:
     //  * @brief Set a node to the graph.
     //  * @param node The node to add
     //  */
-    // virtual void setNode(IWeightedNode<T> &node) = 0;
+    // virtual void setNode(IWeightedHeteroNode<T> &node) = 0;
 
     /**
      * @brief Remove a node from the graph.
@@ -506,13 +570,27 @@ public:
      */
     virtual const std::unordered_map<int, double>& getAdjacents(int id) const = 0;
 
+    /**
+     * @brief Get the attributes of the nodes. 
+     * @param id The id of the node to get the attributes of
+     * @return A vector of the attributes of the nodes
+     */
+    virtual T getAttributes(int id) const = 0;
+
+    /**
+     * @brief Set the attributes of the nodes.
+     * @param id The id of the node to set the attributes of
+     * @param attributes The attributes of the nodes
+     */
+    virtual void setAttributes(int id, T attributes) = 0;
+
     // TODO : Implement this function
     // /**
     //  * @brief Get the node of the specific id.
     //  * @param id The id of the node
     //  * @return The node of the specific id
     //  */
-    // virtual IWeightedNode<T>& operator[](int id) = 0;
+    // virtual IWeightedHeteroNode<T>& operator[](int id) = 0;
 
     /**
      * @brief Get the number of nodes in the graph.
@@ -534,4 +612,4 @@ public:
     virtual void writeGraph(std::string filename, FileExtension extName) const = 0;
 };
 
-#endif // GRAPH_INTERFACE_HPP
+#endif // HETEROGENEOUS_GRAPH_IF_HPP
