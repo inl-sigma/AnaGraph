@@ -36,7 +36,7 @@ TEST(WeightedGraphTest, RemoveNode) {
     graph.setNode(2);
 
     graph.removeNode(1);
-    EXPECT_EQ(graph.size(), 2);
+    EXPECT_EQ(graph.size(), static_cast<size_t>(2));
 }
 
 TEST(WeightedGraphTest, AddEdge) {
@@ -84,7 +84,7 @@ TEST(WeightedGraphTest, GetAdjacents) {
     for (const auto& [id, weight] : adjacents) {
         spdlog::debug("id: {}, weight: {}", id, weight);
     }
-    EXPECT_EQ(adjacents.size(), 2);
+    EXPECT_EQ(adjacents.size(), static_cast<size_t>(2));
     EXPECT_DOUBLE_EQ(adjacents.at(1), 5.0);
     EXPECT_DOUBLE_EQ(adjacents.at(2), 2.5);
 }
@@ -106,7 +106,7 @@ TEST(WeightedGraphTest, GetSubgraph) {
     WeightedGraph subgraph = graph.getSubgraph(indices);
 
     spdlog::debug("calculate subgraph size");
-    EXPECT_EQ(subgraph.size(), 3);
+    EXPECT_EQ(subgraph.size(), static_cast<size_t>(3));
     EXPECT_DOUBLE_EQ(subgraph.getWeight(0, 1), 5.0);
     EXPECT_DOUBLE_EQ(subgraph.getWeight(1, 0), 5.0);
     EXPECT_DOUBLE_EQ(subgraph.getWeight(1, 3), 3.0);
@@ -124,7 +124,7 @@ TEST(WeightedGraphTest, Organize) {
     graph.addEdge(2, 4, 3.5);
 
     graph.organize();
-    EXPECT_EQ(graph.size(), 3);
+    EXPECT_EQ(graph.size(), static_cast<size_t>(3));
     EXPECT_DOUBLE_EQ(graph.getWeight(0, 1), 5.0);
     EXPECT_DOUBLE_EQ(graph.getWeight(1, 0), 5.0);
     EXPECT_DOUBLE_EQ(graph.getWeight(1, 2), 3.5);
@@ -138,7 +138,7 @@ TEST(WeightedGraphTest, ReadGraph) {
     WeightedGraph graph;
     graph.readGraph("../../dataset/graph.txt", FileExtension::TXT);
 
-    EXPECT_EQ(graph.size(), 6);
+    EXPECT_EQ(graph.size(), static_cast<size_t>(6));
     EXPECT_EQ(graph.getWeight(0, 1), 1.0);
     EXPECT_EQ(graph.getWeight(0, 2), 1.0);
     EXPECT_EQ(graph.getWeight(1, 2), 1.0);

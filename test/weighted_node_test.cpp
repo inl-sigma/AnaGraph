@@ -83,7 +83,7 @@ TEST(WeightedNodeTest, RemoveAdjacent) {
     EXPECT_EQ(static_cast<int>(node1.getAdjacents().size()), 2);
     node1.removeAdjacent(5);
     const auto& adjacents = node1.getAdjacents();
-    EXPECT_EQ(adjacents.size(), 1);
+    EXPECT_EQ(adjacents.size(), static_cast<size_t>(1));
     EXPECT_FALSE(adjacents.contains(5));
 }
 
