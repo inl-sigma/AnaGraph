@@ -1,27 +1,29 @@
-#include "weighted_graph.hpp"
+#include "heterogeneous_graph.hpp"
+#include "graph_utils.hpp"
 
 #include <gtest/gtest.h>
 #include <spdlog/spdlog.h>
 
 #include <any>
 #include <string>
+#include <unordered_set>
 
-TEST(WeightedGraphTest, GetNode) {
-    WeightedGraph graph;
+TEST(WeightedHeteroDigraphTest, GetNode) {
+    WeightedHeteroDigraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
 
-    const WeightedNode& node1 = graph.getNode(0);
+    const WeightedHeteroNode<int>& node1 = graph.getNode(0);
     EXPECT_EQ(node1.getId(), 0);
-    const WeightedNode& node2 = graph.getNode(1);
+    const WeightedHeteroNode<int>& node2 = graph.getNode(1);
     EXPECT_EQ(node2.getId(), 1);
-    const WeightedNode& node3 = graph.getNode(2);
+    const WeightedHeteroNode<int>& node3 = graph.getNode(2);
     EXPECT_EQ(node3.getId(), 2);
 }
 
-TEST(WeightedGraphTest, SetNode) {
-    WeightedGraph graph;
+TEST(WeightedHeteroDigraphTest, SetNode) {
+    WeightedHeteroDigraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -29,8 +31,8 @@ TEST(WeightedGraphTest, SetNode) {
     EXPECT_EQ(graph.size(), static_cast<size_t>(3));
 }
 
-TEST(WeightedGraphTest, RemoveNode) {
-    WeightedGraph graph;
+TEST(WeightedHeteroDigraphTest, RemoveNode) {
+    WeightedHeteroDigraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -39,8 +41,8 @@ TEST(WeightedGraphTest, RemoveNode) {
     EXPECT_EQ(graph.size(), static_cast<size_t>(2));
 }
 
-TEST(WeightedGraphTest, GetIDs) {
-    WeightedGraph graph;
+TEST(WeightedHeteroDigraphTest, GetIDs) {
+    WeightedHeteroDigraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -58,10 +60,10 @@ TEST(WeightedGraphTest, GetIDs) {
     EXPECT_FALSE(ids.contains(7));
 }
 
-TEST(WeightedGraphTest, AddEdge) {
+TEST(WeightedHeteroDigraphTest, AddEdge) {
     spdlog::set_level(spdlog::level::debug);
 
-    WeightedGraph graph;
+    WeightedHeteroDigraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -70,13 +72,14 @@ TEST(WeightedGraphTest, AddEdge) {
     graph.addEdge(1, 2, 3.5);
 
     EXPECT_DOUBLE_EQ(graph.getWeight(0, 1), 5.0);
-    EXPECT_DOUBLE_EQ(graph.getWeight(1, 0), 5.0);
     EXPECT_DOUBLE_EQ(graph.getWeight(1, 2), 3.5);
-    EXPECT_DOUBLE_EQ(graph.getWeight(2, 1), 3.5);
+
+    EXPECT_DOUBLE_EQ(graph.getWeight(1, 0), 0.0);
+    EXPECT_DOUBLE_EQ(graph.getWeight(2, 1), 0.0);
 }
 
-TEST(WeightedGraphTest, RemoveEdge) {
-    WeightedGraph graph;
+TEST(WeightedHeteroDigraphTest, RemoveEdge) {
+    WeightedHeteroDigraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -86,12 +89,11 @@ TEST(WeightedGraphTest, RemoveEdge) {
 
     graph.removeEdge(0, 1);
     EXPECT_DOUBLE_EQ(graph.getWeight(0, 1), 0.0);
-    EXPECT_DOUBLE_EQ(graph.getWeight(1, 0), 0.0);
 }
 
-TEST(WeightedGraphTest, GetAdjacents) {
+TEST(WeightedHeteroDigraphTest, GetAdjacents) {
     spdlog::set_level(spdlog::level::debug);
-    WeightedGraph graph;
+    WeightedHeteroDigraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -108,9 +110,9 @@ TEST(WeightedGraphTest, GetAdjacents) {
     EXPECT_DOUBLE_EQ(adjacents.at(2), 2.5);
 }
 
-TEST(WeightedGraphTest, GetSubgraph) {
+TEST(WeightedHeteroDigraphTest, GetSubgraph) {
     spdlog::set_level(spdlog::level::debug);
-    WeightedGraph graph;
+    WeightedHeteroDigraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -122,19 +124,19 @@ TEST(WeightedGraphTest, GetSubgraph) {
 
     std::unordered_set<int> indices = {0, 1, 3};
     spdlog::debug("create subgraph");
-    WeightedGraph subgraph = graph.getSubgraph(indices);
+    WeightedHeteroDigraph<int> subgraph = graph.getSubgraph(indices);
 
     spdlog::debug("calculate subgraph size");
     EXPECT_EQ(subgraph.size(), static_cast<size_t>(3));
     EXPECT_DOUBLE_EQ(subgraph.getWeight(0, 1), 5.0);
-    EXPECT_DOUBLE_EQ(subgraph.getWeight(1, 0), 5.0);
     EXPECT_DOUBLE_EQ(subgraph.getWeight(1, 3), 3.0);
-    EXPECT_DOUBLE_EQ(subgraph.getWeight(3, 1), 3.0);
+
+    EXPECT_DOUBLE_EQ(subgraph.getWeight(0, 2), 0.0);
 }
 
-TEST(WeightedGraphTest, Organize) {
+TEST(WeightedHeteroDigraphTest, Organize) {
     spdlog::set_level(spdlog::level::debug);
-    WeightedGraph graph;
+    WeightedHeteroDigraph<int> graph;
     graph.setNode(0);
     graph.setNode(2);
     graph.setNode(4);
@@ -145,16 +147,67 @@ TEST(WeightedGraphTest, Organize) {
     graph.organize();
     EXPECT_EQ(graph.size(), static_cast<size_t>(3));
     EXPECT_DOUBLE_EQ(graph.getWeight(0, 1), 5.0);
-    EXPECT_DOUBLE_EQ(graph.getWeight(1, 0), 5.0);
     EXPECT_DOUBLE_EQ(graph.getWeight(1, 2), 3.5);
-    EXPECT_DOUBLE_EQ(graph.getWeight(2, 1), 3.5);
 
     EXPECT_DOUBLE_EQ(graph.getWeight(0, 2), 0.0);
     EXPECT_THROW(graph.getWeight(2, 4), std::out_of_range);
 }
 
-TEST(WeightedGraphTest, ReadGraph) {
-    WeightedGraph graph;
+TEST(WeightedHeteroDigraphTest, GetAttributes) {
+    WeightedHeteroDigraph<std::string> graph;
+    graph.setNode(0);
+    graph.setNode(1);
+    graph.setNode(2);
+
+    graph.setAttributes(0, "Node 0");
+    graph.setAttributes(1, "Node 1");
+    graph.setAttributes(2, "Node 2");
+
+    std::string attributes = graph.getAttributes(1);
+    EXPECT_EQ(attributes, "Node 1");
+}
+
+TEST(WeightedHeteroDigraphTest, SetAttributes) {
+    WeightedHeteroDigraph<std::string> graph;
+    graph.setNode(0);
+    graph.setNode(1);
+    graph.setNode(2);
+
+    graph.setAttributes(0, "Node 0");
+    graph.setAttributes(1, "Node 1");
+    graph.setAttributes(2, "Node 2");
+
+    graph.setAttributes(1, "Updated Node 1");
+    std::string attributes = graph.getAttributes(1);
+    EXPECT_EQ(attributes, "Updated Node 1");
+}
+
+TEST(WeightedHeteroDigraphTest, AnyAttributes) {
+    spdlog::set_level(spdlog::level::debug);
+    WeightedHeteroDigraph<std::any> graph;
+    graph.setNode(0);
+    graph.setNode(1);
+    graph.setNode(2);
+
+    graph.setAttributes(0, 1);
+    graph.setAttributes(1, 2.0);
+    graph.setAttributes(2, std::string("Node 2")); // to avoid casting to char[ ]
+
+    spdlog::debug("get int attributes");
+    int intAttributes = std::any_cast<int>(graph.getAttributes(0));
+    EXPECT_EQ(intAttributes, 1);
+
+    spdlog::debug("get double attributes");
+    double doubleAttributes = std::any_cast<double>(graph.getAttributes(1));
+    EXPECT_DOUBLE_EQ(doubleAttributes, 2.0);
+
+    spdlog::debug("get string attributes");
+    std::string stringAttributes = std::any_cast<std::string>(graph.getAttributes(2));
+    EXPECT_EQ(stringAttributes, "Node 2");
+}
+
+TEST(WeightedHeteroDigraphTest, ReadGraph) {
+    WeightedHeteroDigraph<int> graph;
     graph.readGraph("../../dataset/graph.txt", FileExtension::TXT);
 
     EXPECT_EQ(graph.size(), static_cast<size_t>(6));
@@ -166,8 +219,8 @@ TEST(WeightedGraphTest, ReadGraph) {
     EXPECT_EQ(graph.getWeight(4, 5), 1.0);
 }
 
-TEST(WeightedGraphTest, WriteGraph) {
-    WeightedGraph graph;
+TEST(WeightedHeteroDigraphTest, WriteGraph) {
+    WeightedHeteroDigraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);

@@ -6,8 +6,8 @@
 #include <any>
 #include <string>
 
-TEST(WeightedGraphTest, GetNode) {
-    WeightedGraph graph;
+TEST(WeightedDigraphTest, GetNode) {
+    WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -20,8 +20,8 @@ TEST(WeightedGraphTest, GetNode) {
     EXPECT_EQ(node3.getId(), 2);
 }
 
-TEST(WeightedGraphTest, SetNode) {
-    WeightedGraph graph;
+TEST(WeightedDigraphTest, SetNode) {
+    WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -29,8 +29,8 @@ TEST(WeightedGraphTest, SetNode) {
     EXPECT_EQ(graph.size(), static_cast<size_t>(3));
 }
 
-TEST(WeightedGraphTest, RemoveNode) {
-    WeightedGraph graph;
+TEST(WeightedDigraphTest, RemoveNode) {
+    WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -39,8 +39,8 @@ TEST(WeightedGraphTest, RemoveNode) {
     EXPECT_EQ(graph.size(), static_cast<size_t>(2));
 }
 
-TEST(WeightedGraphTest, GetIDs) {
-    WeightedGraph graph;
+TEST(WeightedDigraphTest, GetIDs) {
+    WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -58,10 +58,10 @@ TEST(WeightedGraphTest, GetIDs) {
     EXPECT_FALSE(ids.contains(7));
 }
 
-TEST(WeightedGraphTest, AddEdge) {
+TEST(WeightedDigraphTest, AddEdge) {
     spdlog::set_level(spdlog::level::debug);
 
-    WeightedGraph graph;
+    WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -70,13 +70,14 @@ TEST(WeightedGraphTest, AddEdge) {
     graph.addEdge(1, 2, 3.5);
 
     EXPECT_DOUBLE_EQ(graph.getWeight(0, 1), 5.0);
-    EXPECT_DOUBLE_EQ(graph.getWeight(1, 0), 5.0);
     EXPECT_DOUBLE_EQ(graph.getWeight(1, 2), 3.5);
-    EXPECT_DOUBLE_EQ(graph.getWeight(2, 1), 3.5);
+    
+    EXPECT_DOUBLE_EQ(graph.getWeight(1, 0), 0.0);    
+    EXPECT_DOUBLE_EQ(graph.getWeight(0, 2), 0.0);
 }
 
-TEST(WeightedGraphTest, RemoveEdge) {
-    WeightedGraph graph;
+TEST(WeightedDigraphTest, RemoveEdge) {
+    WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -86,12 +87,13 @@ TEST(WeightedGraphTest, RemoveEdge) {
 
     graph.removeEdge(0, 1);
     EXPECT_DOUBLE_EQ(graph.getWeight(0, 1), 0.0);
-    EXPECT_DOUBLE_EQ(graph.getWeight(1, 0), 0.0);
+
+    EXPECT_DOUBLE_EQ(graph.getWeight(1, 2), 3.5);
 }
 
-TEST(WeightedGraphTest, GetAdjacents) {
+TEST(WeightedDigraphTest, GetAdjacents) {
     spdlog::set_level(spdlog::level::debug);
-    WeightedGraph graph;
+    WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -108,9 +110,9 @@ TEST(WeightedGraphTest, GetAdjacents) {
     EXPECT_DOUBLE_EQ(adjacents.at(2), 2.5);
 }
 
-TEST(WeightedGraphTest, GetSubgraph) {
+TEST(WeightedDigraphTest, GetSubgraph) {
     spdlog::set_level(spdlog::level::debug);
-    WeightedGraph graph;
+    WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -122,19 +124,19 @@ TEST(WeightedGraphTest, GetSubgraph) {
 
     std::unordered_set<int> indices = {0, 1, 3};
     spdlog::debug("create subgraph");
-    WeightedGraph subgraph = graph.getSubgraph(indices);
+    WeightedDigraph subgraph = graph.getSubgraph(indices);
 
     spdlog::debug("calculate subgraph size");
     EXPECT_EQ(subgraph.size(), static_cast<size_t>(3));
     EXPECT_DOUBLE_EQ(subgraph.getWeight(0, 1), 5.0);
-    EXPECT_DOUBLE_EQ(subgraph.getWeight(1, 0), 5.0);
     EXPECT_DOUBLE_EQ(subgraph.getWeight(1, 3), 3.0);
-    EXPECT_DOUBLE_EQ(subgraph.getWeight(3, 1), 3.0);
+
+    EXPECT_EQ(subgraph.getWeight(0, 2), 0.0);
 }
 
-TEST(WeightedGraphTest, Organize) {
+TEST(WeightedDigraphTest, Organize) {
     spdlog::set_level(spdlog::level::debug);
-    WeightedGraph graph;
+    WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(2);
     graph.setNode(4);
@@ -145,16 +147,14 @@ TEST(WeightedGraphTest, Organize) {
     graph.organize();
     EXPECT_EQ(graph.size(), static_cast<size_t>(3));
     EXPECT_DOUBLE_EQ(graph.getWeight(0, 1), 5.0);
-    EXPECT_DOUBLE_EQ(graph.getWeight(1, 0), 5.0);
     EXPECT_DOUBLE_EQ(graph.getWeight(1, 2), 3.5);
-    EXPECT_DOUBLE_EQ(graph.getWeight(2, 1), 3.5);
 
     EXPECT_DOUBLE_EQ(graph.getWeight(0, 2), 0.0);
     EXPECT_THROW(graph.getWeight(2, 4), std::out_of_range);
 }
 
-TEST(WeightedGraphTest, ReadGraph) {
-    WeightedGraph graph;
+TEST(WeightedDigraphTest, ReadGraph) {
+    WeightedDigraph graph;
     graph.readGraph("../../dataset/graph.txt", FileExtension::TXT);
 
     EXPECT_EQ(graph.size(), static_cast<size_t>(6));
@@ -164,10 +164,13 @@ TEST(WeightedGraphTest, ReadGraph) {
     EXPECT_EQ(graph.getWeight(2, 3), 1.0);
     EXPECT_EQ(graph.getWeight(2, 4), 1.0);
     EXPECT_EQ(graph.getWeight(4, 5), 1.0);
+
+    EXPECT_DOUBLE_EQ(graph.getWeight(1, 0), 0.0);
+    EXPECT_THROW(graph.getWeight(0, 6), std::out_of_range);
 }
 
-TEST(WeightedGraphTest, WriteGraph) {
-    WeightedGraph graph;
+TEST(WeightedDigraphTest, WriteGraph) {
+    WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
