@@ -241,7 +241,7 @@ void WeightedHeteroGraph<T>::organize() {
             idMap[oldId] = newId;
 
             spdlog::debug("update nodes");
-            nodes[newId] = nodes[oldId];
+            nodes[newId] = std::move(nodes[oldId]);
             nodes[newId].setId(newId);
 
             spdlog::debug("insert newId: {}", newId);
