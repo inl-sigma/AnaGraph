@@ -149,7 +149,7 @@ public:
     /**
      * @brief Get the id of the graph.
      */
-    std::unordered_set<int> getId() const override;
+    std::unordered_set<int> getIds() const override;
 
     /** 
      * @brief Get the attributes of a node.
@@ -343,7 +343,7 @@ public:
     /**
      * @brief Get the id of the graph.
      */
-    std::unordered_set<int> getId() const override;
+    std::unordered_set<int> getIds() const override;
 
     /**
      * @brief Set a node to the graph.

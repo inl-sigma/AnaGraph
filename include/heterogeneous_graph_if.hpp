@@ -400,7 +400,7 @@ public:
     /**
      * @brief Get the id of the graph.
      */
-    virtual std::unordered_set<int> getId() const = 0;
+    virtual std::unordered_set<int> getIds() const = 0;
 
     /**
      * @brief Add an edge between two nodes.
@@ -539,7 +539,7 @@ public:
     /**
      * @brief Get the id of the graph.
      */
-    virtual std::unordered_set<int> getId() const = 0;
+    virtual std::unordered_set<int> getIds() const = 0;
 
     /**
      * @brief Add an edge between two nodes.

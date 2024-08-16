@@ -98,7 +98,7 @@ public:
     /**
      * @brief Get the id of the graph.
      */
-    virtual std::unordered_set<int> getId() const = 0;
+    virtual std::unordered_set<int> getIds() const = 0;
 
     /**
      * @brief Remove a node from the graph.
@@ -185,7 +185,7 @@ public:
     /**
      * @brief Get the id of the graph.
      */
-    virtual std::unordered_set<int> getId() const = 0;
+    virtual std::unordered_set<int> getIds() const = 0;
 
     /**
      * @brief Remove a node from the graph.
@@ -330,7 +330,7 @@ public:
     /**
      * @brief Get the id of the graph.
      */
-    virtual std::unordered_set<int> getId() const = 0;
+    virtual std::unordered_set<int> getIds() const = 0;
 
     /**
      * @brief Set a node to the graph.
@@ -454,7 +454,7 @@ public:
     /**
      * @brief Get the id of the graph.
      */
-    virtual std::unordered_set<int> getId() const = 0;
+    virtual std::unordered_set<int> getIds() const = 0;
 
     /**
      * @brief Set a node to the graph.

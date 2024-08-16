@@ -207,7 +207,7 @@ public:
     /**
      * @brief Get the id of the graph.
      */
-    std::unordered_set<int> getId() const override;
+    std::unordered_set<int> getIds() const override;
 
     /**
      * @brief Add an edge between two nodes.
@@ -403,7 +403,7 @@ public:
     /**
      * @brief Get the id of the graph.
      */
-    std::unordered_set<int> getId() const override;
+    std::unordered_set<int> getIds() const override;
 
     /**
      * @brief Add an edge between two nodes.
