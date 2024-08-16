@@ -55,6 +55,14 @@ public:
     }
 
     /**
+     * @brief Move constructor for the weightedNode object.
+     */
+    WeightedHeteroNode(WeightedHeteroNode<T> &&node) noexcept
+        : weightedNode(std::move(node.weightedNode)), attributes(std::move(node.attributes)), 
+        isAttrEnabled(std::move(node.isAttrEnabled)) 
+    {};
+
+    /**
      * @brief Assignment operator for the weightedNode object.
      */
     WeightedHeteroNode<T>& operator=(const WeightedHeteroNode<T>& node);

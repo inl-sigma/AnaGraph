@@ -50,6 +50,14 @@ public:
     WeightedNode& operator=(const WeightedNode& node);
 
     /**
+     * @brief Move constructor for the weightedNode object.
+     */
+    WeightedNode(WeightedNode &&node) noexcept
+        : id(node.id), adjacents(std::move(node.adjacents)) {
+        node.clear();
+    }
+
+    /**
      * @brief Get the id of the node.
      * @return The id of the node.
      */

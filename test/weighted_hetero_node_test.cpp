@@ -24,6 +24,31 @@ TEST(WeightedHeteroNodeTest, ConstructorWithIdAndAttributes) {
     EXPECT_TRUE(node3.getAdjacents().empty());
 }
 
+TEST(WeightedHeteroNodeTest, CopyConstructor) {
+    WeightedHeteroNode<int> node1;
+    node1.setId(std::rand());
+    node1.setAdjacent(4, 1.5);
+    node1.setAttributes(10);
+    WeightedHeteroNode<int> node2(node1);
+    EXPECT_EQ(node2.getId(), node1.getId());
+    EXPECT_EQ(node2.getAttributes(), node1.getAttributes());
+    EXPECT_EQ(node2.getAdjacents(), node1.getAdjacents());
+}
+
+TEST(WeightedHeteroNodeTest, MoveConstructor) {
+    WeightedHeteroNode<int> node1;
+    node1.setId(0);
+    node1.setAdjacent(4, 1.5);
+    node1.setAttributes(10);
+    WeightedHeteroNode<int> node2(std::move(node1));
+    EXPECT_EQ(node2.getId(), 0);
+    EXPECT_EQ(node2.getAttributes(), 10);
+    EXPECT_EQ(node2.getAdjacents().at(4), 1.5);
+    EXPECT_FALSE(node1.isUsed());
+    EXPECT_TRUE(node1.getId() < 0);
+    EXPECT_TRUE(node1.getAdjacents().empty());
+}
+
 TEST(WeightedHeteroNodeTest, SetAndGetId) {
     WeightedHeteroNode<int> node1;
     node1.setId(3);
