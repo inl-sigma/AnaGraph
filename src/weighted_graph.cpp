@@ -378,24 +378,7 @@ const std::unordered_map<int, double>& WeightedGraph::getAdjacents(int id) const
 
 WeightedGraph WeightedGraph::getSubgraph(std::unordered_set<int> indices) const {
     WeightedGraph subgraph;
-    // copy necessary nodes
-    for (auto idx : indices) {
-        if (idx >= static_cast<int>(this->size())) {
-            throw std::out_of_range("Node does not exist");
-        }
-        WeightedNode node = getNode(idx);
-        subgraph.setNode(node);
-    }
-    
-    // remove unnecessary edges
-    for (auto idx : indices) {
-        const auto &adjacents = getAdjacents(idx);
-        for (auto [adj, weight] : adjacents) {
-            if (!indices.contains(adj)) {
-                subgraph.removeEdge(idx, adj);
-            }
-        }
-    }
+    subgraph.digraph = digraph.getSubgraph(indices);
     return subgraph;
 }
 

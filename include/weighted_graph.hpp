@@ -110,7 +110,7 @@ public:
 };
 
 /**
- * @class WeightedGraph
+ * @class WeightedDigraph
  * @brief Represents a weighted graph data structure.
  * 
  * @note This WeightedGraph class is indexed as 0-origin and allowed to have self-loops.
@@ -292,7 +292,7 @@ private:
  */
 class WeightedGraph : public IWeightedGraph {
 private:
-    WeightedDigraph digraph; /**< The directed weighted graph, treated as an undirected one. */
+    WeightedDigraph digraph; /**< The directed weighted graph, treated as undirected one. */
 
 public:
     /**
