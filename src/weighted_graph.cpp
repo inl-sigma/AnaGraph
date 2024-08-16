@@ -120,6 +120,10 @@ void WeightedDigraph::removeNode(int id) {
     usedNodes.erase(id);
 }
 
+std::unordered_set<int> WeightedDigraph::getIds() const {
+    return usedNodes;
+}
+
 void WeightedDigraph::addEdge(int src, int dst, double weight) {
     const int maxId = std::max(src, dst);
     if (maxId >= static_cast<int>(nodes.size())) {
@@ -284,9 +288,6 @@ void WeightedDigraph::writeGraph(std::string filePath, FileExtension extName) co
     // note : implement as function in weighted_graph.hpp if needed
     std::vector<WeightedEdgeObject> edges;
     for (int src = 0; src < static_cast<int>(nodes.size()); src++) {
-        if (!nodes[src].isUsed()) {
-            continue;
-        }
         for (auto [dst, weight] : getAdjacents(src)) {
             edges.push_back(WeightedEdgeObject(src, dst, weight));
         }
@@ -346,6 +347,10 @@ void WeightedGraph::setNode(WeightedNode &node) {
 
 void WeightedGraph::removeNode(int id) {
     digraph.removeNode(id);
+}
+
+std::unordered_set<int> WeightedGraph::getIds() const {
+    return digraph.getIds();
 }
 
 void WeightedGraph::addEdge(int src, int dst, double weight) {
@@ -423,11 +428,9 @@ void WeightedGraph::readGraphHelper(std::string filePath, IGraphParser &parser) 
 void WeightedGraph::writeGraph(std::string filePath, FileExtension extName) const {
     // convert the graph to a list of edges
     // note : implement as function in weighted_graph.hpp if needed
+
     std::vector<WeightedEdgeObject> edges;
-    for (int src = 0; src < static_cast<int>(this->size()); src++) {
-        if (!digraph.getNode(src).isUsed()) {
-            continue;
-        }
+    for (int src : digraph.getIds()) {
         for (auto [dst, weight] : getAdjacents(src)) {
             if (src <= dst) {
                 // avoid duplicate edges, only add the edge if src <= dst

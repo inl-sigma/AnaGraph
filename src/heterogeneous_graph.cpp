@@ -134,6 +134,11 @@ void WeightedHeteroDigraph<T>::removeNode(int id) {
 }
 
 template <typename T>
+std::unordered_set<int> WeightedHeteroDigraph<T>::getIds() const {
+    return usedNodes;
+}
+
+template <typename T>
 void WeightedHeteroDigraph<T>::addEdge(int src, int dst, double weight) {
     const int maxId = std::max(src, dst);
     if (maxId >= static_cast<int>(nodes.size())) {
@@ -332,10 +337,7 @@ void WeightedHeteroDigraph<T>::writeGraph(std::string filePath, FileExtension ex
     // convert the graph to a list of edges
     // note : implement as function in weighted_graph.hpp if needed
     std::vector<WeightedEdgeObject> edges;
-    for (int src = 0; src < static_cast<int>(nodes.size()); src++) {
-        if (!nodes[src].isUsed()) {
-            continue;
-        }
+    for (int src : usedNodes) {
         for (auto [dst, weight] : getAdjacents(src)) {
             edges.push_back(WeightedEdgeObject(src, dst, weight));
         }
@@ -403,6 +405,11 @@ void WeightedHeteroGraph<T>::setNode(WeightedHeteroNode<T> &node) {
 template <typename T>
 void WeightedHeteroGraph<T>::removeNode(int id) {
     digraph.removeNode(id);
+}
+
+template <typename T>
+std::unordered_set<int> WeightedHeteroGraph<T>::getIds() const {
+    return digraph.getIds();
 }
 
 template <typename T>
@@ -501,13 +508,8 @@ void WeightedHeteroGraph<T>::readGraphHelper(std::string filePath, IGraphParser 
 template <typename T>
 void WeightedHeteroGraph<T>::writeGraph(std::string filePath, FileExtension extName) const {
     // convert the graph to a list of edges
-    // note : implement as function in weighted_graph.hpp if needed
-    // todo : weighted graphと同様に修正する
     std::vector<WeightedEdgeObject> edges;
-    for (int src = 0; src < static_cast<int>(this->size()); src++) {
-        if (!getNode(src).isUsed()) {
-            continue;
-        }
+    for (int src : digraph.getIds()) {
         for (auto [dst, weight] : getAdjacents(src)) {
             if (src <= dst) {
                 edges.push_back(WeightedEdgeObject(src, dst, weight)); // avoid duplicate edges

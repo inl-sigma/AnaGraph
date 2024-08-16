@@ -96,6 +96,11 @@ public:
     // virtual void setNode(INode node) = 0;
 
     /**
+     * @brief Get the id of the graph.
+     */
+    virtual std::unordered_set<int> getIds() const = 0;
+
+    /**
      * @brief Remove a node from the graph.
      * @param id The node to remove
      */
@@ -176,6 +181,11 @@ public:
     //  * @param node The node to set
     //  */
     // virtual void setNode(INode node) = 0;
+
+    /**
+     * @brief Get the id of the graph.
+     */
+    virtual std::unordered_set<int> getIds() const = 0;
 
     /**
      * @brief Remove a node from the graph.
@@ -318,6 +328,11 @@ public:
     // virtual IWeightedNode<T> getNode(int id) const = 0;
 
     /**
+     * @brief Get the id of the graph.
+     */
+    virtual std::unordered_set<int> getIds() const = 0;
+
+    /**
      * @brief Set a node to the graph.
      * @param id The node to add
      */
@@ -435,6 +450,11 @@ public:
     //  * This method is used to access the attributes of a node.
     //  */
     // virtual IWeightedNode<T> getNode(int id) const = 0;
+
+    /**
+     * @brief Get the id of the graph.
+     */
+    virtual std::unordered_set<int> getIds() const = 0;
 
     /**
      * @brief Set a node to the graph.

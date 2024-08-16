@@ -205,6 +205,11 @@ public:
     void removeNode(int id) override;
 
     /**
+     * @brief Get the id of the graph.
+     */
+    std::unordered_set<int> getIds() const override;
+
+    /**
      * @brief Add an edge between two nodes.
      * @param src The source node
      * @param dst The destination node
@@ -394,6 +399,11 @@ public:
      * @param id The node to remove
      */
     void removeNode(int id) override;
+
+    /**
+     * @brief Get the id of the graph.
+     */
+    std::unordered_set<int> getIds() const override;
 
     /**
      * @brief Add an edge between two nodes.

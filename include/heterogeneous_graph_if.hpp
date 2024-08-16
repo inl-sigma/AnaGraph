@@ -102,20 +102,26 @@ class IHeteroDigraph {
 public:
     virtual ~IHeteroDigraph() = default;
 
-    /** 
-     * @brief Get the attributes of a node.
-     * @param id The node to get the attributes of
-     * @return A reference to the attributes of the node
-     * 
-     * This method is used to modify the attributes of a node.
-     */
-    virtual IHeteroNode<T> getNode(int id) const = 0;
+    // TODO : Implement this function
+    // /** 
+    //  * @brief Get the attributes of a node.
+    //  * @param id The node to get the attributes of
+    //  * @return A reference to the attributes of the node
+    //  * 
+    //  * This method is used to modify the attributes of a node.
+    //  */
+    // virtual IHeteroNode<T> getNode(int id) const = 0;
+
+    // /**
+    //  * @brief Set the node of the graph.
+    //  * @param node The node to set
+    //  */
+    // virtual void setNode(IHeteroNode<T> node) = 0;
 
     /**
-     * @brief Set the node of the graph.
-     * @param node The node to set
+     * @brief Get the id of the graph.
      */
-    virtual void setNode(IHeteroNode<T> node) = 0;
+    virtual std::unordered_set<int> getId() const = 0;
 
     /**
      * @brief Remove a node from the graph.
@@ -189,20 +195,26 @@ class IHeteroGraph {
 public:
     virtual ~IHeteroGraph() = default;
 
-    /** 
-     * @brief Get the attributes of a node.
-     * @param id The node to get the attributes of
-     * @return A reference to the attributes of the node
-     * 
-     * This method is used to modify the attributes of a node.
-     */
-    virtual IHeteroNode<T> getNode(int id) const = 0;
+    // TODO : Implement this function
+    // /** 
+    //  * @brief Get the attributes of a node.
+    //  * @param id The node to get the attributes of
+    //  * @return A reference to the attributes of the node
+    //  * 
+    //  * This method is used to modify the attributes of a node.
+    //  */
+    // virtual IHeteroNode<T> getNode(int id) const = 0;
+
+    // /**
+    //  * @brief Set the node of the graph.
+    //  * @param node The node to set
+    //  */
+    // virtual void setNode(IHeteroNode<T> node) = 0;
 
     /**
-     * @brief Set the node of the graph.
-     * @param node The node to set
+     * @brief Get the id of the graph.
      */
-    virtual void setNode(IHeteroNode<T> node) = 0;
+    virtual std::unordered_set<int> getId() const = 0;
 
     /**
      * @brief Remove a node from the graph.
@@ -384,6 +396,11 @@ public:
      * @param id The node to remove
      */
     virtual void removeNode(int id) = 0;
+    
+    /**
+     * @brief Get the id of the graph.
+     */
+    virtual std::unordered_set<int> getIds() const = 0;
 
     /**
      * @brief Add an edge between two nodes.
@@ -518,6 +535,11 @@ public:
      * @param id The node to remove
      */
     virtual void removeNode(int id) = 0;
+
+    /**
+     * @brief Get the id of the graph.
+     */
+    virtual std::unordered_set<int> getIds() const = 0;
 
     /**
      * @brief Add an edge between two nodes.

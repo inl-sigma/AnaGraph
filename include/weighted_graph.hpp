@@ -146,6 +146,11 @@ public:
      */
     WeightedDigraph& operator=(const WeightedDigraph& graph);
 
+    /**
+     * @brief Get the id of the graph.
+     */
+    std::unordered_set<int> getIds() const override;
+
     /** 
      * @brief Get the attributes of a node.
      * @param id The node to get the attributes of
@@ -334,6 +339,11 @@ public:
      * @param id The node to add
      */
     void setNode(int id) override;
+
+    /**
+     * @brief Get the id of the graph.
+     */
+    std::unordered_set<int> getIds() const override;
 
     /**
      * @brief Set a node to the graph.
