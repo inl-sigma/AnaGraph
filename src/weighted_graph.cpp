@@ -288,9 +288,6 @@ void WeightedDigraph::writeGraph(std::string filePath, FileExtension extName) co
     // note : implement as function in weighted_graph.hpp if needed
     std::vector<WeightedEdgeObject> edges;
     for (int src = 0; src < static_cast<int>(nodes.size()); src++) {
-        if (!nodes[src].isUsed()) {
-            continue;
-        }
         for (auto [dst, weight] : getAdjacents(src)) {
             edges.push_back(WeightedEdgeObject(src, dst, weight));
         }
@@ -434,9 +431,6 @@ void WeightedGraph::writeGraph(std::string filePath, FileExtension extName) cons
 
     std::vector<WeightedEdgeObject> edges;
     for (int src : digraph.getId()) {
-        if (!digraph.getNode(src).isUsed()) {
-            continue;
-        }
         for (auto [dst, weight] : getAdjacents(src)) {
             if (src <= dst) {
                 // avoid duplicate edges, only add the edge if src <= dst
