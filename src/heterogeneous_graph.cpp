@@ -134,6 +134,11 @@ void WeightedHeteroDigraph<T>::removeNode(int id) {
 }
 
 template <typename T>
+std::unordered_set<int> WeightedHeteroDigraph<T>::getId() const {
+    return usedNodes;
+}
+
+template <typename T>
 void WeightedHeteroDigraph<T>::addEdge(int src, int dst, double weight) {
     const int maxId = std::max(src, dst);
     if (maxId >= static_cast<int>(nodes.size())) {
@@ -406,6 +411,11 @@ void WeightedHeteroGraph<T>::removeNode(int id) {
 }
 
 template <typename T>
+std::unordered_set<int> WeightedHeteroGraph<T>::getId() const {
+    return digraph.getId();
+}
+
+template <typename T>
 void WeightedHeteroGraph<T>::addEdge(int src, int dst, double weight) {
     digraph.addEdge(src, dst, weight);
     digraph.addEdge(dst, src, weight);
@@ -501,10 +511,8 @@ void WeightedHeteroGraph<T>::readGraphHelper(std::string filePath, IGraphParser 
 template <typename T>
 void WeightedHeteroGraph<T>::writeGraph(std::string filePath, FileExtension extName) const {
     // convert the graph to a list of edges
-    // note : implement as function in weighted_graph.hpp if needed
-    // todo : weighted graphと同様に修正する
     std::vector<WeightedEdgeObject> edges;
-    for (int src = 0; src < static_cast<int>(this->size()); src++) {
+    for (int src : digraph.getId()) {
         if (!getNode(src).isUsed()) {
             continue;
         }

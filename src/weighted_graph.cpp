@@ -120,6 +120,10 @@ void WeightedDigraph::removeNode(int id) {
     usedNodes.erase(id);
 }
 
+std::unordered_set<int> WeightedDigraph::getId() const {
+    return usedNodes;
+}
+
 void WeightedDigraph::addEdge(int src, int dst, double weight) {
     const int maxId = std::max(src, dst);
     if (maxId >= static_cast<int>(nodes.size())) {
@@ -348,6 +352,10 @@ void WeightedGraph::removeNode(int id) {
     digraph.removeNode(id);
 }
 
+std::unordered_set<int> WeightedGraph::getId() const {
+    return digraph.getId();
+}
+
 void WeightedGraph::addEdge(int src, int dst, double weight) {
     digraph.addEdge(src, dst, weight);
     digraph.addEdge(dst, src, weight);
@@ -423,8 +431,9 @@ void WeightedGraph::readGraphHelper(std::string filePath, IGraphParser &parser) 
 void WeightedGraph::writeGraph(std::string filePath, FileExtension extName) const {
     // convert the graph to a list of edges
     // note : implement as function in weighted_graph.hpp if needed
+
     std::vector<WeightedEdgeObject> edges;
-    for (int src = 0; src < static_cast<int>(this->size()); src++) {
+    for (int src : digraph.getId()) {
         if (!digraph.getNode(src).isUsed()) {
             continue;
         }
