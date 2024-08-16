@@ -337,10 +337,7 @@ void WeightedHeteroDigraph<T>::writeGraph(std::string filePath, FileExtension ex
     // convert the graph to a list of edges
     // note : implement as function in weighted_graph.hpp if needed
     std::vector<WeightedEdgeObject> edges;
-    for (int src = 0; src < static_cast<int>(nodes.size()); src++) {
-        if (!nodes[src].isUsed()) {
-            continue;
-        }
+    for (int src : usedNodes) {
         for (auto [dst, weight] : getAdjacents(src)) {
             edges.push_back(WeightedEdgeObject(src, dst, weight));
         }
@@ -513,9 +510,6 @@ void WeightedHeteroGraph<T>::writeGraph(std::string filePath, FileExtension extN
     // convert the graph to a list of edges
     std::vector<WeightedEdgeObject> edges;
     for (int src : digraph.getId()) {
-        if (!getNode(src).isUsed()) {
-            continue;
-        }
         for (auto [dst, weight] : getAdjacents(src)) {
             if (src <= dst) {
                 edges.push_back(WeightedEdgeObject(src, dst, weight)); // avoid duplicate edges
