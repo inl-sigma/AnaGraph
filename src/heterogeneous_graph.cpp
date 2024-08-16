@@ -134,7 +134,7 @@ void WeightedHeteroDigraph<T>::removeNode(int id) {
 }
 
 template <typename T>
-std::unordered_set<int> WeightedHeteroDigraph<T>::getId() const {
+std::unordered_set<int> WeightedHeteroDigraph<T>::getIds() const {
     return usedNodes;
 }
 
@@ -408,8 +408,8 @@ void WeightedHeteroGraph<T>::removeNode(int id) {
 }
 
 template <typename T>
-std::unordered_set<int> WeightedHeteroGraph<T>::getId() const {
-    return digraph.getId();
+std::unordered_set<int> WeightedHeteroGraph<T>::getIds() const {
+    return digraph.getIds();
 }
 
 template <typename T>
@@ -509,7 +509,7 @@ template <typename T>
 void WeightedHeteroGraph<T>::writeGraph(std::string filePath, FileExtension extName) const {
     // convert the graph to a list of edges
     std::vector<WeightedEdgeObject> edges;
-    for (int src : digraph.getId()) {
+    for (int src : digraph.getIds()) {
         for (auto [dst, weight] : getAdjacents(src)) {
             if (src <= dst) {
                 edges.push_back(WeightedEdgeObject(src, dst, weight)); // avoid duplicate edges
