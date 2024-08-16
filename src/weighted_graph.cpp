@@ -288,7 +288,166 @@ void WeightedDigraph::writeGraph(std::string filePath, FileExtension extName) co
             continue;
         }
         for (auto [dst, weight] : getAdjacents(src)) {
+            edges.push_back(WeightedEdgeObject(src, dst, weight));
+        }
+    }
+
+    switch (extName) {
+    case FileExtension::TXT: {
+        TextGraphWriter writer;
+        writeGraphHelper(filePath, writer, edges);
+    }
+        break;
+
+    case FileExtension::CSV: {
+        CSVGraphWriter writer;
+        writeGraphHelper(filePath, writer, edges);
+    }
+        break;
+
+    // case FileExtension::GML:
+    //     writeGraphHelper(filePath, GMLGraphWriter(), edges);
+    //     break;
+
+    default:
+        throw std::invalid_argument("Invalid file extension");
+        break;
+    }
+}
+
+void WeightedDigraph::writeGraphHelper(std::string filePath, IGraphWriter &writer, std::vector<WeightedEdgeObject> edges) const {
+    writer.writeWeightedGraph(filePath, edges);
+}
+
+WeightedGraph::WeightedGraph() {
+    digraph = WeightedDigraph();
+}
+
+WeightedGraph::WeightedGraph(std::string filePath, FileExtension extName) {
+    readGraph(filePath, extName);
+}
+
+WeightedGraph& WeightedGraph::operator=(const WeightedGraph& graph) {
+    digraph = graph.digraph;
+    return *this;
+}
+
+WeightedNode WeightedGraph::getNode(int id) const {
+    return digraph.getNode(id);
+}
+
+void WeightedGraph::setNode(int id) {
+    digraph.setNode(id);
+}
+
+void WeightedGraph::setNode(WeightedNode &node) {
+    digraph.setNode(node);
+}
+
+void WeightedGraph::removeNode(int id) {
+    digraph.removeNode(id);
+}
+
+void WeightedGraph::addEdge(int src, int dst, double weight) {
+    digraph.addEdge(src, dst, weight);
+    digraph.addEdge(dst, src, weight);
+}
+
+void WeightedGraph::removeEdge(int src, int dst) {
+    digraph.removeEdge(src, dst);
+    digraph.removeEdge(dst, src);
+}
+
+double WeightedGraph::getWeight(int src, int dst) const {
+    return digraph.getWeight(src, dst);
+}
+
+void WeightedGraph::setWeight(int src, int dst, double weight) {
+    digraph.setWeight(src, dst, weight);
+    digraph.setWeight(dst, src, weight);
+}
+
+void WeightedGraph::addWeight(int src, int dst, double weight) {
+    digraph.addWeight(src, dst, weight);
+    digraph.addWeight(dst, src, weight);
+}
+
+const std::unordered_map<int, double>& WeightedGraph::getAdjacents(int id) const {
+    return digraph.getAdjacents(id);
+}
+
+WeightedGraph WeightedGraph::getSubgraph(std::unordered_set<int> indices) const {
+    WeightedGraph subgraph;
+    // copy necessary nodes
+    for (auto idx : indices) {
+        if (idx >= static_cast<int>(this->size())) {
+            throw std::out_of_range("Node does not exist");
+        }
+        WeightedNode node = getNode(idx);
+        subgraph.setNode(node);
+    }
+    
+    // remove unnecessary edges
+    for (auto idx : indices) {
+        const auto &adjacents = getAdjacents(idx);
+        for (auto [adj, weight] : adjacents) {
+            if (!indices.contains(adj)) {
+                subgraph.removeEdge(idx, adj);
+            }
+        }
+    }
+    return subgraph;
+}
+
+void WeightedGraph::organize() {
+    digraph.organize();
+}
+
+size_t WeightedGraph::size() const {
+    return digraph.size();
+}
+
+void WeightedGraph::readGraph(std::string filePath, FileExtension extName) {
+    switch (extName) {
+    case FileExtension::TXT: {
+        TextGraphParser parser;
+        readGraphHelper(filePath, parser);
+    }
+        break;
+
+    case FileExtension::CSV: {
+        CSVGraphParser parser;
+        readGraphHelper(filePath, parser);
+    }
+        break;
+
+    // case FileExtension::GML:
+    //     readGraphHelper(filePath, GMLGraphParser());
+    //     break;
+    
+    default:
+        throw std::invalid_argument("Invalid file extension");
+        break;
+    }
+}
+
+void WeightedGraph::readGraphHelper(std::string filePath, IGraphParser &parser) {
+    for (auto &[src, dst, weight] : parser.parseWeightedGraph(filePath)) {
+        addEdge(src, dst, weight);
+    }
+}
+
+void WeightedGraph::writeGraph(std::string filePath, FileExtension extName) const {
+    // convert the graph to a list of edges
+    // note : implement as function in weighted_graph.hpp if needed
+    std::vector<WeightedEdgeObject> edges;
+    for (int src = 0; src < static_cast<int>(this->size()); src++) {
+        if (!digraph.getNode(src).isUsed()) {
+            continue;
+        }
+        for (auto [dst, weight] : getAdjacents(src)) {
             if (src <= dst) {
+                // avoid duplicate edges, only add the edge if src <= dst
                 edges.push_back(WeightedEdgeObject(src, dst, weight));
             }
         }
@@ -317,6 +476,6 @@ void WeightedDigraph::writeGraph(std::string filePath, FileExtension extName) co
     }
 }
 
-void WeightedDigraph::writeGraphHelper(std::string filePath, IGraphWriter &writer, std::vector<WeightedEdgeObject> edges) const {
+void WeightedGraph::writeGraphHelper(std::string filePath, IGraphWriter &writer, std::vector<WeightedEdgeObject> edges) const {
     writer.writeWeightedGraph(filePath, edges);
 }

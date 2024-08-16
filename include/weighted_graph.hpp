@@ -292,8 +292,7 @@ private:
  */
 class WeightedGraph : public IWeightedGraph {
 private:
-    std::vector<WeightedNode> nodes; /**< The adjacency list representing the graph. */
-    std::unordered_set<int> usedNodes; /**< The set of used nodes. */
+    WeightedDigraph digraph; /**< The directed weighted graph, treated as an undirected one. */
 
 public:
     /**
@@ -311,13 +310,13 @@ public:
      * @brief Copy constructor for the WeightedGraph object.
      */
     WeightedGraph(const WeightedGraph &graph) 
-        : nodes(graph.nodes), usedNodes(graph.usedNodes) {
+        : digraph(graph.digraph) {
     }
 
     /**
      * @brief Assignment operator for the WeightedGraph object.
      */
-    WeightedGraph& operator=(const WeightedGraph& graph);
+    WeightedGraph& operator=(const WeightedGraph& digraph);
 
     /** 
      * @brief Get the attributes of a node.
