@@ -39,6 +39,25 @@ TEST(WeightedGraphTest, RemoveNode) {
     EXPECT_EQ(graph.size(), static_cast<size_t>(2));
 }
 
+TEST(WeightedGraphTest, GetIDs) {
+    WeightedGraph graph;
+    graph.setNode(0);
+    graph.setNode(1);
+    graph.setNode(2);
+    graph.setNode(5);
+
+    std::unordered_set<int> ids = graph.getIds();
+    EXPECT_EQ(ids.size(), static_cast<size_t>(4));
+    EXPECT_TRUE(ids.contains(0));
+    EXPECT_TRUE(ids.contains(1));
+    EXPECT_TRUE(ids.contains(2));
+    EXPECT_TRUE(ids.contains(5));
+
+    EXPECT_FALSE(ids.contains(-1));
+    EXPECT_FALSE(ids.contains(3));
+    EXPECT_FALSE(ids.contains(7));
+}
+
 TEST(WeightedGraphTest, AddEdge) {
     spdlog::set_level(spdlog::level::debug);
 
