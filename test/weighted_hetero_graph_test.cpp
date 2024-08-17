@@ -134,7 +134,7 @@ TEST(WeightedHeteroGraphTest, GetSubgraph) {
     EXPECT_DOUBLE_EQ(subgraph.getWeight(3, 1), 3.0);
 }
 
-TEST(WeightedHeteroGraphTest, Organize) {
+TEST(WeightedHeteroGraphTest, Reorganize) {
     spdlog::set_level(spdlog::level::debug);
     WeightedHeteroGraph<int> graph;
     graph.setNode(0);
@@ -144,7 +144,7 @@ TEST(WeightedHeteroGraphTest, Organize) {
     graph.addEdge(0, 2, 5.0);
     graph.addEdge(2, 4, 3.5);
 
-    graph.organize();
+    graph.reorganize();
     EXPECT_EQ(graph.size(), static_cast<size_t>(3));
     EXPECT_DOUBLE_EQ(graph.getWeight(0, 1), 5.0);
     EXPECT_DOUBLE_EQ(graph.getWeight(1, 0), 5.0);
