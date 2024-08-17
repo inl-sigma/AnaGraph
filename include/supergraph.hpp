@@ -15,7 +15,9 @@ private:
     std::unordered_set<int> children;
 
 public:
-    static const int ROOT = -1; /**< ROOT is a constant that represents that the node has no root node */
+    // todo : declare the constants as utils?
+    static const int UNUSED_ID = -1; /**< UNUSED_ID is a constant that represents that the node is not used */
+    static const int ROOT = -1; /**< ROOT is a constant that represents that the node has no parent node */
     /**
      * @brief Construct a new WeightedSuperNode object.
      */
@@ -145,6 +147,20 @@ public:
      * This method is used to clear the node.
      */
     void clear() override;
+};
+
+// Implement the member functions here
+
+
+/**
+ * @brief The SuperGraph class.
+ * 
+ * This class is used to represent a supergraph.
+ * A supergraph is a graph that contains a set of nodes and a set of edges.
+ * Each node in the supergraph is a supernode that contains a set of nodes and edges.
+ * The supergraph is used to represent a kind of hierarchy of graph.
+ */
+class SuperGraph : public IWeightedGraph {
 };
 
 #endif // SUPERGRAPH_HPP
