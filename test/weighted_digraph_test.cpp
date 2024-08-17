@@ -134,7 +134,7 @@ TEST(WeightedDigraphTest, GetSubgraph) {
     EXPECT_EQ(subgraph.getWeight(0, 2), 0.0);
 }
 
-TEST(WeightedDigraphTest, Organize) {
+TEST(WeightedDigraphTest, Reorganize) {
     spdlog::set_level(spdlog::level::debug);
     WeightedDigraph graph;
     graph.setNode(0);
@@ -144,7 +144,7 @@ TEST(WeightedDigraphTest, Organize) {
     graph.addEdge(0, 2, 5.0);
     graph.addEdge(2, 4, 3.5);
 
-    graph.organize();
+    graph.reorganize();
     EXPECT_EQ(graph.size(), static_cast<size_t>(3));
     EXPECT_DOUBLE_EQ(graph.getWeight(0, 1), 5.0);
     EXPECT_DOUBLE_EQ(graph.getWeight(1, 2), 3.5);

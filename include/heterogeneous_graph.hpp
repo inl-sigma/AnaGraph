@@ -266,12 +266,12 @@ public:
     WeightedHeteroDigraph<T> getSubgraph(std::unordered_set<int> indices) const;
 
     /**
-     * @brief Organize the graph.
+     * @brief Reorganize the graph.
      * 
-     * This method is used to organize the graph.
+     * This method is used to reorganize the graph.
      * It can be used to delete unnecessary nodes.
      */
-    void organize();
+    void reorganize();
 
     /**
      * @brief Get the attributes of the nodes. 
@@ -462,12 +462,12 @@ public:
     WeightedHeteroGraph<T> getSubgraph(std::unordered_set<int> indices) const;
 
     /**
-     * @brief Organize the graph.
+     * @brief Reorganize the graph.
      * 
-     * This method is used to organize the graph.
+     * This method is used to reorganize the graph.
      * It can be used to delete unnecessary nodes.
      */
-    void organize();
+    void reorganize();
 
     /**
      * @brief Get the attributes of the nodes. 
