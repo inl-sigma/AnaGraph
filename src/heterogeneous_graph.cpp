@@ -227,34 +227,28 @@ WeightedHeteroDigraph<T> WeightedHeteroDigraph<T>::getSubgraph(std::unordered_se
 }
 
 template <typename T>
-void WeightedHeteroDigraph<T>::organize() {
-    spdlog::debug("called organize");
+void WeightedHeteroDigraph<T>::reorganize() {
+    spdlog::debug("called reorganize");
 
+    // Create a map from old id to new id
+    std::set<int> oldNodes = std::set<int>(this->usedNodes.begin(), this->usedNodes.end());
     spdlog::debug("clear usedNodes");
     usedNodes.clear();
 
-    // Create a map from old id to new id
     spdlog::debug("create idMap and update usedNodes");
     std::unordered_map<int, int> idMap;
     int newId = 0;
-    for (int oldId = 0; oldId < static_cast<int>(nodes.size()); oldId++) {
-        if (nodes[oldId].isUsed()) {
-            idMap[oldId] = newId;
 
-            spdlog::debug("update nodes");
-            nodes[newId] = std::move(nodes[oldId]);
-            nodes[newId].setId(newId);
-
-            spdlog::debug("insert newId: {}", newId);
-            usedNodes.insert(newId);
-            newId++;
-        }
+    for (int oldId : oldNodes) {
+        idMap[oldId] = newId;
+        nodes[newId] = std::move(nodes[oldId]);
+        usedNodes.insert(newId);
+        newId++;
     }
 
     // Update the adjacent nodes
     spdlog::debug("update adjacents");
-    std::set<int> usedNodesSet = std::set<int>(usedNodes.begin(), usedNodes.end());
-    for (const int &id : usedNodesSet) {
+    for (int id = 0; id < newId; id++) {
         spdlog::debug("update adjacents for {}", id);
         auto &newNode = nodes[id];
 
@@ -454,8 +448,8 @@ WeightedHeteroGraph<T> WeightedHeteroGraph<T>::getSubgraph(std::unordered_set<in
 }
 
 template <typename T>
-void WeightedHeteroGraph<T>::organize() {
-    digraph.organize();
+void WeightedHeteroGraph<T>::reorganize() {
+    digraph.reorganize();
 }
 
 template <typename T>

@@ -7,6 +7,7 @@
 #include <spdlog/spdlog.h>
 
 #include <fstream>
+#include <set>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -205,9 +206,11 @@ WeightedDigraph WeightedDigraph::getSubgraph(std::unordered_set<int> indices) co
     return subgraph;
 }
 
-void WeightedDigraph::organize() {
-    spdlog::debug("called organize");
+void WeightedDigraph::reorganize() {
+    spdlog::debug("called reorganize");
 
+    // for sort and copy
+    std::set<int> oldNodes = std::set<int>(this->usedNodes.begin(), this->usedNodes.end());
     spdlog::debug("clear usedNodes");
     usedNodes.clear();
 
@@ -215,22 +218,21 @@ void WeightedDigraph::organize() {
     spdlog::debug("create idMap and update usedNodes");
     std::unordered_map<int, int> idMap;
     int newId = 0;
-    for (int oldId = 0; oldId < static_cast<int>(nodes.size()); oldId++) {
-        if (nodes[oldId].isUsed()) {
-            idMap[oldId] = newId;
-            nodes[newId] = nodes[oldId];
-            usedNodes.insert(newId);
-            newId++;
-        }
+    for (int oldId : oldNodes) {
+        idMap[oldId] = newId;
+        // move the node to the new id, with the adjacency list is maintained
+        nodes[newId] = std::move(nodes[oldId]);
+        usedNodes.insert(newId);
+        newId++;
     }
 
     // Update the nodes and the adjacents
     spdlog::debug("update nodes and adjacents");
-    for (int newId = 0; newId < static_cast<int>(idMap.size()); newId++) {
-        auto &oldNode = nodes[newId];
+    for (int id = 0; id < newId; id++) {
+        auto &oldNode = nodes[id];
 
         // set the new id
-        auto newNode = WeightedNode(newId);
+        auto newNode = WeightedNode(id);
 
         // set the adjacents
         for (auto [oldAdj, weight] : oldNode.getAdjacents()) {
@@ -241,7 +243,7 @@ void WeightedDigraph::organize() {
             }
         }
 
-        nodes[newId] = newNode;
+        nodes[id] = newNode;
     }
 
     // resize the nodes
@@ -387,8 +389,8 @@ WeightedGraph WeightedGraph::getSubgraph(std::unordered_set<int> indices) const 
     return subgraph;
 }
 
-void WeightedGraph::organize() {
-    digraph.organize();
+void WeightedGraph::reorganize() {
+    digraph.reorganize();
 }
 
 size_t WeightedGraph::size() const {
