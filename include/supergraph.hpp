@@ -8,7 +8,7 @@
 
 #include <unordered_map>
 
-class WeightedSuperNode : IWeightedNode {
+class WeightedSupernode : IWeightedNode {
 private:
     WeightedNode node;
     int parent = ROOT; /**< parent is implemented as type int, because this relation is a kind of attributed edge */
@@ -16,46 +16,46 @@ private:
 
 public:
     // todo : declare the constants as utils?
-    static const int UNUSED_ID = -1; /**< UNUSED_ID is a constant that represents that the node is not used */
-    static const int ROOT = -1; /**< ROOT is a constant that represents that the node has no parent node */
+    static const int UNUSED_ID; /**< UNUSED_ID is a constant that represents that the node is not used */
+    static const int ROOT; /**< ROOT is a constant that represents that the node has no parent node */
     /**
-     * @brief Construct a new WeightedSuperNode object.
+     * @brief Construct a new WeightedSupernode object.
      */
-    WeightedSuperNode() = default;
+    WeightedSupernode() = default;
 
     /**
-     * @brief Construct a new WeightedSuperNode object.
+     * @brief Construct a new WeightedSupernode object.
      * @param id The id of the node.
      */
-    WeightedSuperNode(int id) : node(id) {};
+    WeightedSupernode(int id) : node(id) {};
 
     /**
-     * @brief Copy constructor for WeightedSuperNode.
+     * @brief Copy constructor for WeightedSupernode.
      *
-     * This constructor creates a new WeightedSuperNode object by copying the contents of another WeightedSuperNode object.
+     * This constructor creates a new WeightedSupernode object by copying the contents of another WeightedSupernode object.
      *
-     * @param other The WeightedSuperNode object to be copied.
+     * @param other The WeightedSupernode object to be copied.
      */
-    WeightedSuperNode(const WeightedSuperNode&) = default;
+    WeightedSupernode(const WeightedSupernode&) = default;
 
     /**
-     * @brief Move constructor for WeightedSuperNode.
+     * @brief Move constructor for WeightedSupernode.
      *
-     * This constructor creates a new WeightedSuperNode object by moving the contents of another WeightedSuperNode object.
+     * This constructor creates a new WeightedSupernode object by moving the contents of another WeightedSupernode object.
      *
-     * @param other The WeightedSuperNode object to be moved.
+     * @param other The WeightedSupernode object to be moved.
      */
-    WeightedSuperNode(WeightedSuperNode&&) = default;
+    WeightedSupernode(WeightedSupernode&&) = default;
 
     /**
-     * @brief Assignment operator for WeightedSuperNode.
+     * @brief Assignment operator for WeightedSupernode.
      * 
-     * This operator assigns the values of a WeightedSuperNode object to another WeightedSuperNode object.
+     * This operator assigns the values of a WeightedSupernode object to another WeightedSupernode object.
      * 
-     * @param other The WeightedSuperNode object to be assigned.
-     * @return Reference to the assigned WeightedSuperNode object.
+     * @param other The WeightedSupernode object to be assigned.
+     * @return Reference to the assigned WeightedSupernode object.
      */
-    WeightedSuperNode& operator=(const WeightedSuperNode&) = default;
+    WeightedSupernode& operator=(const WeightedSupernode&) = default;
 
     /**
      * @brief Get the id of the node.
