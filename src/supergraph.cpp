@@ -215,42 +215,7 @@ std::unordered_set<int> WeightedSuperDigraph::getChildren(int id) const {
 }
 
 const std::unordered_map<int, double> WeightedSuperDigraph::getAdjacents(int id) const {
-    int nodeId = id;
-    std::unordered_map<int, double> adjacents = std::unordered_map<int, double>();
-
-    // Traverse the node itself and parents to get all the adjacents
-    while (nodeId != WeightedSupernode::ROOT) {
-        if (!usedNodes.contains(nodeId)) {
-            throw std::out_of_range("Node does not exist");
-        }
-        auto &node = nodes[nodeId];
-        for (const auto &[adj, weight] : node.getAdjacents()) {
-            if (adjacents.contains(adj)) {
-                adjacents[adj] += weight;
-            } else {
-                adjacents[adj] = weight;
-            }
-        }
-        nodeId = node.getParent();
-        if (nodeId == id) {
-            // Avoid infinite loop
-            break;
-        }
-    }
-
-    // Remove edges with weight less than or equal to 0
-    std::vector<int> keysToRemove;
-    for (const auto &[adj, weight] : adjacents) {
-        if (weight <= 0.0) {
-            keysToRemove.push_back(adj);
-        }
-    }
-    for (const auto &key : keysToRemove) {
-        adjacents.erase(key);
-    }
-
-    // copy the adjacents and return
-    return adjacents;
+    return nodes[id].getAdjacents();
 }
 
 size_t WeightedSuperDigraph::size() const {
