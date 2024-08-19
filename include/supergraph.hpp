@@ -331,6 +331,8 @@ public:
      * @brief Get the adjacent nodes of a node.
      * @param id The source node
      * @return A pairs of integers, where the first means the adjacent node and the second means the weight of the edge.
+     * 
+     * @note this function returns the edges if the weight of the edge is greater than 0.
      */
     const std::unordered_map<int, double> getAdjacents(int id) const override;
 
