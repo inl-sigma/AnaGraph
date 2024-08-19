@@ -231,6 +231,7 @@ TEST(WeightedSupergraphTest, GetAdjacents) {
     graph.setNode(4);
     graph.setNode(5);
     graph.setNode(6);
+    graph.setNode(7);
 
     graph.addEdge(1, 2, 5.0);
 
@@ -239,6 +240,8 @@ TEST(WeightedSupergraphTest, GetAdjacents) {
     graph.addEdge(3, 5, -3.0);
     graph.addEdge(4, 5, 3.0);
     graph.addEdge(4, 6, 2.0);
+
+    graph.setParent(7, 4);
 
     const std::unordered_map<int, double>& adjacents1 = graph.getAdjacents(1);
     EXPECT_EQ(adjacents1.size(), static_cast<size_t>(1));
@@ -249,6 +252,15 @@ TEST(WeightedSupergraphTest, GetAdjacents) {
     EXPECT_DOUBLE_EQ(adjacents3.at(2), 1.0);
     EXPECT_DOUBLE_EQ(adjacents3.at(6), 2.0);
     EXPECT_DOUBLE_EQ(graph.getWeight(3, 5), -3.0);
+
+    const std::unordered_map<int, double>& adjacents5 = graph.getAdjacents(5);
+    EXPECT_EQ(adjacents5.size(), static_cast<size_t>(1));
+    EXPECT_DOUBLE_EQ(adjacents5.at(4), 3.0);
+
+    const std::unordered_map<int, double>& adjacents7 = graph.getAdjacents(7);
+    EXPECT_EQ(adjacents7.size(), static_cast<size_t>(2));
+    EXPECT_DOUBLE_EQ(adjacents7.at(5), 3.0);
+    EXPECT_DOUBLE_EQ(adjacents7.at(6), 2.0);
 }
 
 TEST(WeightedSupergraphTest, Size) {
