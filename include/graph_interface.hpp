@@ -124,7 +124,7 @@ public:
      * @brief Get the adjacent nodes of a node.
      * @param id The source node
      */
-    virtual const std::unordered_set<int> &getAdjacents(int id) const = 0;
+    virtual const std::unordered_set<int> getAdjacents(int id) const = 0;
 
     /**
      * @brief Get the number of nodes in the graph.
@@ -211,7 +211,7 @@ public:
      * @brief Get the adjacent nodes of a node.
      * @param id The source node
      */
-    virtual const std::unordered_set<int> &getAdjacents(int id) const = 0;
+    virtual const std::unordered_set<int> getAdjacents(int id) const = 0;
 
     /**
      * @brief Get the number of nodes in the graph.
@@ -400,7 +400,7 @@ public:
      * @param id The source node
      * @return A pairs of integers, where the first means the adjacent node and the second means the weight of the edge.
      */
-    virtual const std::unordered_map<int, double>& getAdjacents(int id) const = 0;
+    virtual const std::unordered_map<int, double> getAdjacents(int id) const = 0;
 
     // TODO : Implement this function
     // /**
@@ -524,7 +524,7 @@ public:
      * @param id The source node
      * @return A pairs of integers, where the first means the adjacent node and the second means the weight of the edge.
      */
-    virtual const std::unordered_map<int, double>& getAdjacents(int id) const = 0;
+    virtual const std::unordered_map<int, double> getAdjacents(int id) const = 0;
 
     // TODO : Implement this function
     // /**

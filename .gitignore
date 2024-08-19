@@ -38,5 +38,6 @@ build
 # unnecessary information
 note.md
 
-# output feature
-*_output.txt
+# testing feature
+output
+*output.txt

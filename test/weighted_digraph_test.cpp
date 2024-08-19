@@ -4,6 +4,7 @@
 #include <spdlog/spdlog.h>
 
 #include <any>
+#include <filesystem>
 #include <string>
 
 TEST(WeightedDigraphTest, GetNode) {
@@ -155,6 +156,8 @@ TEST(WeightedDigraphTest, Reorganize) {
 
 TEST(WeightedDigraphTest, ReadGraph) {
     WeightedDigraph graph;
+    // output current directory
+    spdlog::info("current directory: {}", std::filesystem::current_path().string());
     graph.readGraph("../../dataset/graph.txt", FileExtension::TXT);
 
     EXPECT_EQ(graph.size(), static_cast<size_t>(6));

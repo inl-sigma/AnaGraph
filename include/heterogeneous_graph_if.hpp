@@ -46,7 +46,7 @@ public:
      * 
      * This method is used to retrieve the adjacent nodes of a node.
      */
-    virtual const std::unordered_set<int>& getAdjacent() const = 0;
+    virtual const std::unordered_set<int> getAdjacent() const = 0;
 
     /**
      * @brief Add an adjacent node to the node.
