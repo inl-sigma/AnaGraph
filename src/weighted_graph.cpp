@@ -176,7 +176,7 @@ void WeightedDigraph::addWeight(int src, int dst, double weight) {
     nodes[src].updateAdjacent(dst, weight);
 }
 
-const std::unordered_map<int, double>& WeightedDigraph::getAdjacents(int id) const {
+const std::unordered_map<int, double> WeightedDigraph::getAdjacents(int id) const {
     if (id >= static_cast<int>(nodes.size())) {
         throw std::out_of_range("Node does not exist");
     }
@@ -289,7 +289,7 @@ void WeightedDigraph::writeGraph(std::string filePath, FileExtension extName) co
     // convert the graph to a list of edges
     // note : implement as function in weighted_graph.hpp if needed
     std::vector<WeightedEdgeObject> edges;
-    for (int src = 0; src < static_cast<int>(nodes.size()); src++) {
+    for (int src : usedNodes) {
         for (auto [dst, weight] : getAdjacents(src)) {
             edges.push_back(WeightedEdgeObject(src, dst, weight));
         }
@@ -379,7 +379,7 @@ void WeightedGraph::addWeight(int src, int dst, double weight) {
     digraph.addWeight(dst, src, weight);
 }
 
-const std::unordered_map<int, double>& WeightedGraph::getAdjacents(int id) const {
+const std::unordered_map<int, double> WeightedGraph::getAdjacents(int id) const {
     return digraph.getAdjacents(id);
 }
 
