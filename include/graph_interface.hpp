@@ -96,15 +96,15 @@ public:
     // virtual void setNode(INode node) = 0;
 
     /**
-     * @brief Get the id of the graph.
-     */
-    virtual std::unordered_set<int> getIds() const = 0;
-
-    /**
      * @brief Remove a node from the graph.
      * @param id The node to remove
      */
     virtual void removeNode(int id) = 0;
+
+    /**
+     * @brief Get the id of the graph.
+     */
+    virtual std::unordered_set<int> getIds() const = 0;
 
     /**
      * @brief Add an edge between two nodes.
