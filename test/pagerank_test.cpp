@@ -1,0 +1,99 @@
+#include "pagerank.hpp"
+
+#include "graph_utils.hpp"
+#include "weighted_graph.hpp"
+
+#include <gtest/gtest.h>
+#include <spdlog/spdlog.h>
+
+TEST(PageRankTest, TestDirectedPageRank) {
+    // Create a graph
+    WeightedDigraph digraph("../../dataset/zackary_karate.txt", FileExtension::TXT);
+
+    spdlog::set_level(spdlog::level::debug);
+
+    // Compute the PageRank
+    std::vector<double> pr = pageRank(digraph);
+
+    // Check the result
+    // the result was computed by the networkx library
+    EXPECT_NEAR(pr[0], 0.2464482545465788, 1e-4);
+    EXPECT_NEAR(pr[1], 0.08770594687045946, 1e-4);
+    EXPECT_NEAR(pr[2], 0.0749234303673495, 1e-4);
+    EXPECT_NEAR(pr[3], 0.027793521975148276, 1e-4);
+    EXPECT_NEAR(pr[4], 0.02520115046292283, 1e-4);
+    EXPECT_NEAR(pr[5], 0.03154958747530574, 1e-4);
+    EXPECT_NEAR(pr[6], 0.021286383043794738, 1e-4);
+    EXPECT_NEAR(pr[7], 0.014937946031411825, 1e-4);
+    EXPECT_NEAR(pr[8], 0.02407770077491794, 1e-4);
+    EXPECT_NEAR(pr[9], 0.015684820974045107, 1e-4);
+    EXPECT_NEAR(pr[10], 0.014937946031411825, 1e-4);
+    EXPECT_NEAR(pr[11], 0.014937946031411825, 1e-4);
+    EXPECT_NEAR(pr[12], 0.014937946031411825, 1e-4);
+    EXPECT_NEAR(pr[13], 0.015684820974045107, 1e-4);
+    EXPECT_NEAR(pr[14], 0.016896792037740412, 1e-4);
+    EXPECT_NEAR(pr[15], 0.016896792037740412, 1e-4);
+    EXPECT_NEAR(pr[16], 0.014937946031411825, 1e-4);
+    EXPECT_NEAR(pr[17], 0.014937946031411825, 1e-4);
+    EXPECT_NEAR(pr[18], 0.016896792037740412, 1e-4);
+    EXPECT_NEAR(pr[19], 0.015684820974045107, 1e-4);
+    EXPECT_NEAR(pr[20], 0.016896792037740412, 1e-4);
+    EXPECT_NEAR(pr[21], 0.014937946031411825, 1e-4);
+    EXPECT_NEAR(pr[22], 0.016896792037740412, 1e-4);
+    EXPECT_NEAR(pr[23], 0.03639595499056981, 1e-4);
+    EXPECT_NEAR(pr[24], 0.030846654615652464, 1e-4);
+    EXPECT_NEAR(pr[25], 0.01852840040000059, 1e-4);
+    EXPECT_NEAR(pr[26], 0.022865729711222638, 1e-4);
+    EXPECT_NEAR(pr[27], 0.015684820974045107, 1e-4);
+    EXPECT_NEAR(pr[28], 0.01927527534263387, 1e-4);
+    EXPECT_NEAR(pr[29], 0.016896792037740412, 1e-4);
+    EXPECT_NEAR(pr[30], 0.016896792037740412, 1e-4);
+    EXPECT_NEAR(pr[31], 0.016896792037740412, 1e-4);
+    EXPECT_NEAR(pr[32], 0.015684820974045107, 1e-4);
+    EXPECT_NEAR(pr[33], 0.014937946031411825, 1e-4);
+}
+
+// TEST(PageRankTest, UndirectedPageRankTest) {
+//     // Create a graph
+//     WeightedGraph graph("../../dateset/zuckary_karate.txt", FileExtension::TXT);
+
+//     // Compute the PageRank
+//     std::vector<double> pr = pageRank(graph, 0.15, 100000);
+
+//     // Check the result
+//     // the result was computed by the networkx library
+//     EXPECT_NEAR(pr[0], 0.08850807396280014, 1e-4);
+//     EXPECT_NEAR(pr[1], 0.05741484049711006, 1e-4);
+//     EXPECT_NEAR(pr[2], 0.06276686454603017, 1e-4);
+//     EXPECT_NEAR(pr[3], 0.03721208153631378, 1e-4);
+//     EXPECT_NEAR(pr[4], 0.020503977347501652, 1e-4);
+//     EXPECT_NEAR(pr[5], 0.03381044255357727, 1e-4);
+//     EXPECT_NEAR(pr[6], 0.03152901134345504, 1e-4);
+//     EXPECT_NEAR(pr[7], 0.026464618678806107, 1e-4);
+//     EXPECT_NEAR(pr[8], 0.03338155566846444, 1e-4);
+//     EXPECT_NEAR(pr[9], 0.00946321956579996, 1e-4);
+//     EXPECT_NEAR(pr[10], 0.020689016083505596, 1e-4);
+//     EXPECT_NEAR(pr[11], 0.009785686547904305, 1e-4);
+//     EXPECT_NEAR(pr[12], 0.011474872305945287, 1e-4);
+//     EXPECT_NEAR(pr[13], 0.033474187085322404, 1e-4);
+//     EXPECT_NEAR(pr[14], 0.012941600888556285, 1e-4);
+//     EXPECT_NEAR(pr[15], 0.016376332623593663, 1e-4);
+//     EXPECT_NEAR(pr[16], 0.016755401561857987, 1e-4);
+//     EXPECT_NEAR(pr[17], 0.009677265915396801, 1e-4);
+//     EXPECT_NEAR(pr[18], 0.009544864590131916, 1e-4);
+//     EXPECT_NEAR(pr[19], 0.013077518431081969, 1e-4);
+//     EXPECT_NEAR(pr[20], 0.011224235021037598, 1e-4);
+//     EXPECT_NEAR(pr[21], 0.01136015256356328, 1e-4);
+//     EXPECT_NEAR(pr[22], 0.01296059860686279, 1e-4);
+//     EXPECT_NEAR(pr[23], 0.041145969646022115, 1e-4);
+//     EXPECT_NEAR(pr[24], 0.016634374450252683, 1e-4);
+//     EXPECT_NEAR(pr[25], 0.02867296201373071, 1e-4);
+//     EXPECT_NEAR(pr[26], 0.015240392773380823, 1e-4);
+//     EXPECT_NEAR(pr[27], 0.027235358397633885, 1e-4);
+//     EXPECT_NEAR(pr[28], 0.01447852177427162, 1e-4);
+//     EXPECT_NEAR(pr[29], 0.028271813832825128, 1e-4);
+//     EXPECT_NEAR(pr[30], 0.023031844250911863, 1e-4);
+//     EXPECT_NEAR(pr[31], 0.04198548926127873, 1e-4);
+//     EXPECT_NEAR(pr[32], 0.07592643687005646, 1e-4);
+//     EXPECT_NEAR(pr[33], 0.09698041880501741, 1e-4);
+// }
