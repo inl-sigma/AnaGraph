@@ -293,6 +293,37 @@ TEST(WeightedSupergraphTest, Size) {
     EXPECT_EQ(graph.size(), static_cast<size_t>(3));
 }
 
+TEST(WeightedSupergraphTest, toDigraph) {
+    WeightedSupergraph graph;
+    graph.setNode(1);
+    graph.setNode(2);
+    graph.setNode(3);
+    graph.setNode(4);
+    graph.setNode(5);
+    graph.setNode(6);
+
+    graph.setParent(1, 5);
+    graph.setParent(2, 5);
+    graph.setParent(3, 6);
+    graph.setParent(4, 6);
+
+    graph.addEdge(1, 2, 1.0);
+    graph.addEdge(2, 3, 1.5);
+    graph.addEdge(2, 4, 2.0);
+    graph.addEdge(5, 6, 2.5);
+
+    WeightedSuperDigraph digraph = graph.toDigraph();
+    EXPECT_EQ(digraph.size(), static_cast<size_t>(6));
+    EXPECT_DOUBLE_EQ(digraph.getWeight(1, 2), 1.0);
+    EXPECT_DOUBLE_EQ(digraph.getWeight(2, 1), 1.0);
+    EXPECT_DOUBLE_EQ(digraph.getWeight(2, 3), 1.5);
+    EXPECT_DOUBLE_EQ(digraph.getWeight(3, 2), 1.5);
+    EXPECT_DOUBLE_EQ(digraph.getWeight(2, 4), 2.0);
+    EXPECT_DOUBLE_EQ(digraph.getWeight(4, 2), 2.0);
+    EXPECT_DOUBLE_EQ(digraph.getWeight(5, 6), 2.5);
+    EXPECT_DOUBLE_EQ(digraph.getWeight(6, 5), 2.5);
+}
+
 TEST(WeightedSupergraphTest, ReadGraph) {
     spdlog::set_level(spdlog::level::debug);
     WeightedSupergraph graph;
