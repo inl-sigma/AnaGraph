@@ -555,6 +555,14 @@ public:
      */
     size_t size() const override;
 
+
+    /**
+     * Converts the weighted supergraph to a directed graph.
+     * 
+     * @return The converted directed graph.
+     */
+    virtual WeightedSuperDigraph toDigraph() const;
+
     /**
      * @brief Read a graph from a file.
      * @param filePath The name of the file to import the graph from
