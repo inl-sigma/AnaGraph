@@ -3,10 +3,10 @@
 #ifndef PAGERANK_HPP
 #define PAGERANK_HPP
 
-#include <vector>
-
 #include "graph_interface.hpp"
 #include "heterogeneous_graph_if.hpp"
+
+#include <vector>
 
 /**
  * @brief Compute the PageRank of a graph
@@ -33,6 +33,20 @@ std::vector<double> pageRank(const IWeightedDigraph &graph, const double alpha, 
  * @note The graph must be connected, and has sequential node ids
  */
 std::vector<double> pageRank(const IWeightedDigraph &graph /**, const double alpha = 0.15, int iter = 100000 */);
+
+/**
+ * @brief Compute the single source personalized PageRank of a graph
+ * 
+ * @param graph The graph to compute the PageRank
+ * @param source The source node
+ * @param alpha The damping factor
+ * @param epsilon The error tolerance ratio
+ * 
+ * @return The PageRank of the nodes
+ * 
+ * @note The graph must be connected, and has sequential node ids
+ */
+std::vector<double> singleSourcePersonalizedPageRank(const IWeightedDigraph &graph, const int source, const double alpha, const double epsilon);
 
 /**
  * @brief Compute the PageRank of a graph
