@@ -468,6 +468,11 @@ size_t WeightedHeteroGraph<T>::size() const {
 }
 
 template <typename T>
+WeightedHeteroDigraph<T> WeightedHeteroGraph<T>::toDigraph() const {
+    return digraph;
+}
+
+template <typename T>
 void WeightedHeteroGraph<T>::readGraph(std::string filePath, FileExtension extName) {
     switch (extName) {
     case FileExtension::TXT: {

@@ -397,6 +397,10 @@ size_t WeightedGraph::size() const {
     return digraph.size();
 }
 
+WeightedDigraph WeightedGraph::toDigraph() const {
+    return digraph;
+}
+
 void WeightedGraph::readGraph(std::string filePath, FileExtension extName) {
     switch (extName) {
     case FileExtension::TXT: {
