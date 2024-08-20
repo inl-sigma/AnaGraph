@@ -153,6 +153,27 @@ TEST(WeightedGraphTest, Reorganize) {
     EXPECT_THROW(graph.getWeight(2, 4), std::out_of_range);
 }
 
+TEST(WeightedGraphTest, toDigraph) {
+    WeightedGraph graph;
+    graph.setNode(0);
+    graph.setNode(1);
+    graph.setNode(2);
+    graph.setNode(3);
+
+    graph.addEdge(0, 1, 5.0);
+    graph.addEdge(0, 2, 2.5);
+    graph.addEdge(1, 3, 3.0);
+
+    WeightedDigraph digraph = graph.toDigraph();
+    EXPECT_EQ(digraph.size(), static_cast<size_t>(4));
+    EXPECT_DOUBLE_EQ(digraph.getWeight(0, 1), 5.0);
+    EXPECT_DOUBLE_EQ(digraph.getWeight(1, 0), 5.0);
+    EXPECT_DOUBLE_EQ(digraph.getWeight(0, 2), 2.5);
+    EXPECT_DOUBLE_EQ(digraph.getWeight(2, 0), 2.5);
+    EXPECT_DOUBLE_EQ(digraph.getWeight(1, 3), 3.0);
+    EXPECT_DOUBLE_EQ(digraph.getWeight(3, 1), 3.0);
+}
+
 TEST(WeightedGraphTest, ReadGraph) {
     WeightedGraph graph;
     graph.readGraph("../../dataset/graph.txt", FileExtension::TXT);

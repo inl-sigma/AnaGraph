@@ -429,6 +429,13 @@ public:
     size_t size() const override;
 
     /**
+     * Converts the graph to a weighted directed graph.
+     * 
+     * @return The weighted directed graph representation of the graph.
+     */
+    virtual WeightedDigraph toDigraph() const;
+
+    /**
      * @brief Read a graph from a file.
      * @param filename The name of the file to import the graph from
      * @param extName The extension of the file
