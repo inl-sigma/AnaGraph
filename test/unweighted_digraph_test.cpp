@@ -91,18 +91,6 @@ TEST(DigraphTest, RemoveEdge) {
     EXPECT_FALSE(graph.getAdjacents(1).contains(0));
 }
 
-TEST(DigraphTest, GetAdjacents) {
-    spdlog::set_level(spdlog::level::debug);
-    Digraph graph;
-    graph.setNode(0);
-    graph.setNode(1);
-    graph.setNode(2);
-
-    graph.addEdge(0, 0);
-    graph.addEdge(0, 1);
-    graph.addEdge(0, 2);
-}
-
 TEST(DigraphTest, GetSubgraph) {
     spdlog::set_level(spdlog::level::debug);
     Digraph graph;

@@ -175,6 +175,7 @@ TEST(WeightedGraphTest, toDigraph) {
 }
 
 TEST(WeightedGraphTest, ReadGraph) {
+    spdlog::set_level(spdlog::level::debug);
     WeightedGraph graph;
     graph.readGraph("../../dataset/graph.txt", FileExtension::TXT);
 
@@ -185,6 +186,13 @@ TEST(WeightedGraphTest, ReadGraph) {
     EXPECT_EQ(graph.getWeight(2, 3), 1.0);
     EXPECT_EQ(graph.getWeight(2, 4), 1.0);
     EXPECT_EQ(graph.getWeight(4, 5), 1.0);
+
+    EXPECT_EQ(graph.getWeight(1, 0), 1.0);
+    EXPECT_EQ(graph.getWeight(2, 0), 1.0);
+    EXPECT_EQ(graph.getWeight(2, 1), 1.0);
+    EXPECT_EQ(graph.getWeight(3, 2), 1.0);
+    EXPECT_EQ(graph.getWeight(4, 2), 1.0);
+    EXPECT_EQ(graph.getWeight(5, 4), 1.0);
 }
 
 TEST(WeightedGraphTest, WriteGraph) {
@@ -203,5 +211,5 @@ TEST(WeightedGraphTest, WriteGraph) {
     graph.addEdge(2, 4, 2.5);
     graph.addEdge(4, 5, 0.5);
 
-    graph.writeGraph("../../dataset/graph_output.txt", FileExtension::TXT);
+    graph.writeGraph("../../dataset/weighted_graph_output.txt", FileExtension::TXT);
 }

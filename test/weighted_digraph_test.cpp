@@ -188,5 +188,5 @@ TEST(WeightedDigraphTest, WriteGraph) {
     graph.addEdge(2, 4, 2.5);
     graph.addEdge(4, 5, 0.5);
 
-    graph.writeGraph("../../dataset/graph_output.txt", FileExtension::TXT);
+    graph.writeGraph("../../dataset/weighted_digraph_output.txt", FileExtension::TXT);
 }

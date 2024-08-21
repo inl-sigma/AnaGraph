@@ -179,5 +179,5 @@ TEST(GraphTest, WriteGraph) {
     graph.addEdge(2, 4);
     graph.addEdge(4, 5);
 
-    graph.writeGraph("../../dataset/digraph_output.txt", FileExtension::TXT);
+    graph.writeGraph("../../dataset/graph_output.txt", FileExtension::TXT);
 }
