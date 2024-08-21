@@ -298,8 +298,9 @@ size_t Graph::size() const {
 
 void Graph::readGraph(std::string filePath, FileExtension extName) {
     digraph.readGraph(filePath, extName);
+    Digraph deepCopy = digraph;
     for (auto id : digraph.getIds()) {
-        for (auto adj : digraph.getAdjacents(id)) {
+        for (auto adj : deepCopy.getAdjacents(id)) {
             digraph.addEdge(adj, id);
         }
     }

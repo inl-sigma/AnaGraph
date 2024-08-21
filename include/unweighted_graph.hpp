@@ -325,27 +325,6 @@ public:
      * @param extName The extension of the file
      */
     void writeGraph(std::string filePath, FileExtension extName) const override;
-
-private:
-    /**
-     * @brief Read a graph from a file.
-     * @param filePath The path of the file to import the graph from
-     * @param parser The parser to use to read the graph
-     * 
-     * This method is used to read a graph from a file.
-     * It uses the specified parser to read the graph.
-     */
-    void readGraphHelper(std::string filePath, IGraphParser &parser);
-
-    /**
-     * @brief Write the graph to a file.
-     * @param filePath The path of the file to export the graph to
-     * @param writer The writer to use to write the graph
-     * 
-     * This method is used to write the graph to a file.
-     * It uses the specified writer to write the graph.
-     */
-    void writeGraphHelper(std::string filePath, IGraphWriter &writer, std::vector<EdgeObject> &edges) const;
 };
 
 #endif // UNWEIGHTED_GRAPH_HPP

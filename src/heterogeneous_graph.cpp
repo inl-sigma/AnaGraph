@@ -195,7 +195,7 @@ void WeightedHeteroDigraph<T>::addWeight(int src, int dst, double weight) {
 }
 
 template <typename T>
-const std::unordered_map<int, double>& WeightedHeteroDigraph<T>::getAdjacents(int id) const {
+const std::unordered_map<int, double> WeightedHeteroDigraph<T>::getAdjacents(int id) const {
     if (id >= static_cast<int>(nodes.size())) {
         throw std::out_of_range("Node does not exist");
     }
@@ -436,7 +436,7 @@ void WeightedHeteroGraph<T>::addWeight(int src, int dst, double weight) {
 }
 
 template <typename T>
-const std::unordered_map<int, double>& WeightedHeteroGraph<T>::getAdjacents(int id) const {
+const std::unordered_map<int, double> WeightedHeteroGraph<T>::getAdjacents(int id) const {
     return digraph.getAdjacents(id);
 }
 
@@ -474,74 +474,26 @@ WeightedHeteroDigraph<T> WeightedHeteroGraph<T>::toDigraph() const {
 
 template <typename T>
 void WeightedHeteroGraph<T>::readGraph(std::string filePath, FileExtension extName) {
-    switch (extName) {
-    case FileExtension::TXT: {
-        TextGraphParser parser;
-        readGraphHelper(filePath, parser);
-    }
-        break;
-
-    case FileExtension::CSV: {
-        CSVGraphParser parser;
-        readGraphHelper(filePath, parser);
-    }
-        break;
-
-    // case FileExtension::GML:
-    //     readGraphHelper(filePath, GMLGraphParser());
-    //     break;
-    
-    default:
-        throw std::invalid_argument("Invalid file extension");
-        break;
-    }
-}
-
-template <typename T>
-void WeightedHeteroGraph<T>::readGraphHelper(std::string filePath, IGraphParser &parser) {
-    for (auto &[src, dst, weight] : parser.parseWeightedGraph(filePath)) {
-        this->addEdge(src, dst, weight);
+    digraph.readGraph(filePath, extName);
+    WeightedHeteroDigraph deepCopy = digraph;
+    for (auto id : digraph.getIds()) {
+        for (auto &[adj, weight] : deepCopy.getAdjacents(id)) {
+            digraph.addEdge(adj, id, weight);
+        }
     }
 }
 
 template <typename T>
 void WeightedHeteroGraph<T>::writeGraph(std::string filePath, FileExtension extName) const {
-    // convert the graph to a list of edges
-    std::vector<WeightedEdgeObject> edges;
-    for (int src : digraph.getIds()) {
-        for (auto [dst, weight] : getAdjacents(src)) {
-            if (src <= dst) {
-                edges.push_back(WeightedEdgeObject(src, dst, weight)); // avoid duplicate edges
+    WeightedHeteroDigraph<T> digraph = toDigraph();
+    for (auto id : digraph.getIds()) {
+        for (auto [adj, _] : digraph.getAdjacents(id)) {
+            if (id > adj) {
+                digraph.removeEdge(id, adj);
             }
         }
     }
-
-    switch (extName) {
-    case FileExtension::TXT: {
-        TextGraphWriter writer;
-        writeGraphHelper(filePath, writer, edges);
-    }
-        break;
-
-    case FileExtension::CSV: {
-        CSVGraphWriter writer;
-        writeGraphHelper(filePath, writer, edges);
-    }
-        break;
-
-    // case FileExtension::GML:
-    //     writeGraphHelper(filePath, GMLGraphWriter(), edges);
-    //     break;
-
-    default:
-        throw std::invalid_argument("Invalid file extension");
-        break;
-    }
-}
-
-template <typename T>
-void WeightedHeteroGraph<T>::writeGraphHelper(std::string filePath, IGraphWriter &writer, std::vector<WeightedEdgeObject> edges) const {
-    writer.writeWeightedGraph(filePath, edges);
+    digraph.writeGraph(filePath, extName);
 }
 
 // Explicit instantiation

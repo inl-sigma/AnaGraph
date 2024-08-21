@@ -402,72 +402,23 @@ WeightedDigraph WeightedGraph::toDigraph() const {
 }
 
 void WeightedGraph::readGraph(std::string filePath, FileExtension extName) {
-    switch (extName) {
-    case FileExtension::TXT: {
-        TextGraphParser parser;
-        readGraphHelper(filePath, parser);
-    }
-        break;
-
-    case FileExtension::CSV: {
-        CSVGraphParser parser;
-        readGraphHelper(filePath, parser);
-    }
-        break;
-
-    // case FileExtension::GML:
-    //     readGraphHelper(filePath, GMLGraphParser());
-    //     break;
-    
-    default:
-        throw std::invalid_argument("Invalid file extension");
-        break;
-    }
-}
-
-void WeightedGraph::readGraphHelper(std::string filePath, IGraphParser &parser) {
-    for (auto &[src, dst, weight] : parser.parseWeightedGraph(filePath)) {
-        addEdge(src, dst, weight);
+    digraph.readGraph(filePath, extName);
+    WeightedDigraph deepCopy = digraph;
+    for (auto src : digraph.getIds()) {
+        for (auto [adj, weight] : deepCopy.getAdjacents(src)) {
+            digraph.addEdge(adj, src, weight);
+        }
     }
 }
 
 void WeightedGraph::writeGraph(std::string filePath, FileExtension extName) const {
-    // convert the graph to a list of edges
-    // note : implement as function in weighted_graph.hpp if needed
-
-    std::vector<WeightedEdgeObject> edges;
-    for (int src : digraph.getIds()) {
-        for (auto [dst, weight] : getAdjacents(src)) {
-            if (src <= dst) {
-                // avoid duplicate edges, only add the edge if src <= dst
-                edges.push_back(WeightedEdgeObject(src, dst, weight));
+    auto digraph = toDigraph();
+    for (auto id : digraph.getIds()) {
+        for (auto [adj, _] : digraph.getAdjacents(id)) {
+            if (id > adj) {
+                digraph.removeEdge(id, adj);
             }
         }
     }
-
-    switch (extName) {
-    case FileExtension::TXT: {
-        TextGraphWriter writer;
-        writeGraphHelper(filePath, writer, edges);
-    }
-        break;
-
-    case FileExtension::CSV: {
-        CSVGraphWriter writer;
-        writeGraphHelper(filePath, writer, edges);
-    }
-        break;
-
-    // case FileExtension::GML:
-    //     writeGraphHelper(filePath, GMLGraphWriter(), edges);
-    //     break;
-
-    default:
-        throw std::invalid_argument("Invalid file extension");
-        break;
-    }
-}
-
-void WeightedGraph::writeGraphHelper(std::string filePath, IGraphWriter &writer, std::vector<WeightedEdgeObject> edges) const {
-    writer.writeWeightedGraph(filePath, edges);
+    digraph.writeGraph(filePath, extName);
 }
