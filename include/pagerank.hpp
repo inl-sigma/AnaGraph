@@ -64,6 +64,20 @@ std::vector<double> singleSourcePersonalizedPageRank(const IWeightedDigraph &gra
 std::tuple<std::vector<double>, std::vector<double>> forwardPush(const IWeightedDigraph &graph, const std::vector<double> source, const double alpha, const double thr);
 
 /**
+ * @brief Compute the PageRank of a graph using the combination of forward push algorithm and random walk
+ * 
+ * @param graph The graph to compute the PageRank
+ * @param source The source vector
+ * @param alpha The damping factor
+ * @param epsilon The error tolerance ratio
+ * 
+ * @return The PageRank of the nodes
+ * 
+ * @note The graph must be connected, and has sequential node ids
+ */
+std::vector<double> fora(const IWeightedDigraph &graph, const std::vector<double> source, const double alpha, const double epsilon);
+
+/**
  * @brief Compute the PageRank of a graph
  * 
  * @param graph The graph to compute the PageRank
