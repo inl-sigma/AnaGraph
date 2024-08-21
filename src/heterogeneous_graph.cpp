@@ -15,6 +15,58 @@
 #include <unordered_map>
 #include <unordered_set>
 
+template <typename T>
+int HeteroNode<T>::getId() const {
+    return node.getId();
+}
+
+template <typename T>
+void HeteroNode<T>::setId(int id) {
+    node.setId(id);
+}
+
+template <typename T>
+bool HeteroNode<T>::isUsed() const {
+    return node.isUsed();
+}
+
+template <typename T>
+const std::unordered_set<int>& HeteroNode<T>::getAdjacents() const {
+    return node.getAdjacents();
+}
+
+template <typename T>
+void HeteroNode<T>::setAdjacent(int adjacent) {
+    node.setAdjacent(adjacent);
+}
+
+template <typename T>
+void HeteroNode<T>::removeAdjacent(int adjacent) {
+    node.removeAdjacent(adjacent);
+}
+
+template <typename T>
+T HeteroNode<T>::getAttributes() const {
+    if (!isAttrEnabled) {
+        throw std::runtime_error("Attributes are not enabled");
+    }
+    return attributes;
+}
+
+template <typename T>
+void HeteroNode<T>::setAttributes(T attributes) {
+    this->attributes = attributes;
+    isAttrEnabled = true;
+}
+
+template <typename T>
+void HeteroNode<T>::clear() {
+    node.clear();
+    attributes = T();
+    isAttrEnabled = false;
+}
+
+
 
 template <typename T>
 WeightedHeteroNode<T>& WeightedHeteroNode<T>::operator=(const WeightedHeteroNode<T>& node) {
@@ -497,6 +549,10 @@ void WeightedHeteroGraph<T>::writeGraph(std::string filePath, FileExtension extN
 }
 
 // Explicit instantiation
+template class HeteroNode<int>;
+template class HeteroNode<std::string>;
+template class HeteroNode<std::any>;
+
 template class WeightedHeteroNode<int>;
 template class WeightedHeteroNode<std::string>;
 template class WeightedHeteroNode<std::any>;

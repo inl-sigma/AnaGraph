@@ -49,10 +49,10 @@ public:
     virtual const std::unordered_set<int>& getAdjacents() const = 0;
 
     /**
-     * @brief Add an adjacent node to the node.
+     * @brief Set an adjacent node to the node.
      * @param adjacent The id of the adjacent node.
      */
-    virtual void addAdjacent(int adjacent) = 0;
+    virtual void setAdjacent(int adjacent) = 0;
 
     /**
      * @brief Remove an adjacent node from the node.
@@ -73,14 +73,6 @@ public:
      * @param attribute The attribute of the node.
      */
     virtual void setAttributes(T attributes) = 0;
-
-    /**
-     * @brief Get a pointer to the attribute of the node.
-     * @return A pointer to the attribute of the node.
-     * 
-     * This method is used to modify the attribute of a node.
-     */
-    virtual std::shared_ptr<T> getAttributesPtr() const = 0;
 
     /**
      * @brief Clear the node.
