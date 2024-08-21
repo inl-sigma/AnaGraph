@@ -46,7 +46,7 @@ public:
      * 
      * This method is used to retrieve the adjacent nodes of a node.
      */
-    virtual const std::unordered_set<int> getAdjacents() const = 0;
+    virtual const std::unordered_set<int>& getAdjacents() const = 0;
 
     /**
      * @brief Add an adjacent node to the node.
@@ -147,7 +147,7 @@ public:
      * @brief Get the adjacent nodes of a node.
      * @param id The source node
      */
-    virtual const std::unordered_set<int> &getAdjacents(int id) const = 0;
+    virtual const std::unordered_set<int> getAdjacents(int id) const = 0;
 
     /**
      * @brief Get the attribute of the nodes.
@@ -240,7 +240,7 @@ public:
      * @brief Get the adjacent nodes of a node.
      * @param id The source node
      */
-    virtual const std::unordered_set<int> &getAdjacents(int id) const = 0;
+    virtual const std::unordered_set<int> getAdjacents(int id) const = 0;
 
     /**
      * @brief Get the attribute of the nodes.
@@ -451,7 +451,7 @@ public:
      * @param id The source node
      * @return A pairs of integers, where the first means the adjacent node and the second means the weight of the edge.
      */
-    virtual const std::unordered_map<int, double>& getAdjacents(int id) const = 0;
+    virtual const std::unordered_map<int, double> getAdjacents(int id) const = 0;
 
     /**
      * @brief Get the attributes of the nodes. 
@@ -590,7 +590,7 @@ public:
      * @param id The source node
      * @return A pairs of integers, where the first means the adjacent node and the second means the weight of the edge.
      */
-    virtual const std::unordered_map<int, double>& getAdjacents(int id) const = 0;
+    virtual const std::unordered_map<int, double> getAdjacents(int id) const = 0;
 
     /**
      * @brief Get the attributes of the nodes. 
