@@ -69,6 +69,71 @@ std::vector<double> pageRank(const IWeightedDigraph &graph) {
     return pageRank(graph, 0.15, 1000000);
 }
 
+std::tuple<std::vector<double>, std::vector<double>> forwardPush(const IWeightedDigraph &graph, const std::vector<double> source, const double alpha, const double thr) {
+    const int size = graph.size();
+    std::vector<double> ppr(size, 0); /**< the vector meaning the reserve/approximated PPR */
+    std::vector<double> residue = source; /**< the vector meaning the residue */
+
+    // initialize/normalize the source vector
+    const double sourceSum = std::reduce(source.begin(), source.end());
+    if (sourceSum == 0) {
+        throw std::invalid_argument("The source vector must have at least one non-zero element");
+    }
+    std::unordered_map<int, double> sourceMap;
+    for (int i = 0; i < size; i++) {
+        if (source[i] > 0) {
+            sourceMap[i] = source[i] / sourceSum;
+        }
+    }
+
+    std::vector<double> outWeightSum(size, 0); /**< the vector meaning the sum of the out weights */
+    for (int src = 0; src < size; src++) {
+        for (const auto &[_, weight] : graph.getAdjacents(src)) {
+            outWeightSum[src] += weight;
+        }
+    }
+
+    std::multimap<double, int> residueMap; /**< the map meaning the residue value, treated as heap */
+    for (const auto &[src, weight] : sourceMap) {
+        residueMap.insert({weight, src});
+    }
+
+    while (residueMap.size() > 0) {
+        // get the node with the maximum residue value
+        auto it = residueMap.rbegin();
+        const double estimatedResidue = it->first;
+        const int currentNode = it->second;
+
+        if (estimatedResidue < thr) { // no more nodes to update
+            break;
+        }
+        residueMap.erase(estimatedResidue);
+
+        const double actualResidue = residue[currentNode];
+        if (estimatedResidue - actualResidue > thr) { // check if the node is already updated
+            continue;
+        }
+
+        // flow the residue value to the adjacents
+        residue[currentNode] = 0;
+        auto &adjacents = graph.getAdjacents(currentNode);
+        if (adjacents.empty()) {
+            // dangling node
+            for (const auto &[src, srcWeight] : sourceMap) {
+                residue[src] += (1 - alpha) * srcWeight * actualResidue;
+                residueMap.insert({residue[src], src});
+            }
+        } else {
+            for (const auto &[dst, weight] : graph.getAdjacents(currentNode)) {
+                residue[dst] += (1 - alpha) * (weight / outWeightSum[currentNode]) * actualResidue;
+                residueMap.insert({residue[dst], dst});
+            }
+        }
+        ppr[currentNode] += alpha * actualResidue;
+    }
+    return std::tie(ppr, residue);
+}
+
 std::vector<double> singleSourcePersonalizedPageRank(const IWeightedDigraph &graph, const int source, const double alpha, const double epsilon) {
     const int size = graph.size();
     const double delta = 1 / size;
@@ -125,9 +190,14 @@ std::vector<double> singleSourcePersonalizedPageRank(const IWeightedDigraph &gra
         }
 
         // update the residue value
-        for (const auto &[dst, weight] : graph.getAdjacents(currentNode)) {
-            residue[dst] += (1 - alpha) * (weight / outWeightSum[currentNode]) * actualResidue;
-            residueMap[residue[dst]] = dst;
+        auto &adjacents = graph.getAdjacents(currentNode);
+        if (adjacents.empty()) {
+            residue[source] += (1 - alpha) * actualResidue;
+        } else {
+            for (const auto &[dst, weight] : graph.getAdjacents(currentNode)) {
+                residue[dst] += (1 - alpha) * (weight / outWeightSum[currentNode]) * actualResidue;
+                residueMap[residue[dst]] = dst;
+            }
         }
         ppr[currentNode] += alpha * actualResidue;
         residue[currentNode] = 0;

@@ -48,6 +48,21 @@ std::vector<double> pageRank(const IWeightedDigraph &graph /**, const double alp
  */
 std::vector<double> singleSourcePersonalizedPageRank(const IWeightedDigraph &graph, const int source, const double alpha, const double epsilon);
 
+
+/**
+ * Calculates the forward push algorithm for PageRank.
+ *
+ * This function takes an input weighted graph, a source vector, an alpha value, and an epsilon value.
+ * It performs the forward push algorithm to calculate the PageRank scores for each node in the graph.
+ *
+ * @param graph The input weighted graph.
+ * @param source The source vector containing the initial scores for each node.
+ * @param alpha The damping factor for the algorithm.
+ * @param thr The convergence threshold for the algorithm.
+ * @return A tuple containing two vectors: the final PageRank scores and the residual errors.
+ */
+std::tuple<std::vector<double>, std::vector<double>> forwardPush(const IWeightedDigraph &graph, const std::vector<double> source, const double alpha, const double thr);
+
 /**
  * @brief Compute the PageRank of a graph
  * 
