@@ -1,14 +1,5 @@
 include(GoogleTest)
 
-add_executable(log_test logging_test.cpp)
-target_link_libraries(log_test spdlog::spdlog)
-target_compile_features(log_test PUBLIC cxx_std_20)
-target_compile_options(log_test PUBLIC -Wall)
-
-# add_executable(hello_test hello_test.cpp)
-# target_link_libraries(hello_test GTest::gtest_main)
-# gtest_discover_tests(hello_test)
-
 function(add_component_test_executable name)
     add_executable(${name} ${name}.cpp)
     target_link_libraries(${name} GTest::gtest_main graphcomponents)
