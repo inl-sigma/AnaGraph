@@ -9,7 +9,7 @@ TEST(SimilarityTest, CosineSimilarity) {
     ASSERT_NEAR(result, 0.9746318461970762, 1e-9);
 }
 
-TEST(NDCGTest, NDCG) {
+TEST(SimilarityTest, NDCG) {
     std::vector<double> expected = {3.0, 2.0, 3.0, 0.0, 1.0, 2.0, 4.0, 5.0};
     std::vector<double> answer = {3.0, 2.0, 3.0, 0.0, 1.0, 2.0, 6.0, 7.0};
     double result = similarity::nDCG(expected, answer, 4);
@@ -17,4 +17,80 @@ TEST(NDCGTest, NDCG) {
 
     result = similarity::nDCG(expected, answer);
     ASSERT_NEAR(result, 1.0, 1e-9);
+}
+
+TEST(SimilarityTest, Accuracy) {
+    Digraph expected;
+    expected.addEdge(1, 2);
+    expected.addEdge(2, 3);
+    expected.addEdge(3, 1);
+
+    Digraph answer;
+    answer.addEdge(1, 2);
+    answer.addEdge(2, 3);
+    answer.addEdge(3, 1);
+
+    double result = similarity::accuracy(expected, answer);
+    ASSERT_DOUBLE_EQ(result, 1.0);
+
+    answer.removeEdge(2, 3);
+    result = similarity::accuracy(expected, answer);
+    ASSERT_DOUBLE_EQ(result, 5.0/6);
+}
+
+TEST(SimilarityTest, Precision) {
+    Digraph expected;
+    expected.addEdge(1, 2);
+    expected.addEdge(2, 3);
+    expected.addEdge(3, 1);
+
+    Digraph answer;
+    answer.addEdge(1, 2);
+    answer.addEdge(2, 3);
+    answer.addEdge(3, 1);
+
+    double result = similarity::precision(expected, answer);
+    ASSERT_DOUBLE_EQ(result, 1.0);
+
+    answer.removeEdge(2, 3);
+    result = similarity::precision(expected, answer);
+    ASSERT_DOUBLE_EQ(result, 2.0/3);
+}
+
+TEST(SimilarityTest, Recall) {
+    Digraph expected;
+    expected.addEdge(1, 2);
+    expected.addEdge(2, 3);
+    expected.addEdge(3, 1);
+
+    Digraph answer;
+    answer.addEdge(1, 2);
+    answer.addEdge(2, 3);
+    answer.addEdge(3, 1);
+
+    double result = similarity::recall(expected, answer);
+    ASSERT_DOUBLE_EQ(result, 1.0);
+
+    answer.removeEdge(2, 3);
+    result = similarity::recall(expected, answer);
+    ASSERT_DOUBLE_EQ(result, 1.0);
+}
+
+TEST(SimilarityTest, FMeasure) {
+    Digraph expected;
+    expected.addEdge(1, 2);
+    expected.addEdge(2, 3);
+    expected.addEdge(3, 1);
+
+    Digraph answer;
+    answer.addEdge(1, 2);
+    answer.addEdge(2, 3);
+    answer.addEdge(3, 1);
+
+    double result = similarity::fMeasure(expected, answer);
+    ASSERT_DOUBLE_EQ(result, 1.0);
+
+    answer.removeEdge(2, 3);
+    result = similarity::fMeasure(expected, answer);
+    ASSERT_DOUBLE_EQ(result, 0.8);
 }
