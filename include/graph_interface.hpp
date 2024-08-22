@@ -45,13 +45,13 @@ public:
      * 
      * This method is used to retrieve the adjacent nodes of a node.
      */
-    virtual const std::unordered_set<int>& getAdjacent() const = 0;
+    virtual const std::unordered_set<int>& getAdjacents() const = 0;
 
     /**
-     * @brief Add an adjacent node to the node.
+     * @brief Set an adjacent node to the node.
      * @param adjacent The id of the adjacent node.
      */
-    virtual void addAdjacent(int adjacent) = 0;
+    virtual void setAdjacent(int adjacent) = 0;
 
     /**
      * @brief Remove an adjacent node from the node.
@@ -107,6 +107,11 @@ public:
     virtual void removeNode(int id) = 0;
 
     /**
+     * @brief Get the id of the graph.
+     */
+    virtual std::unordered_set<int> getIds() const = 0;
+
+    /**
      * @brief Add an edge between two nodes.
      * @param src The source node
      * @param dst The destination node
@@ -124,7 +129,7 @@ public:
      * @brief Get the adjacent nodes of a node.
      * @param id The source node
      */
-    virtual const std::unordered_set<int> &getAdjacents(int id) const = 0;
+    virtual const std::unordered_set<int> getAdjacents(int id) const = 0;
 
     /**
      * @brief Get the number of nodes in the graph.
@@ -211,7 +216,7 @@ public:
      * @brief Get the adjacent nodes of a node.
      * @param id The source node
      */
-    virtual const std::unordered_set<int> &getAdjacents(int id) const = 0;
+    virtual const std::unordered_set<int> getAdjacents(int id) const = 0;
 
     /**
      * @brief Get the number of nodes in the graph.
@@ -400,7 +405,7 @@ public:
      * @param id The source node
      * @return A pairs of integers, where the first means the adjacent node and the second means the weight of the edge.
      */
-    virtual const std::unordered_map<int, double>& getAdjacents(int id) const = 0;
+    virtual const std::unordered_map<int, double> getAdjacents(int id) const = 0;
 
     // TODO : Implement this function
     // /**
@@ -524,7 +529,7 @@ public:
      * @param id The source node
      * @return A pairs of integers, where the first means the adjacent node and the second means the weight of the edge.
      */
-    virtual const std::unordered_map<int, double>& getAdjacents(int id) const = 0;
+    virtual const std::unordered_map<int, double> getAdjacents(int id) const = 0;
 
     // TODO : Implement this function
     // /**

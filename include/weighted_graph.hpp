@@ -229,7 +229,7 @@ public:
      * @param id The source node
      * @return A pairs of integers, where the first means the adjacent node and the second means the weight of the edge.
      */
-    const std::unordered_map<int, double> &getAdjacents(int id) const override;
+    const std::unordered_map<int, double> getAdjacents(int id) const override;
 
     /**
      * @brief Get the subgraph of the graph.
@@ -239,12 +239,12 @@ public:
     WeightedDigraph getSubgraph(std::unordered_set<int> indices) const;
 
     /**
-     * @brief Organize the graph.
+     * @brief Reorganize the graph.
      * 
-     * This method is used to organize the graph.
+     * This method is used to reorganize the graph.
      * It can be used to delete unnecessary nodes.
      */
-    void organize();
+    void reorganize();
 
     /**
      * @brief Get the number of nodes in the graph.
@@ -406,7 +406,7 @@ public:
      * @param id The source node
      * @return A pairs of integers, where the first means the adjacent node and the second means the weight of the edge.
      */
-    const std::unordered_map<int, double> &getAdjacents(int id) const override;
+    const std::unordered_map<int, double> getAdjacents(int id) const override;
 
     /**
      * @brief Get the subgraph of the graph.
@@ -416,17 +416,24 @@ public:
     WeightedGraph getSubgraph(std::unordered_set<int> indices) const;
 
     /**
-     * @brief Organize the graph.
+     * @brief Reorganize the graph.
      * 
-     * This method is used to organize the graph.
+     * This method is used to reorganize the graph.
      * It can be used to delete unnecessary nodes.
      */
-    void organize();
+    void reorganize();
 
     /**
      * @brief Get the number of nodes in the graph.
      */
     size_t size() const override;
+
+    /**
+     * Converts the graph to a weighted directed graph.
+     * 
+     * @return The weighted directed graph representation of the graph.
+     */
+    virtual WeightedDigraph toDigraph() const;
 
     /**
      * @brief Read a graph from a file.
@@ -441,27 +448,6 @@ public:
      * @param extName The extension of the file
      */
     void writeGraph(std::string filename, FileExtension extName) const override;
-
-private:
-    /**
-     * @brief Read a graph from a file.
-     * @param filename The name of the file to import the graph from
-     * @param parser The parser to use to read the graph
-     * 
-     * This method is used to read a graph from a file.
-     * It uses the specified parser to read the graph.
-     */
-    void readGraphHelper(std::string filename, IGraphParser &parser);
-
-    /**
-     * @brief Write the graph to a file.
-     * @param filename The name of the file to export the graph to
-     * @param writer The writer to use to write the graph
-     * 
-     * This method is used to write the graph to a file.
-     * It uses the specified writer to write the graph.
-     */
-    void writeGraphHelper(std::string filename, IGraphWriter &writer, std::vector<WeightedEdgeObject>) const;
 };
 
 #endif // WEIGHTED_GRAPH_HPP

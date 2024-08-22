@@ -134,7 +134,7 @@ TEST(WeightedHeteroGraphTest, GetSubgraph) {
     EXPECT_DOUBLE_EQ(subgraph.getWeight(3, 1), 3.0);
 }
 
-TEST(WeightedHeteroGraphTest, Organize) {
+TEST(WeightedHeteroGraphTest, Reorganize) {
     spdlog::set_level(spdlog::level::debug);
     WeightedHeteroGraph<int> graph;
     graph.setNode(0);
@@ -144,7 +144,7 @@ TEST(WeightedHeteroGraphTest, Organize) {
     graph.addEdge(0, 2, 5.0);
     graph.addEdge(2, 4, 3.5);
 
-    graph.organize();
+    graph.reorganize();
     EXPECT_EQ(graph.size(), static_cast<size_t>(3));
     EXPECT_DOUBLE_EQ(graph.getWeight(0, 1), 5.0);
     EXPECT_DOUBLE_EQ(graph.getWeight(1, 0), 5.0);
@@ -209,6 +209,30 @@ TEST(WeightedHeteroGraphTest, AnyAttributes) {
     EXPECT_EQ(stringAttributes, "Node 2");
 }
 
+TEST(WeightedHeteroGraphTest, toDigraph) {
+    WeightedHeteroGraph<int> graph;
+    graph.setNode(0);
+    graph.setNode(1);
+    graph.setNode(2);
+    graph.setNode(3);
+
+    graph.addEdge(0, 1, 5.0);
+    graph.addEdge(0, 2, 2.5);
+    graph.addEdge(1, 3, 3.0);
+
+    graph.setAttributes(0, 42);
+
+    WeightedHeteroDigraph<int> digraph = graph.toDigraph();
+    EXPECT_EQ(digraph.size(), static_cast<size_t>(4));
+    EXPECT_DOUBLE_EQ(digraph.getWeight(0, 1), 5.0);
+    EXPECT_DOUBLE_EQ(digraph.getWeight(1, 0), 5.0);
+    EXPECT_DOUBLE_EQ(digraph.getWeight(0, 2), 2.5);
+    EXPECT_DOUBLE_EQ(digraph.getWeight(2, 0), 2.5);
+    EXPECT_DOUBLE_EQ(digraph.getWeight(1, 3), 3.0);
+    EXPECT_DOUBLE_EQ(digraph.getWeight(3, 1), 3.0);
+    EXPECT_EQ(digraph.getAttributes(0), 42);
+}
+
 TEST(WeightedHeteroGraphTest, ReadGraph) {
     WeightedHeteroGraph<int> graph;
     graph.readGraph("../../dataset/graph.txt", FileExtension::TXT);
@@ -238,5 +262,5 @@ TEST(WeightedHeteroGraphTest, WriteGraph) {
     graph.addEdge(2, 4, 2.5);
     graph.addEdge(4, 5, 0.5);
 
-    graph.writeGraph("../../dataset/graph_output.txt", FileExtension::TXT);
+    graph.writeGraph("../../dataset/weighted_hetero_graph_output.txt", FileExtension::TXT);
 }

@@ -15,6 +15,393 @@
 #include <unordered_map>
 #include <unordered_set>
 
+template <typename T>
+int HeteroNode<T>::getId() const {
+    return node.getId();
+}
+
+template <typename T>
+void HeteroNode<T>::setId(int id) {
+    node.setId(id);
+}
+
+template <typename T>
+bool HeteroNode<T>::isUsed() const {
+    return node.isUsed();
+}
+
+template <typename T>
+const std::unordered_set<int>& HeteroNode<T>::getAdjacents() const {
+    return node.getAdjacents();
+}
+
+template <typename T>
+void HeteroNode<T>::setAdjacent(int adjacent) {
+    node.setAdjacent(adjacent);
+}
+
+template <typename T>
+void HeteroNode<T>::removeAdjacent(int adjacent) {
+    node.removeAdjacent(adjacent);
+}
+
+template <typename T>
+T HeteroNode<T>::getAttributes() const {
+    if (!isAttrEnabled) {
+        throw std::runtime_error("Attributes are not enabled");
+    }
+    return attributes;
+}
+
+template <typename T>
+void HeteroNode<T>::setAttributes(T attributes) {
+    this->attributes = attributes;
+    isAttrEnabled = true;
+}
+
+template <typename T>
+void HeteroNode<T>::clear() {
+    node.clear();
+    attributes = T();
+    isAttrEnabled = false;
+}
+
+template <typename T>
+HeteroDigraph<T>::HeteroDigraph(std::string filename, FileExtension extName) {
+    readGraph(filename, extName);
+}
+
+template <typename T>
+HeteroNode<T> HeteroDigraph<T>::getNode(int id) const {
+    return nodes[id];
+}
+
+template <typename T>
+void HeteroDigraph<T>::setNode(int id) {
+    if (id >= static_cast<int>(nodes.size())) {
+        nodes.resize(id + 1);
+    }
+    nodes[id] = HeteroNode<T>(id);
+    usedNodes.insert(id);
+}
+
+template <typename T>
+void HeteroDigraph<T>::setNode(HeteroNode<T> &node) {
+    // If the ID is not initialized, add it to the end
+    const int nodeId = (!node.isUsed()) ? nodes.size() : node.getId();
+    if (static_cast<int>(nodeId >= static_cast<int>(nodes.size()))) {
+        nodes.resize(nodeId + 1);
+    }
+    nodes[nodeId] = node;
+    usedNodes.insert(nodeId);
+}
+
+template <typename T>
+void HeteroDigraph<T>::removeNode(int id) {
+    nodes[id].clear();
+    usedNodes.erase(id);
+}
+
+template <typename T>
+std::unordered_set<int> HeteroDigraph<T>::getIds() const {
+    return usedNodes;
+}
+
+template <typename T>
+void HeteroDigraph<T>::addEdge(int src, int dst) {
+    const int maxId = std::max(src, dst);
+    if (maxId >= static_cast<int>(nodes.size())) {
+        setNode(maxId);
+    }
+    const int minId = std::min(src, dst);
+    const auto minNode = getNode(minId);
+    if (!minNode.isUsed()) {
+        setNode(minId);
+    }
+    nodes[src].setAdjacent(dst);
+}
+
+template <typename T>
+void HeteroDigraph<T>::removeEdge(int src, int dst) {
+    const int maxId = std::max(src, dst);
+    if (maxId >= static_cast<int>(nodes.size())) {
+        throw std::out_of_range("Node does not exist");
+    }
+    nodes[src].removeAdjacent(dst);
+}
+
+template <typename T>
+const std::unordered_set<int> HeteroDigraph<T>::getAdjacents(int id) const {
+    if (id >= static_cast<int>(nodes.size())) {
+        throw std::out_of_range("Node does not exist");
+    }
+    return nodes[id].getAdjacents();
+}
+
+template <typename T>
+HeteroDigraph<T> HeteroDigraph<T>::getSubgraph(std::unordered_set<int> indices) const {
+    HeteroDigraph<T> subgraph;
+    // copy necessary nodes
+    for (auto idx : indices) {
+        if (idx >= static_cast<int>(nodes.size())) {
+            throw std::out_of_range("Node does not exist");
+        }
+        HeteroNode<T> node = nodes[idx];
+        subgraph.setNode(node);
+    }
+    
+    // remove unnecessary edges
+    for (int idx : indices) {
+        const auto &adjacents = getAdjacents(idx);
+        for (int adj : adjacents) {
+            if (!indices.contains(adj)) {
+                subgraph.removeEdge(idx, adj);
+            }
+        }
+    }
+    return subgraph;
+}
+
+template <typename T>
+void HeteroDigraph<T>::reorganize() {
+    spdlog::debug("called reorganize");
+
+    // Create a map from old id to new id
+    std::set<int> oldNodes = std::set<int>(this->usedNodes.begin(), this->usedNodes.end());
+    spdlog::debug("clear usedNodes");
+    usedNodes.clear();
+
+    spdlog::debug("create idMap and update usedNodes");
+    std::unordered_map<int, int> idMap;
+    int newId = 0;
+
+    for (int oldId : oldNodes) {
+        idMap[oldId] = newId;
+        nodes[newId] = std::move(nodes[oldId]);
+        usedNodes.insert(newId);
+        newId++;
+    }
+
+    // Update the adjacent nodes
+    spdlog::debug("update adjacents");
+    for (int id = 0; id < newId; id++) {
+        spdlog::debug("update adjacents for {}", id);
+        auto &newNode = nodes[id];
+
+        auto adjacents = newNode.getAdjacents();
+        std::unordered_set<int> newAdjacents = std::unordered_set<int>();
+
+        // update the adjacents
+        for (auto adj : adjacents) {
+            spdlog::debug("update adjacent {} from {}", adj, id);
+            newAdjacents.insert(idMap[adj]);
+        }
+
+        // remove old adjacents
+        for (auto adj : adjacents) {
+            spdlog::debug("remove adjacent {} from {}", adj, id);
+            newNode.removeAdjacent(adj);
+        }
+
+        // add new adjacents
+        for (auto &adj : newAdjacents) {
+            spdlog::debug("add adjacent {} to {}", adj, id);
+            newNode.setAdjacent(adj);
+        }
+    }
+
+    // resize the nodes
+    spdlog::debug("resize nodes");
+    nodes.resize(idMap.size());
+}
+
+template <typename T>
+T HeteroDigraph<T>::getAttributes(int id) const {
+    return nodes[id].getAttributes();
+}
+
+template <typename T>
+void HeteroDigraph<T>::setAttributes(int id, T attributes) {
+    nodes[id].setAttributes(attributes);
+}
+
+template <typename T>
+size_t HeteroDigraph<T>::size() const {
+    return usedNodes.size();
+}
+
+template <typename T>
+void HeteroDigraph<T>::readGraph(std::string filename, FileExtension extName) {
+    switch (extName) {
+    case FileExtension::TXT: {
+        TextGraphParser parser;
+        readGraphHelper(filename, parser);
+    }
+        break;
+
+    case FileExtension::CSV: {
+        CSVGraphParser parser;
+        readGraphHelper(filename, parser);
+    }
+        break;
+
+    // case FileExtension::GML:
+    //     readGraphHelper(filename, GMLGraphParser());
+    //     break;
+    
+    default:
+        throw std::invalid_argument("Invalid file extension");
+        break;
+    }
+}
+
+template <typename T>
+void HeteroDigraph<T>::writeGraph(std::string filename, FileExtension extName) const {
+    std::vector<EdgeObject> edges;
+    for (int src : usedNodes) {
+        for (int dst : getAdjacents(src)) {
+            edges.emplace_back(EdgeObject(src, dst));
+        }
+    }
+
+    switch (extName) {
+    case FileExtension::TXT: {
+        TextGraphWriter writer;
+        writeGraphHelper(filename, writer, edges);
+    }
+        break;
+
+    case FileExtension::CSV: {
+        CSVGraphWriter writer;
+        writeGraphHelper(filename, writer, edges);
+    }
+        break;
+
+    // case FileExtension::GML:
+    //     writeGraphHelper(filename, GMLGraphWriter());
+    //     break;
+
+    default:
+        throw std::invalid_argument("Invalid file extension");
+        break;
+    }
+}
+
+template <typename T>
+void HeteroDigraph<T>::readGraphHelper(std::string filename, IGraphParser &parser) {
+    for (auto &[src, dst] : parser.parseGraph(filename)) {
+        addEdge(src, dst);
+    }
+}
+
+template <typename T>
+void HeteroDigraph<T>::writeGraphHelper(std::string filename, IGraphWriter &writer, std::vector<EdgeObject> &edges) const {
+    writer.writeGraph(filename, edges);
+}
+
+template <typename T>
+HeteroGraph<T>::HeteroGraph(std::string filePath, FileExtension extName) {
+    digraph.readGraph(filePath, extName);
+}
+
+template <typename T>
+HeteroNode<T> HeteroGraph<T>::getNode(int id) const {
+    return digraph.getNode(id);
+}
+
+template <typename T>
+void HeteroGraph<T>::setNode(int id) {
+    digraph.setNode(id);
+}
+
+template <typename T>
+void HeteroGraph<T>::setNode(HeteroNode<T> &node) {
+    digraph.setNode(node);
+}
+
+template <typename T>
+void HeteroGraph<T>::removeNode(int id) {
+    digraph.removeNode(id);
+}
+
+template <typename T>
+std::unordered_set<int> HeteroGraph<T>::getIds() const {
+    return digraph.getIds();
+}
+
+template <typename T>
+void HeteroGraph<T>::addEdge(int src, int dst) {
+    digraph.addEdge(src, dst);
+    digraph.addEdge(dst, src);
+}
+
+template <typename T>
+void HeteroGraph<T>::removeEdge(int src, int dst) {
+    digraph.removeEdge(src, dst);
+    digraph.removeEdge(dst, src);
+}
+
+template <typename T>
+const std::unordered_set<int> HeteroGraph<T>::getAdjacents(int id) const {
+    return digraph.getAdjacents(id);
+}
+
+template <typename T>
+HeteroGraph<T> HeteroGraph<T>::getSubgraph(std::unordered_set<int> indices) const {
+    HeteroGraph<T> subgraph;
+    subgraph.digraph = digraph.getSubgraph(indices);
+    return subgraph;
+}
+
+template <typename T>
+void HeteroGraph<T>::reorganize() {
+    digraph.reorganize();
+}
+
+template <typename T>
+T HeteroGraph<T>::getAttributes(int id) const {
+    return digraph.getAttributes(id);
+}
+
+template <typename T>
+void HeteroGraph<T>::setAttributes(int id, T attributes) {
+    digraph.setAttributes(id, attributes);
+}
+
+template <typename T>
+HeteroDigraph<T> HeteroGraph<T>::toDigraph() const {
+    return digraph;
+}
+
+template <typename T> 
+size_t HeteroGraph<T>::size() const {
+    return digraph.size();
+}
+
+template <typename T>
+void HeteroGraph<T>::readGraph(std::string filename, FileExtension extName) {
+    digraph.readGraph(filename, extName);
+    HeteroDigraph<T> deepCopy = digraph;
+    for (int id : digraph.getIds()) {
+        for (int adj : deepCopy.getAdjacents(id)) {
+            digraph.addEdge(adj, id);
+        }
+    }
+}
+
+template <typename T>
+void HeteroGraph<T>::writeGraph(std::string filename, FileExtension extName) const {
+    HeteroDigraph<T> digraph = toDigraph();
+    for (int id : digraph.getIds()) {
+        for (int adj : digraph.getAdjacents(id)) {
+            if (id > adj) {
+                digraph.removeEdge(id, adj);
+            }
+        }
+    }
+    digraph.writeGraph(filename, extName);
+}
+
 
 template <typename T>
 WeightedHeteroNode<T>& WeightedHeteroNode<T>::operator=(const WeightedHeteroNode<T>& node) {
@@ -195,7 +582,7 @@ void WeightedHeteroDigraph<T>::addWeight(int src, int dst, double weight) {
 }
 
 template <typename T>
-const std::unordered_map<int, double>& WeightedHeteroDigraph<T>::getAdjacents(int id) const {
+const std::unordered_map<int, double> WeightedHeteroDigraph<T>::getAdjacents(int id) const {
     if (id >= static_cast<int>(nodes.size())) {
         throw std::out_of_range("Node does not exist");
     }
@@ -227,34 +614,28 @@ WeightedHeteroDigraph<T> WeightedHeteroDigraph<T>::getSubgraph(std::unordered_se
 }
 
 template <typename T>
-void WeightedHeteroDigraph<T>::organize() {
-    spdlog::debug("called organize");
+void WeightedHeteroDigraph<T>::reorganize() {
+    spdlog::debug("called reorganize");
 
+    // Create a map from old id to new id
+    std::set<int> oldNodes = std::set<int>(this->usedNodes.begin(), this->usedNodes.end());
     spdlog::debug("clear usedNodes");
     usedNodes.clear();
 
-    // Create a map from old id to new id
     spdlog::debug("create idMap and update usedNodes");
     std::unordered_map<int, int> idMap;
     int newId = 0;
-    for (int oldId = 0; oldId < static_cast<int>(nodes.size()); oldId++) {
-        if (nodes[oldId].isUsed()) {
-            idMap[oldId] = newId;
 
-            spdlog::debug("update nodes");
-            nodes[newId] = std::move(nodes[oldId]);
-            nodes[newId].setId(newId);
-
-            spdlog::debug("insert newId: {}", newId);
-            usedNodes.insert(newId);
-            newId++;
-        }
+    for (int oldId : oldNodes) {
+        idMap[oldId] = newId;
+        nodes[newId] = std::move(nodes[oldId]);
+        usedNodes.insert(newId);
+        newId++;
     }
 
     // Update the adjacent nodes
     spdlog::debug("update adjacents");
-    std::set<int> usedNodesSet = std::set<int>(usedNodes.begin(), usedNodes.end());
-    for (const int &id : usedNodesSet) {
+    for (int id = 0; id < newId; id++) {
         spdlog::debug("update adjacents for {}", id);
         auto &newNode = nodes[id];
 
@@ -367,7 +748,7 @@ void WeightedHeteroDigraph<T>::writeGraph(std::string filePath, FileExtension ex
 }
 
 template <typename T>
-void WeightedHeteroDigraph<T>::writeGraphHelper(std::string filePath, IGraphWriter &writer, std::vector<WeightedEdgeObject> edges) const {
+void WeightedHeteroDigraph<T>::writeGraphHelper(std::string filePath, IGraphWriter &writer, std::vector<WeightedEdgeObject> &edges) const {
     writer.writeWeightedGraph(filePath, edges);
 }
 
@@ -442,7 +823,7 @@ void WeightedHeteroGraph<T>::addWeight(int src, int dst, double weight) {
 }
 
 template <typename T>
-const std::unordered_map<int, double>& WeightedHeteroGraph<T>::getAdjacents(int id) const {
+const std::unordered_map<int, double> WeightedHeteroGraph<T>::getAdjacents(int id) const {
     return digraph.getAdjacents(id);
 }
 
@@ -454,8 +835,8 @@ WeightedHeteroGraph<T> WeightedHeteroGraph<T>::getSubgraph(std::unordered_set<in
 }
 
 template <typename T>
-void WeightedHeteroGraph<T>::organize() {
-    digraph.organize();
+void WeightedHeteroGraph<T>::reorganize() {
+    digraph.reorganize();
 }
 
 template <typename T>
@@ -474,78 +855,47 @@ size_t WeightedHeteroGraph<T>::size() const {
 }
 
 template <typename T>
-void WeightedHeteroGraph<T>::readGraph(std::string filePath, FileExtension extName) {
-    switch (extName) {
-    case FileExtension::TXT: {
-        TextGraphParser parser;
-        readGraphHelper(filePath, parser);
-    }
-        break;
-
-    case FileExtension::CSV: {
-        CSVGraphParser parser;
-        readGraphHelper(filePath, parser);
-    }
-        break;
-
-    // case FileExtension::GML:
-    //     readGraphHelper(filePath, GMLGraphParser());
-    //     break;
-    
-    default:
-        throw std::invalid_argument("Invalid file extension");
-        break;
-    }
+WeightedHeteroDigraph<T> WeightedHeteroGraph<T>::toDigraph() const {
+    return digraph;
 }
 
 template <typename T>
-void WeightedHeteroGraph<T>::readGraphHelper(std::string filePath, IGraphParser &parser) {
-    for (auto &[src, dst, weight] : parser.parseWeightedGraph(filePath)) {
-        this->addEdge(src, dst, weight);
+void WeightedHeteroGraph<T>::readGraph(std::string filePath, FileExtension extName) {
+    digraph.readGraph(filePath, extName);
+    WeightedHeteroDigraph deepCopy = digraph;
+    for (auto id : digraph.getIds()) {
+        for (auto &[adj, weight] : deepCopy.getAdjacents(id)) {
+            digraph.addEdge(adj, id, weight);
+        }
     }
 }
 
 template <typename T>
 void WeightedHeteroGraph<T>::writeGraph(std::string filePath, FileExtension extName) const {
-    // convert the graph to a list of edges
-    std::vector<WeightedEdgeObject> edges;
-    for (int src : digraph.getIds()) {
-        for (auto [dst, weight] : getAdjacents(src)) {
-            if (src <= dst) {
-                edges.push_back(WeightedEdgeObject(src, dst, weight)); // avoid duplicate edges
+    WeightedHeteroDigraph<T> digraph = toDigraph();
+    for (auto id : digraph.getIds()) {
+        for (auto [adj, _] : digraph.getAdjacents(id)) {
+            if (id > adj) {
+                digraph.removeEdge(id, adj);
             }
         }
     }
-
-    switch (extName) {
-    case FileExtension::TXT: {
-        TextGraphWriter writer;
-        writeGraphHelper(filePath, writer, edges);
-    }
-        break;
-
-    case FileExtension::CSV: {
-        CSVGraphWriter writer;
-        writeGraphHelper(filePath, writer, edges);
-    }
-        break;
-
-    // case FileExtension::GML:
-    //     writeGraphHelper(filePath, GMLGraphWriter(), edges);
-    //     break;
-
-    default:
-        throw std::invalid_argument("Invalid file extension");
-        break;
-    }
-}
-
-template <typename T>
-void WeightedHeteroGraph<T>::writeGraphHelper(std::string filePath, IGraphWriter &writer, std::vector<WeightedEdgeObject> edges) const {
-    writer.writeWeightedGraph(filePath, edges);
+    digraph.writeGraph(filePath, extName);
 }
 
 // Explicit instantiation
+template class HeteroNode<int>;
+template class HeteroNode<std::string>;
+template class HeteroNode<std::any>;
+
+template class HeteroDigraph<int>;
+template class HeteroDigraph<std::string>;
+template class HeteroDigraph<std::any>;
+
+template class HeteroGraph<int>;
+template class HeteroGraph<std::string>;
+template class HeteroGraph<std::any>;
+
 template class WeightedHeteroNode<int>;
 template class WeightedHeteroNode<std::string>;
 template class WeightedHeteroNode<std::any>;

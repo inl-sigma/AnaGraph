@@ -4,6 +4,7 @@
 #include <spdlog/spdlog.h>
 
 #include <any>
+#include <filesystem>
 #include <string>
 
 TEST(WeightedDigraphTest, GetNode) {
@@ -134,7 +135,7 @@ TEST(WeightedDigraphTest, GetSubgraph) {
     EXPECT_EQ(subgraph.getWeight(0, 2), 0.0);
 }
 
-TEST(WeightedDigraphTest, Organize) {
+TEST(WeightedDigraphTest, Reorganize) {
     spdlog::set_level(spdlog::level::debug);
     WeightedDigraph graph;
     graph.setNode(0);
@@ -144,7 +145,7 @@ TEST(WeightedDigraphTest, Organize) {
     graph.addEdge(0, 2, 5.0);
     graph.addEdge(2, 4, 3.5);
 
-    graph.organize();
+    graph.reorganize();
     EXPECT_EQ(graph.size(), static_cast<size_t>(3));
     EXPECT_DOUBLE_EQ(graph.getWeight(0, 1), 5.0);
     EXPECT_DOUBLE_EQ(graph.getWeight(1, 2), 3.5);
@@ -155,6 +156,8 @@ TEST(WeightedDigraphTest, Organize) {
 
 TEST(WeightedDigraphTest, ReadGraph) {
     WeightedDigraph graph;
+    // output current directory
+    spdlog::info("current directory: {}", std::filesystem::current_path().string());
     graph.readGraph("../../dataset/graph.txt", FileExtension::TXT);
 
     EXPECT_EQ(graph.size(), static_cast<size_t>(6));
@@ -185,5 +188,5 @@ TEST(WeightedDigraphTest, WriteGraph) {
     graph.addEdge(2, 4, 2.5);
     graph.addEdge(4, 5, 0.5);
 
-    graph.writeGraph("../../dataset/graph_output.txt", FileExtension::TXT);
+    graph.writeGraph("../../dataset/weighted_digraph_output.txt", FileExtension::TXT);
 }
