@@ -46,6 +46,10 @@ Node Digraph::getNode(int id) const {
     return nodes[id];
 }
 
+Digraph::Digraph(std::string filePath, FileExtension extName) {
+    readGraph(filePath, extName);
+}
+
 void Digraph::setNode(int id) {
     if (id >= static_cast<int>(nodes.size())) {
         nodes.resize(id + 1);
@@ -242,6 +246,10 @@ void Digraph::readGraphHelper(std::string filePath, IGraphParser &parser) {
 
 void Digraph::writeGraphHelper(std::string filePath, IGraphWriter &writer, std::vector<EdgeObject> &edges) const {
     writer.writeGraph(filePath, edges);
+}
+
+Graph::Graph(std::string filePath, FileExtension extName) {
+    readGraph(filePath, extName);
 }
 
 Node Graph::getNode(int id) const {
