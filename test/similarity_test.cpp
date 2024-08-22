@@ -1,6 +1,7 @@
 #include "similarity.hpp"
 
 #include <gtest/gtest.h>
+#include <spdlog/spdlog.h>
 
 TEST(SimilarityTest, CosineSimilarity) {
     std::vector<double> v1 = {1.0, 2.0, 3.0};
@@ -19,7 +20,7 @@ TEST(SimilarityTest, NDCG) {
     ASSERT_NEAR(result, 1.0, 1e-9);
 }
 
-TEST(SimilarityTest, Accuracy) {
+TEST(SimilarityTest, DirectedAccuracy) {
     Digraph expected;
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
@@ -38,7 +39,27 @@ TEST(SimilarityTest, Accuracy) {
     ASSERT_DOUBLE_EQ(result, 5.0/6);
 }
 
-TEST(SimilarityTest, Precision) {
+TEST(SimilarityTest, UndirectedAccuracy) {
+    Graph expected;
+    expected.addEdge(1, 2);
+    expected.addEdge(2, 3);
+    expected.addEdge(3, 4);
+
+    Graph answer;
+    answer.addEdge(1, 2);
+    answer.addEdge(2, 3);
+    answer.addEdge(3, 4);
+
+    double result = similarity::accuracy(expected, answer);
+    ASSERT_DOUBLE_EQ(result, 1.0);
+
+    answer.removeEdge(2, 3);
+    result = similarity::accuracy(expected, answer);
+    ASSERT_DOUBLE_EQ(result, 5.0/6);
+}
+
+
+TEST(SimilarityTest, DirectedPrecision) {
     Digraph expected;
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
@@ -57,7 +78,26 @@ TEST(SimilarityTest, Precision) {
     ASSERT_DOUBLE_EQ(result, 2.0/3);
 }
 
-TEST(SimilarityTest, Recall) {
+TEST(SimilarityTest, UndirectedPrecision) {
+    Graph expected;
+    expected.addEdge(1, 2);
+    expected.addEdge(2, 3);
+    expected.addEdge(3, 4);
+
+    Graph answer;
+    answer.addEdge(1, 2);
+    answer.addEdge(2, 3);
+    answer.addEdge(3, 4);
+
+    double result = similarity::precision(expected, answer);
+    ASSERT_DOUBLE_EQ(result, 1.0);
+
+    answer.removeEdge(2, 3);
+    result = similarity::precision(expected, answer);
+    ASSERT_DOUBLE_EQ(result, 2.0/3);
+}
+
+TEST(SimilarityTest, DirectedRecall) {
     Digraph expected;
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
@@ -76,7 +116,27 @@ TEST(SimilarityTest, Recall) {
     ASSERT_DOUBLE_EQ(result, 1.0);
 }
 
-TEST(SimilarityTest, FMeasure) {
+TEST(SimilarityTest, UndirectedRecall) {
+    spdlog::set_level(spdlog::level::debug);
+    Graph expected;
+    expected.addEdge(1, 2);
+    expected.addEdge(2, 3);
+    expected.addEdge(3, 4);
+
+    Graph answer;
+    answer.addEdge(1, 2);
+    answer.addEdge(2, 3);
+    answer.addEdge(3, 4);
+
+    double result = similarity::recall(expected, answer);
+    ASSERT_DOUBLE_EQ(result, 1.0);
+
+    answer.removeEdge(2, 3);
+    result = similarity::recall(expected, answer);
+    ASSERT_DOUBLE_EQ(result, 1.0);
+}
+
+TEST(SimilarityTest, DirectedFMeasure) {
     Digraph expected;
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
@@ -86,6 +146,25 @@ TEST(SimilarityTest, FMeasure) {
     answer.addEdge(1, 2);
     answer.addEdge(2, 3);
     answer.addEdge(3, 1);
+
+    double result = similarity::fMeasure(expected, answer);
+    ASSERT_DOUBLE_EQ(result, 1.0);
+
+    answer.removeEdge(2, 3);
+    result = similarity::fMeasure(expected, answer);
+    ASSERT_DOUBLE_EQ(result, 0.8);
+}
+
+TEST(SimilarityTest, UndirectedFMeasure) {
+    Graph expected;
+    expected.addEdge(1, 2);
+    expected.addEdge(2, 3);
+    expected.addEdge(3, 4);
+
+    Graph answer;
+    answer.addEdge(1, 2);
+    answer.addEdge(2, 3);
+    answer.addEdge(3, 4);
 
     double result = similarity::fMeasure(expected, answer);
     ASSERT_DOUBLE_EQ(result, 1.0);

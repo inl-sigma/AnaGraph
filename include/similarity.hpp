@@ -54,6 +54,15 @@ namespace similarity {
     double accuracy(const Digraph &expected, const Digraph &answer);
 
     /**
+     * Calculates the accuracy of a given answer compared to the expected result.
+     *
+     * @param expected The expected graph.
+     * @param answer The answer graph to be evaluated.
+     * @return The accuracy of the answer as a double value.
+     */
+    double accuracy(const Graph &expected, const Graph &answer);
+
+    /**
      * Calculates the precision of a given expected digraph and answer digraph.
      *
      * @param expected The expected digraph.
@@ -61,6 +70,15 @@ namespace similarity {
      * @return The precision value.
      */
     double precision(const Digraph &expected, const Digraph &answer);
+
+    /**
+     * Calculates the precision of a given expected graph and answer graph.
+     *
+     * @param expected The expected graph.
+     * @param answer The answer graph.
+     * @return The precision value.
+     */
+    double precision(const Graph &expected, const Graph &answer);
 
     /**
      * Calculates the recall value between two directed graphs.
@@ -72,6 +90,15 @@ namespace similarity {
     double recall(const Digraph &expected, const Digraph &answer);
 
     /**
+     * Calculates the recall value between two graphs.
+     *
+     * @param expected The expected graph.
+     * @param answer The actual graph.
+     * @return The recall value between the two graphs.
+     */
+    double recall(const Graph &expected, const Graph &answer);
+
+    /**
      * Calculates the F-measure between the expected and answer digraphs.
      *
      * @param expected The expected digraph.
@@ -79,6 +106,15 @@ namespace similarity {
      * @return The F-measure value.
      */
     double fMeasure(const Digraph &expected, const Digraph &answer);
+
+    /**
+     * Calculates the F-measure between the expected and answer graphs.
+     *
+     * @param expected The expected graph.
+     * @param answer The answer graph.
+     * @return The F-measure value.
+     */
+    double fMeasure(const Graph &expected, const Graph &answer);
 
 } // namespace similarity
 

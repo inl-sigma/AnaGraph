@@ -39,6 +39,36 @@ namespace {
         }
         return std::make_tuple(tp, fp, fn, tn);
     }
+
+    std::tuple<int, int, int, int> calcConfusionMatrix(const Graph &expected, const Graph &answer) {
+        int tp = 0;
+        int fp = 0;
+        int fn = 0;
+        int tn = 0;
+        std::unordered_set<int> nodes = expected.getIds();
+
+        for (int node : nodes) {
+            const std::unordered_set<int> expectedAdjacents = expected.getAdjacents(node);
+            const std::unordered_set<int> answerAdjacents = answer.getAdjacents(node);
+            for (int adj : nodes) {
+                if (node >= adj) {
+                    continue; // exclude self loop
+                }
+                const bool isPositive = expectedAdjacents.contains(adj);
+                const bool isTrue = answerAdjacents.contains(adj);
+                if (isPositive && isTrue) {
+                    tp++;
+                } else if (isPositive && !isTrue) {
+                    fp++;
+                } else if (!isPositive && isTrue) {
+                    fn++;
+                } else { // !isPositive && !isTrue
+                    tn++;
+                }
+            }
+        }
+        return std::make_tuple(tp, fp, fn, tn);
+    }
 }
 
 namespace similarity {
@@ -110,7 +140,19 @@ double accuracy(const Digraph &expected, const Digraph &answer) {
     return static_cast<double>(tp + tn) / (tp + fp + fn + tn);
 }
 
+double accuracy(const Graph &expected, const Graph &answer) {
+    auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
+    spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
+    return static_cast<double>(tp + tn) / (tp + fp + fn + tn);
+}
+
 double precision(const Digraph &expected, const Digraph &answer) {
+    auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
+    spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
+    return static_cast<double>(tp) / (tp + fp);
+}
+
+double precision(const Graph &expected, const Graph &answer) {
     auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
     spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
     return static_cast<double>(tp) / (tp + fp);
@@ -122,8 +164,23 @@ double recall(const Digraph &expected, const Digraph &answer) {
     return static_cast<double>(tp) / (tp + fn);
 }
 
+double recall(const Graph &expected, const Graph &answer) {
+    auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
+    spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
+    return static_cast<double>(tp) / (tp + fn);
+}
+
 double fMeasure(const Digraph &expected, const Digraph &answer) {
     auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
+    spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
+    const double precisionValue = static_cast<double>(tp) / (tp + fp);
+    const double recallValue = static_cast<double>(tp) / (tp + fn);
+    return 2 * (precisionValue * recallValue) / (precisionValue + recallValue);
+}
+
+double fMeasure(const Graph &expected, const Graph &answer) {
+    auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
+    spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
     const double precisionValue = static_cast<double>(tp) / (tp + fp);
     const double recallValue = static_cast<double>(tp) / (tp + fn);
     return 2 * (precisionValue * recallValue) / (precisionValue + recallValue);
