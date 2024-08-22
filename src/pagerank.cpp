@@ -2,6 +2,7 @@
 
 #include <spdlog/spdlog.h>
 
+#include <cmath>
 #include <map>
 #include <random>
 #include <unordered_map>
@@ -158,7 +159,7 @@ std::vector<double> fora(const IWeightedDigraph &graph, const std::vector<double
         }
     }
     // const double coef = (2*epsilon/3 + 2) * std::log(2/faultProbability) / (epsilon*epsilon * delta); 
-    const double coef = (2*epsilon/3 + 2) * std::log(2*size) * size / epsilon / epsilon; /**< note: the coefficient but what? */
+    const double coef = (2*epsilon/3 + 2) * std::log2(2*size) * size / epsilon / epsilon; /**< note: the coefficient but what? */
     spdlog::debug("coef = {}", coef);
 
     // forward push

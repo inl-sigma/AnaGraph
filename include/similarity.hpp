@@ -1,0 +1,121 @@
+#pragma once
+
+#ifndef SIMILARITY_HPP
+#define SIMILARITY_HPP
+
+#include "unweighted_graph.hpp"
+
+#include <vector>
+
+namespace similarity {
+    /**
+     * Calculates the cosine similarity between two vectors.
+     *
+     * @param v1 The first vector.
+     * @param v2 The second vector.
+     * @return The cosine similarity between v1 and v2.
+     */
+    double cosineSimilarity(const std::vector<double>& v1, const std::vector<double>& v2);
+
+    /**
+     * Calculates the normalized Discounted Cumulative Gain (nDCG) for a given set of expected and answer values.
+     * 
+     * The nDCG is calculated by the difference of ranking between the expected and answer values.
+     *
+     * @param expected The vector of expected values.
+     * @param answer The vector of answer values.
+     * @param k The number of elements to consider in the calculation.
+     * @return The nDCG value.
+     * 
+     * @note The vectors must have the same size. The value of k must be less than or equal to the size of the vectors.
+     */
+    double nDCG(const std::vector<double>& expected, const std::vector<double>& answer, int k);
+
+    /**
+     * Calculates the normalized Discounted Cumulative Gain (nDCG) for a given set of expected and answer values.
+     * 
+     * The nDCG is calculated by the difference of ranking between the expected and answer values.
+     *
+     * @param expected The vector of expected values.
+     * @param answer The vector of answer values.
+     * @return The nDCG value.
+     * 
+     * @note The vectors must have the same size.
+     */
+    double nDCG(const std::vector<double>& expected, const std::vector<double>& answer);
+
+    /**
+     * Calculates the accuracy of a given answer compared to the expected result.
+     *
+     * @param expected The expected Digraph.
+     * @param answer The answer Digraph to be evaluated.
+     * @return The accuracy of the answer as a double value.
+     */
+    double accuracy(const Digraph &expected, const Digraph &answer);
+
+    /**
+     * Calculates the accuracy of a given answer compared to the expected result.
+     *
+     * @param expected The expected graph.
+     * @param answer The answer graph to be evaluated.
+     * @return The accuracy of the answer as a double value.
+     */
+    double accuracy(const Graph &expected, const Graph &answer);
+
+    /**
+     * Calculates the precision of a given expected digraph and answer digraph.
+     *
+     * @param expected The expected digraph.
+     * @param answer The answer digraph.
+     * @return The precision value.
+     */
+    double precision(const Digraph &expected, const Digraph &answer);
+
+    /**
+     * Calculates the precision of a given expected graph and answer graph.
+     *
+     * @param expected The expected graph.
+     * @param answer The answer graph.
+     * @return The precision value.
+     */
+    double precision(const Graph &expected, const Graph &answer);
+
+    /**
+     * Calculates the recall value between two directed graphs.
+     *
+     * @param expected The expected directed graph.
+     * @param answer The actual directed graph.
+     * @return The recall value between the two graphs.
+     */
+    double recall(const Digraph &expected, const Digraph &answer);
+
+    /**
+     * Calculates the recall value between two graphs.
+     *
+     * @param expected The expected graph.
+     * @param answer The actual graph.
+     * @return The recall value between the two graphs.
+     */
+    double recall(const Graph &expected, const Graph &answer);
+
+    /**
+     * Calculates the F-measure between the expected and answer digraphs.
+     *
+     * @param expected The expected digraph.
+     * @param answer The answer digraph.
+     * @return The F-measure value.
+     */
+    double fMeasure(const Digraph &expected, const Digraph &answer);
+
+    /**
+     * Calculates the F-measure between the expected and answer graphs.
+     *
+     * @param expected The expected graph.
+     * @param answer The answer graph.
+     * @return The F-measure value.
+     */
+    double fMeasure(const Graph &expected, const Graph &answer);
+
+} // namespace similarity
+
+#endif // SIMILARITY_HPP

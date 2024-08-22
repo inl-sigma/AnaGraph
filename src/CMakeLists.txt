@@ -18,6 +18,7 @@ endif()
 
 add_library(graphalgorithms STATIC
     pagerank.cpp
+    similarity.cpp
 )
 target_link_libraries(graphalgorithms PUBLIC spdlog::spdlog)
 target_include_directories(graphalgorithms PUBLIC ${PROJECT_SOURCE_DIR}/include)
