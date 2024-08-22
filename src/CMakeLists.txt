@@ -1,5 +1,6 @@
 add_library(graphcomponents STATIC 
     weighted_graph.cpp
+    unweighted_graph.cpp
     graph_parser.cpp
     graph_writer.cpp
     heterogeneous_graph.cpp

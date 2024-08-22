@@ -45,13 +45,13 @@ public:
      * 
      * This method is used to retrieve the adjacent nodes of a node.
      */
-    virtual const std::unordered_set<int>& getAdjacent() const = 0;
+    virtual const std::unordered_set<int>& getAdjacents() const = 0;
 
     /**
-     * @brief Add an adjacent node to the node.
+     * @brief Set an adjacent node to the node.
      * @param adjacent The id of the adjacent node.
      */
-    virtual void addAdjacent(int adjacent) = 0;
+    virtual void setAdjacent(int adjacent) = 0;
 
     /**
      * @brief Remove an adjacent node from the node.
@@ -96,15 +96,15 @@ public:
     // virtual void setNode(INode node) = 0;
 
     /**
-     * @brief Get the id of the graph.
-     */
-    virtual std::unordered_set<int> getIds() const = 0;
-
-    /**
      * @brief Remove a node from the graph.
      * @param id The node to remove
      */
     virtual void removeNode(int id) = 0;
+
+    /**
+     * @brief Get the id of the graph.
+     */
+    virtual std::unordered_set<int> getIds() const = 0;
 
     /**
      * @brief Add an edge between two nodes.

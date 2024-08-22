@@ -46,13 +46,13 @@ public:
      * 
      * This method is used to retrieve the adjacent nodes of a node.
      */
-    virtual const std::unordered_set<int> getAdjacent() const = 0;
+    virtual const std::unordered_set<int>& getAdjacents() const = 0;
 
     /**
-     * @brief Add an adjacent node to the node.
+     * @brief Set an adjacent node to the node.
      * @param adjacent The id of the adjacent node.
      */
-    virtual void addAdjacent(int adjacent) = 0;
+    virtual void setAdjacent(int adjacent) = 0;
 
     /**
      * @brief Remove an adjacent node from the node.
@@ -73,14 +73,6 @@ public:
      * @param attribute The attribute of the node.
      */
     virtual void setAttributes(T attributes) = 0;
-
-    /**
-     * @brief Get a pointer to the attribute of the node.
-     * @return A pointer to the attribute of the node.
-     * 
-     * This method is used to modify the attribute of a node.
-     */
-    virtual std::shared_ptr<T> getAttributesPtr() const = 0;
 
     /**
      * @brief Clear the node.
@@ -118,10 +110,23 @@ public:
     //  */
     // virtual void setNode(IHeteroNode<T> node) = 0;
 
+    // /**
+    //  * @brief Get the node of the specific id.
+    //  * @param id The id of the node
+    //  * @return The node of the specific id
+    //  */
+    // virtual IHeteroNode<T> operator[](int id) = 0;
+
+    /**
+     * @brief Set the node of the graph.
+     * @param id The node to add
+     */
+    virtual void setNode(int id) = 0;
+
     /**
      * @brief Get the id of the graph.
      */
-    virtual std::unordered_set<int> getId() const = 0;
+    virtual std::unordered_set<int> getIds() const = 0;
 
     /**
      * @brief Remove a node from the graph.
@@ -147,7 +152,7 @@ public:
      * @brief Get the adjacent nodes of a node.
      * @param id The source node
      */
-    virtual const std::unordered_set<int> &getAdjacents(int id) const = 0;
+    virtual const std::unordered_set<int> getAdjacents(int id) const = 0;
 
     /**
      * @brief Get the attribute of the nodes.
@@ -157,16 +162,16 @@ public:
     virtual T getAttributes(int id) const = 0;
 
     /**
+     * @brief Set the attribute of the nodes.
+     * @param id The id of the node to set the attributes of
+     * @param attributes The attributes of the nodes
+     */
+    virtual void setAttributes(int id, T attributes) = 0;
+
+    /**
      * @brief Get the number of nodes in the graph.
      */
     virtual size_t size() const = 0;
-
-    /**
-     * @brief Get the node of the specific id.
-     * @param id The id of the node
-     * @return The node of the specific id
-     */
-    virtual IHeteroNode<T> operator[](int id) = 0;
 
     /**
      * @brief Read a graph from a file.
@@ -240,7 +245,7 @@ public:
      * @brief Get the adjacent nodes of a node.
      * @param id The source node
      */
-    virtual const std::unordered_set<int> &getAdjacents(int id) const = 0;
+    virtual const std::unordered_set<int> getAdjacents(int id) const = 0;
 
     /**
      * @brief Get the attribute of the nodes.
@@ -451,7 +456,7 @@ public:
      * @param id The source node
      * @return A pairs of integers, where the first means the adjacent node and the second means the weight of the edge.
      */
-    virtual const std::unordered_map<int, double>& getAdjacents(int id) const = 0;
+    virtual const std::unordered_map<int, double> getAdjacents(int id) const = 0;
 
     /**
      * @brief Get the attributes of the nodes. 
@@ -590,7 +595,7 @@ public:
      * @param id The source node
      * @return A pairs of integers, where the first means the adjacent node and the second means the weight of the edge.
      */
-    virtual const std::unordered_map<int, double>& getAdjacents(int id) const = 0;
+    virtual const std::unordered_map<int, double> getAdjacents(int id) const = 0;
 
     /**
      * @brief Get the attributes of the nodes. 

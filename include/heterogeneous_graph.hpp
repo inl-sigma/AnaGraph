@@ -4,14 +4,425 @@
 #define HETEROGENEOUS_GRAPH_HPP
 
 #include "heterogeneous_graph_if.hpp"
+#include "unweighted_graph.hpp"
 #include "weighted_graph.hpp"
 
 #include <memory>
 #include <unordered_map>
 #include <vector>
 
+template <typename T>
+class HeteroNode : public IHeteroNode<T> {
+private:
+    static const int UNUSED_ID; /**< The default value for an unused node */
+    Node node;
+    T attributes;
+    bool isAttrEnabled;
+
+public:
+    /**
+     * @brief Constructs a HeteroNode object.
+     */
+    HeteroNode() : node(Node()), attributes(T()), isAttrEnabled(false) {};
+
+    /**
+     * @brief Constructs a HeteroNode object with the specified id.
+     * @param id The id of the node.
+     */
+    HeteroNode(int id) : node(Node(id)), attributes(T()), isAttrEnabled(false) {};
+
+    /**
+     * @brief Constructs a HeteroNode object with the specified id and attributes.
+     * @param id The id of the node.
+     * @param attributes The attributes of the node.
+     */
+    HeteroNode(int id, T attributes) : node(Node(id)), attributes(attributes), isAttrEnabled(true) {};
+
+    /**
+     * @brief Get the id of the node.
+     * @return The id of the node.
+     */
+    int getId() const override;
+
+    /**
+     * @brief Set the id of the node.
+     * @param id The id of the node.
+     */
+    void setId(int id) override;
+
+    /**
+     * @brief Check if the node is used.
+     * @return True if the node is used, false otherwise.
+     */
+    bool isUsed() const override;
+
+    /**
+     * @brief Get the adjacent nodes of a node.
+     * @return A set of integers representing the adjacent nodes.
+     * 
+     * This method is used to retrieve the adjacent nodes of a node.
+     */
+    const std::unordered_set<int>& getAdjacents() const override;
+
+    /**
+     * @brief Set an adjacent node to the node.
+     * @param adjacent The id of the adjacent node.
+     */
+    void setAdjacent(int adjacent) override;
+
+    /**
+     * @brief Remove an adjacent node from the node.
+     * @param adjacent The id of the adjacent node.
+     */
+    void removeAdjacent(int adjacent) override;
+
+    /**
+     * @brief Get the attribute of the node.
+     * @return The attribute of the node.
+     * 
+     * This method is used to access the attribute of a node.
+     */
+    T getAttributes() const override;
+
+    /**
+     * @brief Set the attribute of the node.
+     * @param attribute The attribute of the node.
+     */
+    void setAttributes(T attributes) override;
+
+    /**
+     * @brief Clear the node.
+     * 
+     * This method is used to clear the node.
+     */
+    void clear() override;
+};
+
 /**
- * @class weightedNode
+ * @class HeteroDigraph
+ * @brief Represents a weighted graph data structure.
+ * 
+ * @note This HeteroDigraph class is indexed as 0-origin and allowed to have self-loops.
+ * The HeteroDigraph class provides a way to represent a graph using an adjacency list.
+ * It supports adding edges between vertices and accessing the adjacency list of a node.
+ */
+template <typename T>
+class HeteroDigraph : public IHeteroDigraph<T> {
+private:
+    std::vector<HeteroNode<T>> nodes; /**< The nodes of the graph */
+    std::unordered_set<int> usedNodes; /**< The set of used nodes */
+
+public:
+    /**
+     * @brief Constructs a UnweightedHeteroDigraph object.
+     */
+    HeteroDigraph() = default;
+
+    /**
+     * @brief Constructs a UnweightedHeteroDigraph object with the file.
+     * @param filePath The path to the file containing the graph data.
+     */
+    HeteroDigraph(std::string filePath, FileExtension extName);
+
+    /**
+     * @brief Copy constructor for the UnweightedHeteroDigraph object.
+     */
+    HeteroDigraph(const HeteroDigraph<T> &graph) 
+        : nodes(graph.nodes), usedNodes(graph.usedNodes) {
+    }
+
+    /**
+     * @brief Assignment operator for the UnweightedHeteroDigraph object.
+     */
+    HeteroDigraph<T>& operator=(const HeteroDigraph<T>& graph) = default;
+
+    /** 
+     * @brief Get the attributes of a node.
+     * @param id The node to get the attributes of
+     * @return A copy of the attributes of the node
+     * 
+     * @todo override interface method after implementing the method
+     * 
+     * This method is used to access the attributes of a node.
+     */
+    HeteroNode<T> getNode(int id) const;
+
+    /**
+     * @brief Set a node to the graph.
+     * @param id The node to add
+     */
+    void setNode(int id) override;
+
+    /**
+     * @brief Set a node to the graph.
+     * @param node The node to add
+     * 
+     * @todo override interface method after implementing the method
+     */
+    void setNode(HeteroNode<T> &node);
+
+    /**
+     * @brief Remove a node from the graph.
+     * @param id The node to remove
+     */
+    void removeNode(int id) override;
+
+    /**
+     * @brief Get the id of the graph.
+     */
+    std::unordered_set<int> getIds() const override;
+
+    /**
+     * @brief Add an edge between two nodes.
+     * @param src The source node
+     * @param dst The destination node
+     */
+    void addEdge(int src, int dst) override;
+
+    /**
+     * @brief Remove an edge between two nodes.
+     * @param src The source node
+     * @param dst The destination node
+     */
+    void removeEdge(int src, int dst) override;
+
+    /**
+     * @brief Get the adjacent nodes of a node.
+     * @param id The source node
+     * @return A set of integers representing the adjacent nodes.
+     */
+    const std::unordered_set<int> getAdjacents(int id) const override;
+
+    /**
+     * @brief Get the subgraph of the graph.
+     * @param indices The indices of the nodes to include in the subgraph
+     * @return A subgraph of the graph
+     */
+    HeteroDigraph<T> getSubgraph(std::unordered_set<int> indices) const;
+
+    /**
+     * @brief Reorganize the graph.
+     * 
+     * This method is used to reorganize the graph.
+     * It can be used to delete unnecessary nodes.
+     */
+    void reorganize();
+
+    /**
+     * @brief Get the attributes of the nodes. 
+     * @param id The id of the node to get the attributes of
+     * @return A vector of the attributes of the nodes
+     */
+    T getAttributes(int id) const override;
+
+    /**
+     * @brief Set the attributes of the nodes.
+     * @param id The id of the node to set the attributes of
+     * @param attribute The attributes of the nodes
+     */
+    void setAttributes(int id, T attributes) override;
+
+    /**
+     * @brief Get the number of nodes in the graph.
+     */
+    size_t size() const override;
+
+    /**
+     * @brief Read a graph from a file.
+     * @param filename The name of the file to import the graph from
+     * @param extName The extension of the file
+     * 
+     * @todo read graph as a heterogeneous graph, not a weighted graph
+     */
+    void readGraph(std::string filename, FileExtension extName) override;
+
+    /**
+     * @brief Write the graph to a file.
+     * @param filename The name of the file to export the graph to
+     * @param extName The extension of the file
+     * 
+     * @todo write graph as a heterogeneous graph, not a weighted graph
+     */
+    void writeGraph(std::string filename, FileExtension extName) const override;
+
+private:
+    /**
+     * @brief Read a graph from a file.
+     * @param filename The name of the file to import the graph from
+     * @param parser The parser to use to read the graph
+     * 
+     * This method is used to read a graph from a file.
+     * It uses the specified parser to read the graph.
+     */
+    void readGraphHelper(std::string filename, IGraphParser &parser);
+
+    /**
+     * @brief Write the graph to a file.
+     * @param filename The name of the file to export the graph to
+     * @param writer The writer to use to write the graph
+     * 
+     * This method is used to write the graph to a file.
+     * It uses the specified writer to write the graph.
+     */
+    void writeGraphHelper(std::string filename, IGraphWriter &writer, std::vector<EdgeObject> &edges) const;
+};
+
+/**
+ * @class HeteroGraph
+ * @brief Represents a graph data structure.
+ * 
+ * @note This HeteroGraph class is indexed as 0-origin and allowed to have self-loops.
+ * The HeteroGraph class provides a way to represent a graph using an adjacency list.
+ * It supports adding edges between vertices and accessing the adjacency list of a node.
+ */
+template <typename T>
+class HeteroGraph : public IHeteroDigraph<T> {
+private:
+    HeteroDigraph<T> digraph;
+
+public:
+    /**
+     * @brief Constructs a HeteroGraph object.
+     */
+    HeteroGraph() = default;
+
+    /**
+     * @brief Constructs a HeteroGraph object with the file.
+     * @param filePath The path to the file containing the graph data.
+     */
+    HeteroGraph(std::string filePath, FileExtension extName);
+
+    /**
+     * @brief Copy constructor for the HeteroGraph object.
+     */
+    HeteroGraph(const HeteroGraph<T> &graph) 
+        : digraph(graph.digraph) {
+    }
+
+    /**
+     * @brief Assignment operator for the HeteroGraph object.
+     */
+    HeteroGraph<T>& operator=(const HeteroGraph<T>& graph) = default;
+
+    /** 
+     * @brief Get the attributes of a node.
+     * @param id The node to get the attributes of
+     * @return A copy of the attributes of the node
+     * 
+     * @todo override interface method after implementing the method
+     * 
+     * This method is used to access the attributes of a node.
+     */
+    HeteroNode<T> getNode(int id) const;
+
+    /**
+     * @brief Set a node to the graph.
+     * @param id The node to add
+     */
+    void setNode(int id) override;
+
+    /**
+     * @brief Set a node to the graph.
+     * @param node The node to add
+     * 
+     * @todo override interface method after implementing the method
+     */
+    void setNode(HeteroNode<T> &node);
+
+    /**
+     * @brief Remove a node from the graph.
+     * @param id The node to remove
+     */
+    void removeNode(int id) override;
+
+    /**
+     * @brief Get the id of the graph.
+     */
+    std::unordered_set<int> getIds() const override;
+
+    /**
+     * @brief Add an edge between two nodes.
+     * @param src The source node
+     * @param dst The destination node
+     */
+    void addEdge(int src, int dst) override;
+
+    /**
+     * @brief Remove an edge between two nodes.
+     * @param src The source node
+     * @param dst The destination node
+     */
+    void removeEdge(int src, int dst) override;
+
+    /**
+     * @brief Get the adjacent nodes of a node.
+     * @param id The source node
+     * @return A set of integers representing the adjacent nodes.
+     */
+    const std::unordered_set<int> getAdjacents(int id) const override;
+
+    /**
+     * @brief Get the subgraph of the graph.
+     * @param indices The indices of the nodes to include in the subgraph
+     * @return A subgraph of the graph
+     */
+    HeteroGraph<T> getSubgraph(std::unordered_set<int> indices) const;
+
+    /**
+     * @brief Reorganize the graph.
+     * 
+     * This method is used to reorganize the graph.
+     * It can be used to delete unnecessary nodes.
+     */
+    void reorganize();
+
+    /**
+     * @brief Get the attributes of the nodes. 
+     * @param id The id of the node to get the attributes of
+     * @return A vector of the attributes of the nodes
+     */
+    T getAttributes(int id) const override;
+
+    /**
+     * @brief Set the attributes of the nodes.
+     * @param id The id of the node to set the attributes of
+     * @param attribute The attributes of the nodes
+     */
+    void setAttributes(int id, T attributes) override;
+
+    /**
+     * Converts the heterogeneous graph to a directed graph.
+     *
+     * @return The converted directed graph.
+     */
+    HeteroDigraph<T> toDigraph() const;
+
+    /**
+     * @brief Get the number of nodes in the graph.
+     */
+    size_t size() const override;
+
+    /**
+     * @brief Read a graph from a file.
+     * @param filename The name of the file to import the graph from
+     * @param extName The extension of the file
+     * 
+     * @todo read graph as a heterogeneous graph, not a weighted graph
+     */
+    void readGraph(std::string filename, FileExtension extName) override;
+
+    /**
+     * @brief Write the graph to a file.
+     * @param filename The name of the file to export the graph to
+     * @param extName The extension of the file
+     * 
+     * @todo write graph as a heterogeneous graph, not a weighted graph
+     */
+    void writeGraph(std::string filename, FileExtension extName) const override;
+};
+
+/**
+ * @class WeightedHeteroNode
  * @brief Represents a weighted node data structure with attributes.
  * 
  * The weightedNode class provides a way to represent a weighted node using an adjacency list.
@@ -23,7 +434,7 @@ private:
     static const int UNUSED_ID; /**< The default value for an unused node */
     WeightedNode weightedNode;
     T attributes;
-    bool isAttrEnabled; // todo : implement this for checking if the attributes are initialized
+    bool isAttrEnabled;
 
 public:
     /**
@@ -256,7 +667,7 @@ public:
      * @param id The source node
      * @return A pairs of integers, where the first means the adjacent node and the second means the weight of the edge.
      */
-    const std::unordered_map<int, double> &getAdjacents(int id) const override;
+    const std::unordered_map<int, double> getAdjacents(int id) const override;
 
     /**
      * @brief Get the subgraph of the graph.
@@ -329,7 +740,7 @@ private:
      * This method is used to write the graph to a file.
      * It uses the specified writer to write the graph.
      */
-    void writeGraphHelper(std::string filename, IGraphWriter &writer, std::vector<WeightedEdgeObject>) const;
+    void writeGraphHelper(std::string filename, IGraphWriter &writer, std::vector<WeightedEdgeObject> &edges) const;
 };
 
 /**
@@ -452,7 +863,7 @@ public:
      * @param id The source node
      * @return A pairs of integers, where the first means the adjacent node and the second means the weight of the edge.
      */
-    const std::unordered_map<int, double> &getAdjacents(int id) const override;
+    const std::unordered_map<int, double> getAdjacents(int id) const override;
 
     /**
      * @brief Get the subgraph of the graph.
@@ -493,7 +904,7 @@ public:
      *
      * @return The weighted directed graph representation of the heterogeneous graph.
      */
-    virtual WeightedHeteroDigraph<T> toDigraph() const;
+    WeightedHeteroDigraph<T> toDigraph() const;
 
     /**
      * @brief Read a graph from a file.
@@ -512,27 +923,6 @@ public:
      * @todo write graph as a heterogeneous graph, not a weighted graph
      */
     void writeGraph(std::string filename, FileExtension extName) const override;
-
-private:
-    /**
-     * @brief Read a graph from a file.
-     * @param filename The name of the file to import the graph from
-     * @param parser The parser to use to read the graph
-     * 
-     * This method is used to read a graph from a file.
-     * It uses the specified parser to read the graph.
-     */
-    void readGraphHelper(std::string filename, IGraphParser &parser);
-
-    /**
-     * @brief Write the graph to a file.
-     * @param filename The name of the file to export the graph to
-     * @param writer The writer to use to write the graph
-     * 
-     * This method is used to write the graph to a file.
-     * It uses the specified writer to write the graph.
-     */
-    void writeGraphHelper(std::string filename, IGraphWriter &writer, std::vector<WeightedEdgeObject>) const;
 };
 
 #endif // HETEROGENEOUS_GRAPH_HPP
