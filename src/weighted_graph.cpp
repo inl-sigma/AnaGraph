@@ -417,6 +417,7 @@ void WeightedGraph::writeGraph(std::string filePath, FileExtension extName) cons
         for (auto [adj, _] : digraph.getAdjacents(id)) {
             if (id > adj) {
                 digraph.removeEdge(id, adj);
+
             }
         }
     }
