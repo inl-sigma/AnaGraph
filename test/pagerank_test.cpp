@@ -55,7 +55,7 @@ TEST(PageRankTest, TestDirectedPageRank) {
     EXPECT_NEAR(pr[33], 0.014937946031411825, 1e-3);
 }
 
-TEST(PageRankTest, ForwardPushTest) {
+TEST(PageRankTest, WeightedForwardPushTest) {
     WeightedDigraph digraph("../../dataset/zackary_karate.txt", FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
@@ -102,7 +102,7 @@ TEST(PageRankTest, ForwardPushTest) {
     EXPECT_NEAR(pr[33], 0.014937946031411825, 1e-5);
 }
 
-TEST(PageRankTest, UndirectedForwardPushTest) {
+TEST(PageRankTest, UnweightedForwardPushTest) {
     Digraph digraph("../../dataset/zackary_karate.txt", FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
@@ -149,8 +149,57 @@ TEST(PageRankTest, UndirectedForwardPushTest) {
     EXPECT_NEAR(pr[33], 0.014937946031411825, 1e-5);
 }
 
-TEST(PageRankTest, ForaTest) {
+TEST(PageRankTest, WeightedForaTest) {
     WeightedDigraph digraph("../../dataset/zackary_karate.txt", FileExtension::TXT);
+    spdlog::set_level(spdlog::level::debug);
+
+    // Compute the PageRank
+    const int size = digraph.size();
+    std::vector<double> source(size, 1.0 / size);
+    auto pr = fora(digraph, source, 0.15, 1e-4);
+    double prSum = std::reduce(pr.begin(), pr.end());
+    spdlog::debug("Sum of PageRank: {}", prSum);
+
+    // Check the result
+    // the result was computed by the networkx library
+    EXPECT_NEAR(pr[0], 0.246448254546578800, 1e-4);
+    EXPECT_NEAR(pr[1], 0.087705946870459460, 1e-5);
+    EXPECT_NEAR(pr[2], 0.074923430367349500, 1e-5);
+    EXPECT_NEAR(pr[3], 0.027793521975148276, 1e-5);
+    EXPECT_NEAR(pr[4], 0.025201150462922830, 1e-5);
+    EXPECT_NEAR(pr[5], 0.031549587475305740, 1e-5);
+    EXPECT_NEAR(pr[6], 0.021286383043794738, 1e-5);
+    EXPECT_NEAR(pr[7], 0.014937946031411825, 1e-5);
+    EXPECT_NEAR(pr[8], 0.024077700774917940, 1e-5);
+    EXPECT_NEAR(pr[9], 0.015684820974045107, 1e-5);
+    EXPECT_NEAR(pr[10], 0.014937946031411825, 1e-5);
+    EXPECT_NEAR(pr[11], 0.014937946031411825, 1e-5);
+    EXPECT_NEAR(pr[12], 0.014937946031411825, 1e-5);
+    EXPECT_NEAR(pr[13], 0.015684820974045107, 1e-5);
+    EXPECT_NEAR(pr[14], 0.016896792037740412, 1e-5);
+    EXPECT_NEAR(pr[15], 0.016896792037740412, 1e-5);
+    EXPECT_NEAR(pr[16], 0.014937946031411825, 1e-5);
+    EXPECT_NEAR(pr[17], 0.014937946031411825, 1e-5);
+    EXPECT_NEAR(pr[18], 0.016896792037740412, 1e-5);
+    EXPECT_NEAR(pr[19], 0.015684820974045107, 1e-5);
+    EXPECT_NEAR(pr[20], 0.016896792037740412, 1e-5);
+    EXPECT_NEAR(pr[21], 0.014937946031411825, 1e-5);
+    EXPECT_NEAR(pr[22], 0.016896792037740412, 1e-5);
+    EXPECT_NEAR(pr[23], 0.036395954990569810, 1e-5);
+    EXPECT_NEAR(pr[24], 0.030846654615652464, 1e-5);
+    EXPECT_NEAR(pr[25], 0.018528400400000590, 1e-5);
+    EXPECT_NEAR(pr[26], 0.022865729711222638, 1e-5);
+    EXPECT_NEAR(pr[27], 0.015684820974045107, 1e-5);
+    EXPECT_NEAR(pr[28], 0.019275275342633870, 1e-5);
+    EXPECT_NEAR(pr[29], 0.016896792037740412, 1e-5);
+    EXPECT_NEAR(pr[30], 0.016896792037740412, 1e-5);
+    EXPECT_NEAR(pr[31], 0.016896792037740412, 1e-5);
+    EXPECT_NEAR(pr[32], 0.015684820974045107, 1e-5);
+    EXPECT_NEAR(pr[33], 0.014937946031411825, 1e-5);
+}
+
+TEST(PageRankTest, UnweightedForaTest) {
+    Digraph digraph("../../dataset/zackary_karate.txt", FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
