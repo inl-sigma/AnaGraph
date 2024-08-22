@@ -35,6 +35,7 @@ add_test_executable(weighted_hetero_digraph_test)
 add_test_executable(weighted_hetero_graph_test)
 
 add_test_executable(unweighted_hetero_node_test)
+add_test_executable(unweighted_hetero_digraph_test)
 
 add_test_executable(weighted_supernode_test)
 add_test_executable(weighted_superdigraph_test)
