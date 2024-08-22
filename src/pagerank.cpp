@@ -196,7 +196,6 @@ std::tuple<std::vector<double>, std::vector<double>> forwardPush(const Digraph &
     return std::tie(ppr, residue);
 }
 
-
 std::vector<double> fora(const WeightedDigraph &graph, const std::vector<double> source, const double alpha, const double epsilon) {
     const int size = graph.size();
     std::vector<double> outWeightSum(size, 0); /**< the vector meaning the sum of the out weights */
@@ -242,7 +241,7 @@ std::vector<double> fora(const WeightedDigraph &graph, const std::vector<double>
             continue;
         }
         const int omegaSrc = std::ceil(residue[src] * coef);
-        spdlog::debug("src =  {}, omegaSrc = {}", src, omegaSrc);
+        spdlog::debug("src = {}, omegaSrc = {}", src, omegaSrc);
         const double randomWalkWeight = residue[src] / omegaSrc;
 
         const std::unordered_map<int, double> &adjacents = graph.getAdjacents(src);
@@ -269,3 +268,63 @@ std::vector<double> fora(const WeightedDigraph &graph, const std::vector<double>
     return ppr;
 }
 
+std::vector<double> fora(const Digraph &graph, const std::vector<double> source, const double alpha, const double epsilon) {
+    const int size = graph.size();
+    std::vector<std::vector<int>> outEdges(size, std::vector<int>()); 
+    std::vector<int> outDegree(size, 0); /**< the vector meaning the out degree of each node */
+    for (int src = 0; src < size; src++) {
+        const auto &adjacents = graph.getAdjacents(src);
+        outDegree[src] = adjacents.size();
+        for (const auto &dst : adjacents) {
+            outEdges[src].push_back(dst);
+        }
+    }
+    const double totalEdges = std::reduce(outDegree.begin(), outDegree.end());
+
+    // const double coef = (2*epsilon/3 + 2) * std::log(2/faultProbability) / (epsilon*epsilon * delta); 
+    const double coef = (2*epsilon/3 + 2) * std::log2(2*size) * size / epsilon / epsilon; /**< note: the coefficient but what? */
+    spdlog::debug("coef = {}", coef);
+
+    // forward push
+    const double localThr = 1 / std::sqrt(coef * totalEdges); /**< threshold of forward push */
+    auto [ppr, residue] = forwardPush(graph, source, alpha, localThr);
+
+    // random walk
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> intDis(0, size - 1); // right inclusive
+    std::uniform_real_distribution<double> realDis(0, 1); // right exclusive
+
+    const double residueSum = std::reduce(residue.begin(), residue.end());
+    const double omega = residueSum * coef;
+    spdlog::debug("residueSum = {}, omega = {}", residueSum, omega);
+    for (int src = 0; src < size; src++) {
+        if (residue[src] == 0) {
+            continue;
+        }
+        const int omegaSrc = std::ceil(residue[src] * coef);
+        spdlog::debug("src = {}, omegaSrc = {}", src, omegaSrc);
+        const double randomWalkWeight = residue[src] / omegaSrc;
+
+        for (int i = 0; i < omegaSrc; i++) {
+            int currentNode = src;
+
+            while (true) {
+                const double rand = realDis(gen);
+                if (rand < alpha) {
+                    break;
+                }
+
+                const std::vector<int> &adjacents = outEdges[currentNode];
+                if (adjacents.empty()) {
+                    currentNode = intDis(gen);
+                } else {
+                    std::uniform_int_distribution<int> getAdjIdx(0, outDegree[currentNode]-1);
+                    currentNode = adjacents[getAdjIdx(gen)];
+                }
+            }
+            ppr[currentNode] += randomWalkWeight;
+        }
+    }
+    return ppr;
+}
