@@ -110,10 +110,23 @@ public:
     //  */
     // virtual void setNode(IHeteroNode<T> node) = 0;
 
+    // /**
+    //  * @brief Get the node of the specific id.
+    //  * @param id The id of the node
+    //  * @return The node of the specific id
+    //  */
+    // virtual IHeteroNode<T> operator[](int id) = 0;
+
+    /**
+     * @brief Set the node of the graph.
+     * @param id The node to add
+     */
+    virtual void setNode(int id) = 0;
+
     /**
      * @brief Get the id of the graph.
      */
-    virtual std::unordered_set<int> getId() const = 0;
+    virtual std::unordered_set<int> getIds() const = 0;
 
     /**
      * @brief Remove a node from the graph.
@@ -149,16 +162,16 @@ public:
     virtual T getAttributes(int id) const = 0;
 
     /**
+     * @brief Set the attribute of the nodes.
+     * @param id The id of the node to set the attributes of
+     * @param attributes The attributes of the nodes
+     */
+    virtual void setAttributes(int id, T attributes) = 0;
+
+    /**
      * @brief Get the number of nodes in the graph.
      */
     virtual size_t size() const = 0;
-
-    /**
-     * @brief Get the node of the specific id.
-     * @param id The id of the node
-     * @return The node of the specific id
-     */
-    virtual IHeteroNode<T> operator[](int id) = 0;
 
     /**
      * @brief Read a graph from a file.
