@@ -47,3 +47,4 @@ add_component_test_executable(weighted_superdigraph_test)
 add_component_test_executable(weighted_supergraph_test)
 
 add_algorithm_test_executable(pagerank_test)
+add_algorithm_test_executable(similarity_test)
