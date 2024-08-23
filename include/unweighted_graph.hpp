@@ -103,6 +103,14 @@ public:
     Digraph() = default;
 
     /**
+     * @brief Constructs a new Digraph object with the given file path and extension name.
+     *
+     * @param filePath The path of the file to import the graph from
+     * @param extName The extension of the file
+     */
+    Digraph(std::string filePath, FileExtension extName);
+
+    /**
      * @brief Copy constructor for the Digraph class.
      */
     Digraph(const Digraph& digraph) = default;
@@ -226,6 +234,14 @@ public:
      * @brief Default constructor for the Graph class.
      */
     Graph() = default;
+
+    /**
+     * @brief Constructs a new Graph object with the given file path and extension name.
+     *
+     * @param filePath The path of the file to import the graph from
+     * @param extName The extension of the file
+     */
+    Graph(std::string filePath, FileExtension extName);
 
     /**
      * @brief Copy constructor for the Graph class.
