@@ -3,7 +3,7 @@
 #ifndef SIMILARITY_HPP
 #define SIMILARITY_HPP
 
-#include "unweighted_graph.hpp"
+#include "anagraph/components/unweighted_graph.hpp"
 
 #include <vector>
 

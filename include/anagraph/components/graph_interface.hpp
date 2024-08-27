@@ -3,7 +3,7 @@
 #ifndef GRAPH_INTERFACE_HPP
 #define GRAPH_INTERFACE_HPP
 
-#include "graph_utils.hpp"
+#include "anagraph/utils/graph_utils.hpp"
 
 #include <memory>
 #include <string>

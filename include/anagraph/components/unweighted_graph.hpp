@@ -3,9 +3,13 @@
 #ifndef UNWEIGHTED_GRAPH_HPP
 #define UNWEIGHTED_GRAPH_HPP
 
-#include "graph_interface.hpp"
-#include "graph_parser.hpp"
-#include "graph_writer.hpp"
+#include "anagraph/components/graph_interface.hpp"
+#include "anagraph/components/graph_parser.hpp"
+#include "anagraph/components/graph_writer.hpp"
+#include "anagraph/utils/graph_utils.hpp"
+
+#include <unordered_set>
+#include <vector>
 
 class Node : public INode {
 private:

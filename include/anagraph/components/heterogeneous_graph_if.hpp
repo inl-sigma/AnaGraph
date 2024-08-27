@@ -3,7 +3,7 @@
 #ifndef HETEROGENEOUS_GRAPH_IF_HPP
 #define HETEROGENEOUS_GRAPH_IF_HPP
 
-#include "graph_utils.hpp"
+#include "anagraph/utils/graph_utils.hpp"
 
 #include <memory>
 #include <string>

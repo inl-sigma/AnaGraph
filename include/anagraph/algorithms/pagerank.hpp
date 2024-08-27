@@ -3,8 +3,8 @@
 #ifndef PAGERANK_HPP
 #define PAGERANK_HPP
 
-#include "weighted_graph.hpp"
-#include "unweighted_graph.hpp"
+#include "anagraph/components/weighted_graph.hpp"
+#include "anagraph/components/unweighted_graph.hpp"
 
 #include <vector>
 

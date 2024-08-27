@@ -3,7 +3,7 @@
 #ifndef GRAPH_PARSER_HPP
 #define GRAPH_PARSER_HPP
 
-#include "graph_utils.hpp"
+#include "anagraph/utils/graph_utils.hpp"
 
 #include <string>
 #include <vector>

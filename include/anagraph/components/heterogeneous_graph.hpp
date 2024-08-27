@@ -3,9 +3,9 @@
 #ifndef HETEROGENEOUS_GRAPH_HPP
 #define HETEROGENEOUS_GRAPH_HPP
 
-#include "heterogeneous_graph_if.hpp"
-#include "unweighted_graph.hpp"
-#include "weighted_graph.hpp"
+#include "anagraph/components/heterogeneous_graph_if.hpp"
+#include "anagraph/components/unweighted_graph.hpp"
+#include "anagraph/components/weighted_graph.hpp"
 
 #include <memory>
 #include <unordered_map>
