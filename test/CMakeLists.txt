@@ -15,7 +15,7 @@ endfunction(add_component_test_executable name)
 
 function(add_algorithm_test_executable name)
     add_executable(${name} ${name}.cpp)
-    target_link_libraries(${name} GTest::gtest_main graphcomponents graphalgorithms)
+    target_link_libraries(${name} GTest::gtest_main graphalgorithms)
     target_compile_features(${name} PUBLIC cxx_std_20)
     if (USE_ASAN)
         target_compile_options(${name} PUBLIC -Wall -fsanitize=address)

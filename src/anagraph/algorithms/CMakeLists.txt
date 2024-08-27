@@ -2,7 +2,7 @@ add_library(graphalgorithms STATIC
     pagerank.cpp
     similarity.cpp
 )
-target_link_libraries(graphalgorithms PUBLIC spdlog::spdlog)
+target_link_libraries(graphalgorithms PUBLIC spdlog::spdlog graphcomponents)
 target_include_directories(graphalgorithms PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(graphalgorithms PUBLIC cxx_std_20)
 if (USE_ASAN)
