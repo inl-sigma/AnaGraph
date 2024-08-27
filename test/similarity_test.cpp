@@ -20,6 +20,20 @@ TEST(SimilarityTest, NDCG) {
     ASSERT_NEAR(result, 1.0, 1e-9);
 }
 
+TEST(SimilarityTest, KLdivergence) {
+    std::vector<double> p = {0.1, 0.2, 0.7};
+    std::vector<double> q = {0.2, 0.3, 0.5};
+    double result = similarity::KLdivergence(p, q);
+    ASSERT_NEAR(result, 0.12280627887493795, 1e-9);
+}
+
+TEST(SimilarityTest, JSdivergence) {
+    std::vector<double> p = {0.1, 0.2, 0.7};
+    std::vector<double> q = {0.2, 0.3, 0.5};
+    double result = similarity::JSdivergence(p, q);
+    ASSERT_NEAR(result, 0.031596722287467766, 1e-9);
+}
+
 TEST(SimilarityTest, DirectedAccuracy) {
     Digraph expected;
     expected.addEdge(1, 2);

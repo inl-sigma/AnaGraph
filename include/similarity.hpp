@@ -45,6 +45,24 @@ namespace similarity {
     double nDCG(const std::vector<double>& expected, const std::vector<double>& answer);
 
     /**
+     * Calculates the Kullback-Leibler divergence between two vectors.
+     *
+     * @param p The first vector.
+     * @param q The second vector.
+     * @return The Kullback-Leibler divergence between p and q.
+     */
+    double KLdivergence(const std::vector<double>& p, const std::vector<double>& q);
+
+    /**
+     * Calculates the Jensen-Shannon divergence between two vectors.
+     *
+     * @param p The first vector.
+     * @param q The second vector.
+     * @return The Jensen-Shannon divergence between p and q.
+     */
+    double JSdivergence(const std::vector<double>& p, const std::vector<double>& q);
+
+    /**
      * Calculates the accuracy of a given answer compared to the expected result.
      *
      * @param expected The expected Digraph.
