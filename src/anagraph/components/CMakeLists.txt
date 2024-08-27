@@ -1,0 +1,17 @@
+add_library(graphcomponents STATIC 
+    graph_parser.cpp
+    graph_writer.cpp
+    unweighted_graph.cpp
+    weighted_graph.cpp
+    heterogeneous_graph.cpp
+    supergraph.cpp
+)
+target_link_libraries(graphcomponents PUBLIC spdlog::spdlog)
+target_include_directories(graphcomponents PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_compile_features(graphcomponents PUBLIC cxx_std_20)
+if (USE_ASAN)
+    target_compile_options(graphcomponents PUBLIC -Wall -fsanitize=address)
+    target_link_options(graphcomponents PUBLIC -fsanitize=address)
+else()
+    target_compile_options(graphcomponents PUBLIC -Wall)
+endif()

@@ -33,5 +33,6 @@ if(APPLE AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 else()
   set(USE_ASAN ON)
 endif()
+
 add_subdirectory(src)
 add_subdirectory(test)
