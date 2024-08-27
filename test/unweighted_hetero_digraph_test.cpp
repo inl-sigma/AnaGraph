@@ -1,5 +1,4 @@
-#include "heterogeneous_graph.hpp"
-#include "graph_utils.hpp"
+#include "anagraph/components/heterogeneous_graph.hpp"
 
 #include <gtest/gtest.h>
 #include <spdlog/spdlog.h>

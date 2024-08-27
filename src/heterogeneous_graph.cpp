@@ -1,8 +1,4 @@
-#include "heterogeneous_graph.hpp"
-
-#include "graph_parser.hpp"
-#include "graph_utils.hpp"
-#include "graph_writer.hpp"
+#include "anagraph/components/heterogeneous_graph.hpp"
 
 #include <spdlog/spdlog.h>
 

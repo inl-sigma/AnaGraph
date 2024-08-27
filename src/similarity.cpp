@@ -1,6 +1,4 @@
-#include "similarity.hpp"
-
-#include "unweighted_graph.hpp"
+#include "anagraph/algorithms/similarity.hpp"
 
 #include <spdlog/spdlog.h>
 

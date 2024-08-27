@@ -1,5 +1,4 @@
-#include "weighted_graph.hpp"
-#include "graph_utils.hpp"
+#include "anagraph/components/weighted_graph.hpp"
 
 #include <gtest/gtest.h>
 

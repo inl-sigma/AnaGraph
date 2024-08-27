@@ -1,7 +1,6 @@
-#include "pagerank.hpp"
+#include "anagraph/algorithms/pagerank.hpp"
 
-#include "graph_utils.hpp"
-#include "weighted_graph.hpp"
+#include "anagraph/components/weighted_graph.hpp"
 
 #include <gtest/gtest.h>
 #include <spdlog/spdlog.h>

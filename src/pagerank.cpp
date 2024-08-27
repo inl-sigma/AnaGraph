@@ -1,4 +1,4 @@
-#include "pagerank.hpp"
+#include "anagraph/algorithms/pagerank.hpp"
 
 #include <spdlog/spdlog.h>
 

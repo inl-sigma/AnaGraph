@@ -1,4 +1,4 @@
-#include "similarity.hpp"
+#include "anagraph/algorithms/similarity.hpp"
 
 #include <gtest/gtest.h>
 #include <spdlog/spdlog.h>

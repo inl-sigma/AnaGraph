@@ -1,4 +1,4 @@
-#include "graph_parser.hpp"
+#include "anagraph/components/graph_parser.hpp"
 
 #include <fstream>
 #include <regex>

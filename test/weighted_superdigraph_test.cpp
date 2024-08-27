@@ -1,4 +1,4 @@
-#include "supergraph.hpp"
+#include "anagraph/components/supergraph.hpp"
 
 #include <gtest/gtest.h>
 #include <spdlog/spdlog.h>
