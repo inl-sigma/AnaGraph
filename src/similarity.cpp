@@ -134,6 +134,40 @@ double nDCG(const std::vector<double>& expected, const std::vector<double>& answ
     return nDCG(expected, answer, expected.size());
 }
 
+double KLdivergence(const std::vector<double>& p, const std::vector<double>& q) {
+    const size_t pSize = p.size();
+    const size_t qSize = q.size();
+    if (pSize != qSize) {
+        throw std::invalid_argument("Vectors must have the same size");
+    }
+
+    double kl = 0.0;
+    for (size_t i = 0; i < pSize; i++) {
+        if (p[i] == 0.0) {
+            continue;
+        }
+        if (q[i] == 0.0) {
+            throw std::invalid_argument("q must not contain 0.0 when p contains non-zero value");
+        }
+        kl += p[i] * std::log2(p[i] / q[i]);
+    }
+    return kl;
+}
+
+double JSdivergence(const std::vector<double>& p, const std::vector<double>& q) {
+    const size_t pSize = p.size();
+    const size_t qSize = q.size();
+    if (pSize != qSize) {
+        throw std::invalid_argument("Vectors must have the same size");
+    }
+
+    std::vector<double> m(pSize);
+    for (size_t i = 0; i < pSize; i++) {
+        m[i] = (p[i] + q[i]) / 2;
+    }
+    return (KLdivergence(p, m) + KLdivergence(q, m)) / 2;
+}
+
 double accuracy(const Digraph &expected, const Digraph &answer) {
     auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
     spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
