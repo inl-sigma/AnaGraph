@@ -8,6 +8,9 @@
 #include <numeric>
 
 namespace {
+    const std::string datasetDirectory = PROJECT_SOURCE_DIR + std::string("/dataset");
+    const std::string datasetFile = datasetDirectory + "/zackary_karate.txt";
+
     // PageRank values with error 1e-6, computed with the directed graph
     const std::vector<double> directedPageRank = {
         0.246448254546578800,
@@ -86,7 +89,7 @@ namespace {
 
 TEST(PageRankTest, TestDirectedPageRank) {
     // Create a graph
-    WeightedDigraph digraph("../../dataset/zackary_karate.txt", FileExtension::TXT);
+    WeightedDigraph digraph(datasetFile, FileExtension::TXT);
 
     spdlog::set_level(spdlog::level::debug);
 
@@ -99,7 +102,7 @@ TEST(PageRankTest, TestDirectedPageRank) {
 }
 
 TEST(PageRankTest, WeightedDigraphForwardPushTest) {
-    WeightedDigraph digraph("../../dataset/zackary_karate.txt", FileExtension::TXT);
+    WeightedDigraph digraph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
@@ -113,7 +116,7 @@ TEST(PageRankTest, WeightedDigraphForwardPushTest) {
 }
 
 TEST(PageRankTest, WeightedGraphForwardPushTest) {
-    WeightedGraph graph("../../dataset/zackary_karate.txt", FileExtension::TXT);
+    WeightedGraph graph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
@@ -127,7 +130,7 @@ TEST(PageRankTest, WeightedGraphForwardPushTest) {
 }
 
 TEST(PageRankTest, DigraphForwardPushTest) {
-    Digraph digraph("../../dataset/zackary_karate.txt", FileExtension::TXT);
+    Digraph digraph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
@@ -141,7 +144,7 @@ TEST(PageRankTest, DigraphForwardPushTest) {
 }
 
 TEST(PageRankTest, GraphForwardPushTest) {
-    Graph graph("../../dataset/zackary_karate.txt", FileExtension::TXT);
+    Graph graph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
@@ -155,7 +158,7 @@ TEST(PageRankTest, GraphForwardPushTest) {
 }
 
 TEST(PageRankTest, WeightedDigraphForaTest) {
-    WeightedDigraph digraph("../../dataset/zackary_karate.txt", FileExtension::TXT);
+    WeightedDigraph digraph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
@@ -171,7 +174,7 @@ TEST(PageRankTest, WeightedDigraphForaTest) {
 }
 
 TEST(PageRankTest, WeightedGraphForaTest) {
-    WeightedGraph graph("../../dataset/zackary_karate.txt", FileExtension::TXT);
+    WeightedGraph graph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
@@ -187,7 +190,7 @@ TEST(PageRankTest, WeightedGraphForaTest) {
 }
 
 TEST(PageRankTest, DigraphForaTest) {
-    Digraph digraph("../../dataset/zackary_karate.txt", FileExtension::TXT);
+    Digraph digraph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
@@ -203,7 +206,7 @@ TEST(PageRankTest, DigraphForaTest) {
 }
 
 TEST(PageRankTest, GraphForaTest) {
-    Graph graph("../../dataset/zackary_karate.txt", FileExtension::TXT);
+    Graph graph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
