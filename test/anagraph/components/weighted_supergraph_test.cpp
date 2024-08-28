@@ -8,6 +8,7 @@ namespace {
 }
 
 TEST(WeightedSupergraphTest, SetNode) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedSupergraph graph;
     graph.setNode(1);
@@ -18,6 +19,7 @@ TEST(WeightedSupergraphTest, SetNode) {
 }
 
 TEST(WeightedSupergraphTest, GetNode) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedSupergraph graph;
     graph.setNode(1);
@@ -34,6 +36,7 @@ TEST(WeightedSupergraphTest, GetNode) {
 }
 
 TEST(WeightedSupergraphTest, RemoveNode) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedSupergraph graph;
     graph.setNode(1);
@@ -49,6 +52,7 @@ TEST(WeightedSupergraphTest, RemoveNode) {
 }
 
 TEST(WeightedSupergraphTest, GetIds) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedSupergraph graph;
     graph.setNode(1);
@@ -71,6 +75,7 @@ TEST(WeightedSupergraphTest, GetIds) {
 }
 
 TEST(WeightedSupergraphTest, AddEdge) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedSupergraph graph;
     graph.setNode(1);
@@ -87,6 +92,7 @@ TEST(WeightedSupergraphTest, AddEdge) {
 }
 
 TEST(WeightedSupergraphTest, RemoveEdge) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedSupergraph graph;
     graph.setNode(1);
@@ -105,6 +111,7 @@ TEST(WeightedSupergraphTest, RemoveEdge) {
 }
 
 TEST(WeightedSupergraphTest, GetWeight) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedSupergraph graph;
     graph.setNode(1);
@@ -121,6 +128,7 @@ TEST(WeightedSupergraphTest, GetWeight) {
 }
 
 TEST(WeightedSupergraphTest, SetWeight) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedSupergraph graph;
     graph.setNode(1);
@@ -140,6 +148,7 @@ TEST(WeightedSupergraphTest, SetWeight) {
 }
 
 TEST(WeightedSupergraphTest, AddWeight) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedSupergraph graph;
     graph.setNode(1);
@@ -159,6 +168,7 @@ TEST(WeightedSupergraphTest, AddWeight) {
 }
 
 TEST(WeightedSupergraphTest, GetAndSetParent) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedSupergraph graph;
     graph.setNode(1);
@@ -175,6 +185,7 @@ TEST(WeightedSupergraphTest, GetAndSetParent) {
 }
 
 TEST(WeightedSupergraphTest, UpdateParent) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedSupergraph graph;
     graph.setNode(1);
@@ -190,6 +201,7 @@ TEST(WeightedSupergraphTest, UpdateParent) {
 }
 
 TEST(WeightedSupergraphTest, RemoveParent) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedSupergraph graph;
     graph.setNode(1);
@@ -205,6 +217,7 @@ TEST(WeightedSupergraphTest, RemoveParent) {
 }
 
 TEST(WeightedSupergraphTest, GetChildren) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedSupergraph graph;
     graph.setNode(1);
@@ -227,6 +240,7 @@ TEST(WeightedSupergraphTest, GetChildren) {
 }
 
 TEST(WeightedSupergraphTest, GetAdjacents) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedSupergraph graph;
     graph.setNode(1);
@@ -288,6 +302,7 @@ TEST(WeightedSupergraphTest, GetAdjacents) {
 }
 
 TEST(WeightedSupergraphTest, Size) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedSupergraph graph;
     graph.setNode(1);
@@ -298,6 +313,7 @@ TEST(WeightedSupergraphTest, Size) {
 }
 
 TEST(WeightedSupergraphTest, toDigraph) {
+    using namespace anagraph;
     WeightedSupergraph graph;
     graph.setNode(1);
     graph.setNode(2);
@@ -329,6 +345,7 @@ TEST(WeightedSupergraphTest, toDigraph) {
 }
 
 TEST(WeightedSupergraphTest, ReadGraph) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedSupergraph graph;
     const std::string inputPath = datasetDirectory + "/input";
@@ -358,6 +375,7 @@ TEST(WeightedSupergraphTest, ReadGraph) {
 }
 
 TEST(WeightedSupergraphTest, WriteGraph) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedSupergraph graph;
     graph.setNode(1);

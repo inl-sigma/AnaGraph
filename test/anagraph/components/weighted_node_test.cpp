@@ -5,18 +5,21 @@
 #include <string>
 
 TEST(WeightedNodeTest, DefaultConstructor) {
+    using namespace anagraph;
     WeightedNode node1;
     EXPECT_EQ(node1.getId(), WeightedNode::UNUSED_ID);
     EXPECT_TRUE(node1.getAdjacents().empty());
 }
 
 TEST(WeightedNodeTest, ConstructorWithId) {
+    using namespace anagraph;
     WeightedNode node2(1);
     EXPECT_EQ(node2.getId(), 1);
     EXPECT_TRUE(node2.getAdjacents().empty());
 }
 
 TEST(WeightedNodeTest, CopyConstructor) {
+    using namespace anagraph;
     WeightedNode node1;
     node1.setId(std::rand());
     node1.setAdjacent(4, 1.5);
@@ -26,6 +29,7 @@ TEST(WeightedNodeTest, CopyConstructor) {
 }
 
 TEST(WeightedNodeTest, MoveConstructor) {
+    using namespace anagraph;
     WeightedNode node1;
     node1.setId(0);
     node1.setAdjacent(4, 1.5);
@@ -37,6 +41,7 @@ TEST(WeightedNodeTest, MoveConstructor) {
 }
 
 TEST(WeightedNodeTest, SetAndGetId) {
+    using namespace anagraph;
     WeightedNode node1;
     node1.setId(3);
     EXPECT_EQ(node1.getId(), 3);
@@ -47,6 +52,7 @@ TEST(WeightedNodeTest, SetAndGetId) {
 }
 
 TEST(WeightedNodeTest, IsUsed) {
+    using namespace anagraph;
     WeightedNode node1;
     WeightedNode node2(1);
     WeightedNode node3(2);
@@ -56,6 +62,7 @@ TEST(WeightedNodeTest, IsUsed) {
 }
 
 TEST(WeightedNodeTest, SetAndGetAdjacents) {
+    using namespace anagraph;
     WeightedNode node1;
     node1.setAdjacent(4, 1.5);
     node1.setAdjacent(5, 2.0);
@@ -66,6 +73,7 @@ TEST(WeightedNodeTest, SetAndGetAdjacents) {
 }
 
 TEST(WeightedNodeTest, UpdateAdjacent) {
+    using namespace anagraph;
     WeightedNode node1;
     node1.setAdjacent(4, 1.5);
     node1.updateAdjacent(4, 0.5);
@@ -76,6 +84,7 @@ TEST(WeightedNodeTest, UpdateAdjacent) {
 }
 
 TEST(WeightedNodeTest, RemoveAdjacent) {
+    using namespace anagraph;
     WeightedNode node1;
     node1.setAdjacent(4, 1.5);
     node1.setAdjacent(5, 2.0);
@@ -87,6 +96,7 @@ TEST(WeightedNodeTest, RemoveAdjacent) {
 }
 
 TEST(WeightedNodeTest, Clear) {
+    using namespace anagraph;
     WeightedNode node1;
     node1.setAdjacent(4, 1.5);
     node1.clear();

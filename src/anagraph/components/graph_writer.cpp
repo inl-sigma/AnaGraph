@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 
+namespace anagraph {
+
 void TextGraphWriter::writeGraph(std::string file_path, const std::vector<EdgeObject>& edges) {
     // Implement the logic to write a graph to a text file.
     std::ofstream file(file_path);
@@ -54,3 +56,5 @@ void CSVGraphWriter::writeWeightedGraph(std::string file_path, const std::vector
         throw std::runtime_error("file not found: " + file_path + "\n");
     }
 }
+
+} // namespace anagraph

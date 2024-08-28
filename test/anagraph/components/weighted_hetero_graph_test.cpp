@@ -12,6 +12,7 @@ namespace {
 }
 
 TEST(WeightedHeteroGraphTest, GetNode) {
+    using namespace anagraph;
     WeightedHeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -26,6 +27,7 @@ TEST(WeightedHeteroGraphTest, GetNode) {
 }
 
 TEST(WeightedHeteroGraphTest, SetNode) {
+    using namespace anagraph;
     WeightedHeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -35,6 +37,7 @@ TEST(WeightedHeteroGraphTest, SetNode) {
 }
 
 TEST(WeightedHeteroGraphTest, RemoveNode) {
+    using namespace anagraph;
     WeightedHeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -45,6 +48,7 @@ TEST(WeightedHeteroGraphTest, RemoveNode) {
 }
 
 TEST(WeightedHeteroGraphTest, GetIDs) {
+    using namespace anagraph;
     WeightedHeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -64,6 +68,7 @@ TEST(WeightedHeteroGraphTest, GetIDs) {
 }
 
 TEST(WeightedHeteroGraphTest, AddEdge) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
 
     WeightedHeteroGraph<int> graph;
@@ -81,6 +86,7 @@ TEST(WeightedHeteroGraphTest, AddEdge) {
 }
 
 TEST(WeightedHeteroGraphTest, RemoveEdge) {
+    using namespace anagraph;
     WeightedHeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -95,6 +101,7 @@ TEST(WeightedHeteroGraphTest, RemoveEdge) {
 }
 
 TEST(WeightedHeteroGraphTest, GetAdjacents) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedHeteroGraph<int> graph;
     graph.setNode(0);
@@ -114,6 +121,7 @@ TEST(WeightedHeteroGraphTest, GetAdjacents) {
 }
 
 TEST(WeightedHeteroGraphTest, GetSubgraph) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedHeteroGraph<int> graph;
     graph.setNode(0);
@@ -138,6 +146,7 @@ TEST(WeightedHeteroGraphTest, GetSubgraph) {
 }
 
 TEST(WeightedHeteroGraphTest, Reorganize) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedHeteroGraph<int> graph;
     graph.setNode(0);
@@ -160,6 +169,7 @@ TEST(WeightedHeteroGraphTest, Reorganize) {
 }
 
 TEST(WeightedHeteroGraphTest, GetAttributes) {
+    using namespace anagraph;
     WeightedHeteroGraph<std::string> graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -174,6 +184,7 @@ TEST(WeightedHeteroGraphTest, GetAttributes) {
 }
 
 TEST(WeightedHeteroGraphTest, SetAttributes) {
+    using namespace anagraph;
     WeightedHeteroGraph<std::string> graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -189,6 +200,7 @@ TEST(WeightedHeteroGraphTest, SetAttributes) {
 }
 
 TEST(WeightedHeteroGraphTest, AnyAttributes) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedHeteroGraph<std::any> graph;
     graph.setNode(0);
@@ -213,6 +225,7 @@ TEST(WeightedHeteroGraphTest, AnyAttributes) {
 }
 
 TEST(WeightedHeteroGraphTest, toDigraph) {
+    using namespace anagraph;
     WeightedHeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -237,6 +250,7 @@ TEST(WeightedHeteroGraphTest, toDigraph) {
 }
 
 TEST(WeightedHeteroGraphTest, ReadGraph) {
+    using namespace anagraph;
     WeightedHeteroGraph<int> graph;
     const std::string inputPath = datasetDirectory + "/graph.txt";
     graph.readGraph(inputPath, FileExtension::TXT);
@@ -251,6 +265,7 @@ TEST(WeightedHeteroGraphTest, ReadGraph) {
 }
 
 TEST(WeightedHeteroGraphTest, WriteGraph) {
+    using namespace anagraph;
     WeightedHeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);

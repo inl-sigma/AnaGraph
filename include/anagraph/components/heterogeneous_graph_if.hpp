@@ -11,6 +11,8 @@
 #include <unordered_set>
 #include <vector>
 
+namespace anagraph {
+
 /**
  * @class IHeteroNode
  * @brief Represents a node in an unweighted graph.
@@ -638,5 +640,7 @@ public:
      */
     virtual void writeGraph(std::string filename, FileExtension extName) const = 0;
 };
+
+} // namespace anagraph
 
 #endif // HETEROGENEOUS_GRAPH_IF_HPP

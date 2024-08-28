@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+namespace anagraph {
+
 class IGraphWriter {
 public:
     virtual void writeGraph(std::string file_path, const std::vector<EdgeObject> &edges) = 0;
@@ -35,5 +37,6 @@ public:
     void writeWeightedGraph(std::string file_path, const std::vector<WeightedEdgeObject> &weightedEdges) override;
 };
 
+} // namespace anagraph
 
 #endif // GRAPH_WRITER_HPP

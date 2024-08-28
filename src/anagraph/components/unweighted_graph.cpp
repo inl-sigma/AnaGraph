@@ -4,6 +4,8 @@
 
 #include <set>
 
+namespace anagraph {
+
 const int Node::UNUSED_ID = -1;
 
 int Node::getId() const {
@@ -325,3 +327,5 @@ void Graph::writeGraph(std::string filePath, FileExtension extName) const {
     }
     digraph.writeGraph(filePath, extName);
 }
+
+} // namespace anagraph

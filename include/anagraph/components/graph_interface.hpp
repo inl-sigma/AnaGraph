@@ -11,6 +11,8 @@
 #include <unordered_set>
 #include <vector>
 
+namespace anagraph {
+
 /**
  * @class INode
  * @brief Represents a node in an unweighted graph.
@@ -555,3 +557,5 @@ public:
 };
 
 #endif // GRAPH_INTERFACE_HPP
+
+} // namespace anagraph

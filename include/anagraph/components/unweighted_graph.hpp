@@ -11,6 +11,8 @@
 #include <unordered_set>
 #include <vector>
 
+namespace anagraph {
+
 class Node : public INode {
 private:
     int id;
@@ -346,5 +348,7 @@ public:
      */
     void writeGraph(std::string filePath, FileExtension extName) const override;
 };
+
+} // namespace anagraph
 
 #endif // UNWEIGHTED_GRAPH_HPP

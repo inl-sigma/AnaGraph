@@ -11,6 +11,8 @@
 
 #include <unordered_map>
 
+namespace anagraph {
+
 class WeightedSupernode : IWeightedNode {
 private:
     WeightedNode node;
@@ -598,5 +600,7 @@ private:
      */
     void readHierarchyHelper(std::string filePath, IGraphParser &parser);
 };
+
+} // namespace anagraph
 
 #endif // SUPERGRAPH_HPP

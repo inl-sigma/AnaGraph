@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+namespace anagraph {
+
 class IGraphParser {
 protected:
     const double DEFAULT_WEIGHT = 1.0;
@@ -36,5 +38,7 @@ public:
 
     std::vector<WeightedEdgeObject> parseWeightedGraph(std::string file_path) override;
 };
+
+} // namespace anagraph
 
 #endif // GRAPH_PARSER_HPP

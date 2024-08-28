@@ -2,6 +2,8 @@
 
 #include <spdlog/spdlog.h>
 
+namespace anagraph {
+
 const int WeightedSupernode::UNUSED_ID = -1;
 const int WeightedSupernode::ROOT = -1;
 
@@ -467,3 +469,5 @@ void WeightedSupergraph::writeGraph(std::string filePath, FileExtension extName)
         break;
     }
 }
+
+} // namespace anagraph

@@ -5,18 +5,21 @@
 #include <string>
 
 TEST(UnweightedNodeTest, DefaultConstructor) {
+    using namespace anagraph;
     Node node1;
     EXPECT_EQ(node1.getId(), Node::UNUSED_ID);
     EXPECT_TRUE(node1.getAdjacents().empty());
 }
 
 TEST(UnweightedNodeTest, ConstructorWithId) {
+    using namespace anagraph;
     Node node2(1);
     EXPECT_EQ(node2.getId(), 1);
     EXPECT_TRUE(node2.getAdjacents().empty());
 }
 
 TEST(UnweightedNodeTest, CopyConstructor) {
+    using namespace anagraph;
     Node node1;
     node1.setId(std::rand());
     node1.setAdjacent(4);
@@ -26,6 +29,7 @@ TEST(UnweightedNodeTest, CopyConstructor) {
 }
 
 TEST(UnweightedNodeTest, MoveConstructor) {
+    using namespace anagraph;
     Node node1;
     node1.setId(0);
     node1.setAdjacent(4);
@@ -37,6 +41,7 @@ TEST(UnweightedNodeTest, MoveConstructor) {
 }
 
 TEST(UnweightedNodeTest, SetAndGetId) {
+    using namespace anagraph;
     Node node1;
     node1.setId(3);
     EXPECT_EQ(node1.getId(), 3);
@@ -47,6 +52,7 @@ TEST(UnweightedNodeTest, SetAndGetId) {
 }
 
 TEST(UnweightedNodeTest, IsUsed) {
+    using namespace anagraph;
     Node node1;
     Node node2(1);
     Node node3(2);
@@ -56,6 +62,7 @@ TEST(UnweightedNodeTest, IsUsed) {
 }
 
 TEST(UnweightedNodeTest, SetAndGetAdjacents) {
+    using namespace anagraph;
     Node node1;
     node1.setAdjacent(4);
     node1.setAdjacent(5);
@@ -66,6 +73,7 @@ TEST(UnweightedNodeTest, SetAndGetAdjacents) {
 }
 
 TEST(UnweightedNodeTest, RemoveAdjacent) {
+    using namespace anagraph;
     Node node1;
     node1.setAdjacent(4);
     node1.setAdjacent(5);
@@ -77,6 +85,7 @@ TEST(UnweightedNodeTest, RemoveAdjacent) {
 }
 
 TEST(UnweightedNodeTest, Clear) {
+    using namespace anagraph;
     Node node1;
     node1.setAdjacent(4);
     node1.clear();

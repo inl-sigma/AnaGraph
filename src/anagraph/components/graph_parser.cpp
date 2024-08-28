@@ -5,6 +5,8 @@
 #include <sstream>
 #include <vector>
 
+namespace anagraph {
+
 std::vector<EdgeObject> TextGraphParser::parseGraph(std::string file_path) {
 	// Implement the logic to parse a graph from a text file
 	// and return a vector of EdgeObjects.
@@ -111,3 +113,5 @@ std::vector<WeightedEdgeObject> GMLGraphParser::parseWeightedGraph(std::string f
 
     //TODO: Implement the logic to parse a weighted graph from a GML file
 }
+
+} // namespace anagraph

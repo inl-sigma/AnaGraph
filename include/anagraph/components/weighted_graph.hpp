@@ -13,6 +13,8 @@
 #include <unordered_map>
 #include <vector>
 
+namespace anagraph {
+
 /**
  * @class weightedNode
  * @brief Represents a weighted node data structure.
@@ -450,5 +452,7 @@ public:
      */
     void writeGraph(std::string filename, FileExtension extName) const override;
 };
+
+} // namespace anagraph
 
 #endif // WEIGHTED_GRAPH_HPP

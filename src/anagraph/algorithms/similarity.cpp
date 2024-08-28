@@ -8,6 +8,7 @@
 #include <unordered_set>
 
 namespace {
+    using namespace anagraph;
     std::tuple<int, int, int, int> calcConfusionMatrix(const Digraph &expected, const Digraph &answer) {
         int tp = 0;
         int fp = 0;
@@ -69,6 +70,7 @@ namespace {
     }
 }
 
+namespace anagraph {
 namespace similarity {
 
 double cosineSimilarity(const std::vector<double>& v1, const std::vector<double>& v2) {
@@ -243,3 +245,4 @@ double fMeasure(const Graph &expected, const Graph &answer) {
 }
 
 } // namespace similarity
+} // namespace anagraph

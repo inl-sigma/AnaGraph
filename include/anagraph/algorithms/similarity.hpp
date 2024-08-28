@@ -7,6 +7,7 @@
 
 #include <vector>
 
+namespace anagraph {
 namespace similarity {
     /**
      * Calculates the cosine similarity between two vectors.
@@ -135,5 +136,6 @@ namespace similarity {
     double fMeasure(const Graph &expected, const Graph &answer);
 
 } // namespace similarity
+} // namespace anagraph
 
 #endif // SIMILARITY_HPP

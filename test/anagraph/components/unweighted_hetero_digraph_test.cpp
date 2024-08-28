@@ -12,6 +12,7 @@ namespace {
 }
 
 TEST(HeteroDigraphTest, GetNode) {
+    using namespace anagraph;
     HeteroDigraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -26,6 +27,7 @@ TEST(HeteroDigraphTest, GetNode) {
 }
 
 TEST(HeteroDigraphTest, SetNode) {
+    using namespace anagraph;
     HeteroDigraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -35,6 +37,7 @@ TEST(HeteroDigraphTest, SetNode) {
 }
 
 TEST(HeteroDigraphTest, RemoveNode) {
+    using namespace anagraph;
     HeteroDigraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -45,6 +48,7 @@ TEST(HeteroDigraphTest, RemoveNode) {
 }
 
 TEST(HeteroDigraphTest, GetIDs) {
+    using namespace anagraph;
     HeteroDigraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -64,6 +68,7 @@ TEST(HeteroDigraphTest, GetIDs) {
 }
 
 TEST(HeteroDigraphTest, GetAdjacents) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     HeteroDigraph<int> graph;
     graph.setNode(0);
@@ -80,6 +85,7 @@ TEST(HeteroDigraphTest, GetAdjacents) {
 }
 
 TEST(HeteroDigraphTest, AddEdge) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
 
     HeteroDigraph<int> graph;
@@ -103,6 +109,7 @@ TEST(HeteroDigraphTest, AddEdge) {
 }
 
 TEST(HeteroDigraphTest, RemoveEdge) {
+    using namespace anagraph;
     HeteroDigraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -117,6 +124,7 @@ TEST(HeteroDigraphTest, RemoveEdge) {
 }
 
 TEST(HeteroDigraphTest, GetSubgraph) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     HeteroDigraph<int> graph;
     graph.setNode(0);
@@ -141,6 +149,7 @@ TEST(HeteroDigraphTest, GetSubgraph) {
 }
 
 TEST(HeteroDigraphTest, Reorganize) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     HeteroDigraph<int> graph;
     graph.setNode(0);
@@ -160,6 +169,7 @@ TEST(HeteroDigraphTest, Reorganize) {
 }
 
 TEST(HeteroDigraphTest, GetAttributes) {
+    using namespace anagraph;
     HeteroDigraph<std::string> graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -177,6 +187,7 @@ TEST(HeteroDigraphTest, GetAttributes) {
 }
 
 TEST(HeteroDigraphTest, SetAttributes) {
+    using namespace anagraph;
     HeteroDigraph<std::string> graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -192,6 +203,7 @@ TEST(HeteroDigraphTest, SetAttributes) {
 }
 
 TEST(HeteroDigraphTest, AnyAttributes) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     HeteroDigraph<std::any> graph;
     graph.setNode(0);
@@ -216,6 +228,7 @@ TEST(HeteroDigraphTest, AnyAttributes) {
 }
 
 TEST(HeteroDigraphTest, ReadGraph) {
+    using namespace anagraph;
     HeteroDigraph<int> graph;
     const std::string inputPath = datasetDirectory + "/graph.txt";
     graph.readGraph(inputPath, FileExtension::TXT);
@@ -237,6 +250,7 @@ TEST(HeteroDigraphTest, ReadGraph) {
 }
 
 TEST(HeteroDigraphTest, WriteGraph) {
+    using namespace anagraph;
     HeteroDigraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);

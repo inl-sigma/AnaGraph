@@ -7,6 +7,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+namespace anagraph {
+
 WeightedNode::WeightedNode() {
     id = UNUSED_ID;
     adjacents = std::unordered_map<int, double>();
@@ -419,3 +421,5 @@ void WeightedGraph::writeGraph(std::string filePath, FileExtension extName) cons
     }
     digraph.writeGraph(filePath, extName);
 }
+
+} // namespace anagraph

@@ -8,6 +8,9 @@
 #include <unordered_map>
 #include <vector>
 
+namespace anagraph {
+namespace pagerank {
+
 std::vector<double> pageRank(const WeightedDigraph &graph, const double alpha, const int iter) {
     spdlog::debug("called pageRank with alpha = {} and iter = {}", alpha, iter);
     const int size = graph.size();
@@ -348,3 +351,6 @@ std::vector<double> fora(const Graph &graph, const std::vector<double> source, c
     Digraph digraph = graph.toDigraph();
     return fora(digraph, source, alpha, epsilon);
 }
+
+} // namespace pagerank
+} // namespace anagraph

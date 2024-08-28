@@ -5,18 +5,21 @@
 #include <string>
 
 TEST(WeightedHeteroNodeTest, DefaultConstructor) {
+    using namespace anagraph;
     WeightedHeteroNode<int> node1;
     EXPECT_TRUE(node1.getId() < 0);
     EXPECT_TRUE(node1.getAdjacents().empty());
 }
 
 TEST(WeightedHeteroNodeTest, ConstructorWithId) {
+    using namespace anagraph;
     WeightedHeteroNode<int> node2(1);
     EXPECT_EQ(node2.getId(), 1);
     EXPECT_TRUE(node2.getAdjacents().empty());
 }
 
 TEST(WeightedHeteroNodeTest, ConstructorWithIdAndAttributes) {
+    using namespace anagraph;
     WeightedHeteroNode<int> node3(2, 42);
     EXPECT_EQ(node3.getId(), 2);
     EXPECT_EQ(node3.getAttributes(), 42);
@@ -24,6 +27,7 @@ TEST(WeightedHeteroNodeTest, ConstructorWithIdAndAttributes) {
 }
 
 TEST(WeightedHeteroNodeTest, CopyConstructor) {
+    using namespace anagraph;
     WeightedHeteroNode<int> node1;
     node1.setId(std::rand());
     node1.setAdjacent(4, 1.5);
@@ -35,6 +39,7 @@ TEST(WeightedHeteroNodeTest, CopyConstructor) {
 }
 
 TEST(WeightedHeteroNodeTest, MoveConstructor) {
+    using namespace anagraph;
     WeightedHeteroNode<int> node1;
     node1.setId(0);
     node1.setAdjacent(4, 1.5);
@@ -49,6 +54,7 @@ TEST(WeightedHeteroNodeTest, MoveConstructor) {
 }
 
 TEST(WeightedHeteroNodeTest, SetAndGetId) {
+    using namespace anagraph;
     WeightedHeteroNode<int> node1;
     node1.setId(3);
     EXPECT_EQ(node1.getId(), 3);
@@ -59,6 +65,7 @@ TEST(WeightedHeteroNodeTest, SetAndGetId) {
 }
 
 TEST(WeightedHeteroNodeTest, IsUsed) {
+    using namespace anagraph;
     WeightedHeteroNode<int> node1;
     WeightedHeteroNode<int> node2(1);
     WeightedHeteroNode<int> node3(2, 42);
@@ -68,6 +75,7 @@ TEST(WeightedHeteroNodeTest, IsUsed) {
 }
 
 TEST(WeightedHeteroNodeTest, SetAndGetAdjacents) {
+    using namespace anagraph;
     WeightedHeteroNode<int> node1;
     node1.setAdjacent(4, 1.5);
     node1.setAdjacent(5, 2.0);
@@ -78,6 +86,7 @@ TEST(WeightedHeteroNodeTest, SetAndGetAdjacents) {
 }
 
 TEST(WeightedHeteroNodeTest, UpdateAdjacent) {
+    using namespace anagraph;
     WeightedHeteroNode<int> node1;
     node1.setAdjacent(4, 1.5);
     node1.updateAdjacent(4, 0.5);
@@ -88,6 +97,7 @@ TEST(WeightedHeteroNodeTest, UpdateAdjacent) {
 }
 
 TEST(WeightedHeteroNodeTest, RemoveAdjacent) {
+    using namespace anagraph;
     WeightedHeteroNode<int> node1;
     node1.setAdjacent(4, 1.5);
     node1.setAdjacent(5, 2.0);
@@ -99,6 +109,7 @@ TEST(WeightedHeteroNodeTest, RemoveAdjacent) {
 }
 
 TEST(WeightedHeteroNodeTest, SetAndGetAttributes) {
+    using namespace anagraph;
     WeightedHeteroNode<int> node1;
     node1.setAttributes(10);
     EXPECT_EQ(node1.getAttributes(), 10);
@@ -111,6 +122,7 @@ TEST(WeightedHeteroNodeTest, SetAndGetAttributes) {
 }
 
 TEST(WeightedHeteroNodeTest, Clear) {
+    using namespace anagraph;
     WeightedHeteroNode<int> node1;
     node1.setAdjacent(4, 1.5);
     node1.setAttributes(10);

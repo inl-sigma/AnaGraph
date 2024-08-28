@@ -11,6 +11,8 @@
 #include <unordered_map>
 #include <vector>
 
+namespace anagraph {
+
 template <typename T>
 class HeteroNode : public IHeteroNode<T> {
 private:
@@ -924,5 +926,7 @@ public:
      */
     void writeGraph(std::string filename, FileExtension extName) const override;
 };
+
+} // namespace anagraph
 
 #endif // HETEROGENEOUS_GRAPH_HPP

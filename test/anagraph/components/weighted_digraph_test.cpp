@@ -12,6 +12,7 @@ namespace {
 }
 
 TEST(WeightedDigraphTest, GetNode) {
+    using namespace anagraph;
     WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -26,6 +27,7 @@ TEST(WeightedDigraphTest, GetNode) {
 }
 
 TEST(WeightedDigraphTest, SetNode) {
+    using namespace anagraph;
     WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -35,6 +37,7 @@ TEST(WeightedDigraphTest, SetNode) {
 }
 
 TEST(WeightedDigraphTest, RemoveNode) {
+    using namespace anagraph;
     WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -45,6 +48,7 @@ TEST(WeightedDigraphTest, RemoveNode) {
 }
 
 TEST(WeightedDigraphTest, GetIDs) {
+    using namespace anagraph;
     WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -64,6 +68,7 @@ TEST(WeightedDigraphTest, GetIDs) {
 }
 
 TEST(WeightedDigraphTest, AddEdge) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
 
     WeightedDigraph graph;
@@ -82,6 +87,7 @@ TEST(WeightedDigraphTest, AddEdge) {
 }
 
 TEST(WeightedDigraphTest, RemoveEdge) {
+    using namespace anagraph;
     WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -97,6 +103,7 @@ TEST(WeightedDigraphTest, RemoveEdge) {
 }
 
 TEST(WeightedDigraphTest, GetAdjacents) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedDigraph graph;
     graph.setNode(0);
@@ -116,6 +123,7 @@ TEST(WeightedDigraphTest, GetAdjacents) {
 }
 
 TEST(WeightedDigraphTest, GetSubgraph) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedDigraph graph;
     graph.setNode(0);
@@ -140,6 +148,7 @@ TEST(WeightedDigraphTest, GetSubgraph) {
 }
 
 TEST(WeightedDigraphTest, Reorganize) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedDigraph graph;
     graph.setNode(0);
@@ -159,6 +168,7 @@ TEST(WeightedDigraphTest, Reorganize) {
 }
 
 TEST(WeightedDigraphTest, ReadGraph) {
+    using namespace anagraph;
     WeightedDigraph graph;
     // output current directory
     spdlog::info("current directory: {}", std::filesystem::current_path().string());
@@ -178,6 +188,7 @@ TEST(WeightedDigraphTest, ReadGraph) {
 }
 
 TEST(WeightedDigraphTest, WriteGraph) {
+    using namespace anagraph;
     WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);

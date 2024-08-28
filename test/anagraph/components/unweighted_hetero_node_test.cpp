@@ -5,18 +5,21 @@
 #include <string>
 
 TEST(HeteroNodeTest, DefaultConstructor) {
+    using namespace anagraph;
     HeteroNode<int> node1;
     EXPECT_TRUE(node1.getId() < 0);
     EXPECT_TRUE(node1.getAdjacents().empty());
 }
 
 TEST(HeteroNodeTest, ConstructorWithId) {
+    using namespace anagraph;
     HeteroNode<int> node2(1);
     EXPECT_EQ(node2.getId(), 1);
     EXPECT_TRUE(node2.getAdjacents().empty());
 }
 
 TEST(HeteroNodeTest, ConstructorWithIdAndAttributes) {
+    using namespace anagraph;
     HeteroNode<int> node3(2, 42);
     EXPECT_EQ(node3.getId(), 2);
     EXPECT_EQ(node3.getAttributes(), 42);
@@ -24,6 +27,7 @@ TEST(HeteroNodeTest, ConstructorWithIdAndAttributes) {
 }
 
 TEST(HeteroNodeTest, CopyConstructor) {
+    using namespace anagraph;
     HeteroNode<int> node1;
     node1.setId(std::rand());
     node1.setAdjacent(4);
@@ -35,6 +39,7 @@ TEST(HeteroNodeTest, CopyConstructor) {
 }
 
 TEST(HeteroNodeTest, MoveConstructor) {
+    using namespace anagraph;
     HeteroNode<int> node1;
     node1.setId(0);
     node1.setAdjacent(4);
@@ -49,6 +54,7 @@ TEST(HeteroNodeTest, MoveConstructor) {
 }
 
 TEST(HeteroNodeTest, SetAndGetId) {
+    using namespace anagraph;
     HeteroNode<int> node1;
     node1.setId(3);
     EXPECT_EQ(node1.getId(), 3);
@@ -59,6 +65,7 @@ TEST(HeteroNodeTest, SetAndGetId) {
 }
 
 TEST(HeteroNodeTest, IsUsed) {
+    using namespace anagraph;
     HeteroNode<int> node1;
     HeteroNode<int> node2(1);
     HeteroNode<int> node3(2, 42);
@@ -68,6 +75,7 @@ TEST(HeteroNodeTest, IsUsed) {
 }
 
 TEST(HeteroNodeTest, SetAndGetAdjacents) {
+    using namespace anagraph;
     HeteroNode<int> node1;
     node1.setAdjacent(4);
     node1.setAdjacent(5);
@@ -78,6 +86,7 @@ TEST(HeteroNodeTest, SetAndGetAdjacents) {
 }
 
 TEST(HeteroNodeTest, RemoveAdjacent) {
+    using namespace anagraph;
     HeteroNode<int> node1;
     node1.setAdjacent(4);
     node1.setAdjacent(5);
@@ -89,6 +98,7 @@ TEST(HeteroNodeTest, RemoveAdjacent) {
 }
 
 TEST(HeteroNodeTest, SetAndGetAttributes) {
+    using namespace anagraph;
     HeteroNode<int> node1;
     node1.setAttributes(10);
     EXPECT_EQ(node1.getAttributes(), 10);
@@ -101,6 +111,7 @@ TEST(HeteroNodeTest, SetAndGetAttributes) {
 }
 
 TEST(HeteroNodeTest, Clear) {
+    using namespace anagraph;
     HeteroNode<int> node1;
     node1.setAdjacent(4);
     node1.setAttributes(10);

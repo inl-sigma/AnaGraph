@@ -11,6 +11,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+namespace anagraph {
+
 template <typename T>
 int HeteroNode<T>::getId() const {
     return node.getId();
@@ -903,3 +905,5 @@ template class WeightedHeteroDigraph<std::any>;
 template class WeightedHeteroGraph<int>;
 template class WeightedHeteroGraph<std::string>;
 template class WeightedHeteroGraph<std::any>;
+
+}  // namespace anagraph

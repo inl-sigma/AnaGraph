@@ -12,6 +12,7 @@ namespace {
 }
 
 TEST(DigraphTest, GetNode) {
+    using namespace anagraph;
     Digraph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -26,6 +27,7 @@ TEST(DigraphTest, GetNode) {
 }
 
 TEST(DigraphTest, SetNode) {
+    using namespace anagraph;
     Digraph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -35,6 +37,7 @@ TEST(DigraphTest, SetNode) {
 }
 
 TEST(DigraphTest, RemoveNode) {
+    using namespace anagraph;
     Digraph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -45,6 +48,7 @@ TEST(DigraphTest, RemoveNode) {
 }
 
 TEST(DigraphTest, GetIDs) {
+    using namespace anagraph;
     Digraph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -64,6 +68,7 @@ TEST(DigraphTest, GetIDs) {
 }
 
 TEST(DigraphTest, AddEdge) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
 
     Digraph graph;
@@ -82,6 +87,7 @@ TEST(DigraphTest, AddEdge) {
 }
 
 TEST(DigraphTest, RemoveEdge) {
+    using namespace anagraph;
     Digraph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -96,6 +102,7 @@ TEST(DigraphTest, RemoveEdge) {
 }
 
 TEST(DigraphTest, GetSubgraph) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     Digraph graph;
     graph.setNode(0);
@@ -121,6 +128,7 @@ TEST(DigraphTest, GetSubgraph) {
 }
 
 TEST(DigraphTest, Reorganize) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     Digraph graph;
     graph.setNode(0);
@@ -140,6 +148,7 @@ TEST(DigraphTest, Reorganize) {
 }
 
 TEST(DigraphTest, ReadGraph) {
+    using namespace anagraph;
     Digraph graph;
     // output current directory
     spdlog::info("current directory: {}", std::filesystem::current_path().string());
@@ -160,6 +169,7 @@ TEST(DigraphTest, ReadGraph) {
 }
 
 TEST(DigraphTest, WriteGraph) {
+    using namespace anagraph;
     Digraph graph;
     graph.setNode(0);
     graph.setNode(1);

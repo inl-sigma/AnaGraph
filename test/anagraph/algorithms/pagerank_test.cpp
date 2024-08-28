@@ -88,13 +88,14 @@ namespace {
 }
 
 TEST(PageRankTest, TestDirectedPageRank) {
+    using namespace anagraph;
     // Create a graph
     WeightedDigraph digraph(datasetFile, FileExtension::TXT);
 
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
-    std::vector<double> pr = pageRank(digraph, 0.15, 1000000);
+    std::vector<double> pr = pagerank::pageRank(digraph, 0.15, 1000000);
 
     for (size_t i = 0; i < digraph.size(); i++) {
         EXPECT_NEAR(pr[i], directedPageRank[i], 1e-3);
@@ -102,13 +103,14 @@ TEST(PageRankTest, TestDirectedPageRank) {
 }
 
 TEST(PageRankTest, WeightedDigraphForwardPushTest) {
+    using namespace anagraph;
     WeightedDigraph digraph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
     const int size = digraph.size();
     std::vector<double> source(size, 1.0);
-    auto [pr, _] = forwardPush(digraph, source, 0.15, 1e-5);
+    auto [pr, _] = pagerank::forwardPush(digraph, source, 0.15, 1e-5);
 
     for (size_t i = 0; i < digraph.size(); i++) {
         EXPECT_NEAR(pr[i], directedPageRank[i], 1e-5);
@@ -116,13 +118,14 @@ TEST(PageRankTest, WeightedDigraphForwardPushTest) {
 }
 
 TEST(PageRankTest, WeightedGraphForwardPushTest) {
+    using namespace anagraph;
     WeightedGraph graph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
     const int size = graph.size();
     std::vector<double> source(size, 1.0);
-    auto [pr, _] = forwardPush(graph, source, 0.15, 1e-5);
+    auto [pr, _] = pagerank::forwardPush(graph, source, 0.15, 1e-5);
 
     for (size_t i = 0; i < graph.size(); i++) {
         EXPECT_NEAR(pr[i], undirectedPageRank[i], 1e-5);
@@ -130,13 +133,14 @@ TEST(PageRankTest, WeightedGraphForwardPushTest) {
 }
 
 TEST(PageRankTest, DigraphForwardPushTest) {
+    using namespace anagraph;
     Digraph digraph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
     const int size = digraph.size();
     std::vector<double> source(size, 1.0);
-    auto [pr, _] = forwardPush(digraph, source, 0.15, 1e-5);
+    auto [pr, _] = pagerank::forwardPush(digraph, source, 0.15, 1e-5);
 
     for (size_t i = 0; i < digraph.size(); i++) {
         EXPECT_NEAR(pr[i], directedPageRank[i], 1e-5);
@@ -144,13 +148,14 @@ TEST(PageRankTest, DigraphForwardPushTest) {
 }
 
 TEST(PageRankTest, GraphForwardPushTest) {
+    using namespace anagraph;
     Graph graph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
     const int size = graph.size();
     std::vector<double> source(size, 1.0);
-    auto [pr, _] = forwardPush(graph, source, 0.15, 1e-5);
+    auto [pr, _] = pagerank::forwardPush(graph, source, 0.15, 1e-5);
 
     for (size_t i = 0; i < graph.size(); i++) {
         EXPECT_NEAR(pr[i], undirectedPageRank[i], 1e-5);
@@ -158,13 +163,14 @@ TEST(PageRankTest, GraphForwardPushTest) {
 }
 
 TEST(PageRankTest, WeightedDigraphForaTest) {
+    using namespace anagraph;
     WeightedDigraph digraph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
     const int size = digraph.size();
     std::vector<double> source(size, 1.0 / size);
-    auto pr = fora(digraph, source, 0.15, 1e-4);
+    auto pr = pagerank::fora(digraph, source, 0.15, 1e-4);
     double prSum = std::reduce(pr.begin(), pr.end());
     spdlog::debug("Sum of PageRank: {}", prSum);
 
@@ -174,13 +180,14 @@ TEST(PageRankTest, WeightedDigraphForaTest) {
 }
 
 TEST(PageRankTest, WeightedGraphForaTest) {
+    using namespace anagraph;
     WeightedGraph graph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
     const int size = graph.size();
     std::vector<double> source(size, 1.0 / size);
-    auto pr = fora(graph, source, 0.15, 1e-4);
+    auto pr = pagerank::fora(graph, source, 0.15, 1e-4);
     double prSum = std::reduce(pr.begin(), pr.end());
     spdlog::debug("Sum of PageRank: {}", prSum);
 
@@ -190,13 +197,14 @@ TEST(PageRankTest, WeightedGraphForaTest) {
 }
 
 TEST(PageRankTest, DigraphForaTest) {
+    using namespace anagraph;
     Digraph digraph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
     const int size = digraph.size();
     std::vector<double> source(size, 1.0 / size);
-    auto pr = fora(digraph, source, 0.15, 1e-4);
+    auto pr = pagerank::fora(digraph, source, 0.15, 1e-4);
     double prSum = std::reduce(pr.begin(), pr.end());
     spdlog::debug("Sum of PageRank: {}", prSum);
 
@@ -206,13 +214,14 @@ TEST(PageRankTest, DigraphForaTest) {
 }
 
 TEST(PageRankTest, GraphForaTest) {
+    using namespace anagraph;
     Graph graph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
     const int size = graph.size();
     std::vector<double> source(size, 1.0 / size);
-    auto pr = fora(graph, source, 0.15, 1e-4);
+    auto pr = pagerank::fora(graph, source, 0.15, 1e-4);
     double prSum = std::reduce(pr.begin(), pr.end());
     spdlog::debug("Sum of PageRank: {}", prSum);
 

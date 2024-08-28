@@ -11,6 +11,7 @@ namespace {
 }
 
 TEST(WeightedGraphTest, GetNode) {
+    using namespace anagraph;
     WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -25,6 +26,7 @@ TEST(WeightedGraphTest, GetNode) {
 }
 
 TEST(WeightedGraphTest, SetNode) {
+    using namespace anagraph;
     WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -34,6 +36,7 @@ TEST(WeightedGraphTest, SetNode) {
 }
 
 TEST(WeightedGraphTest, RemoveNode) {
+    using namespace anagraph;
     WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -44,6 +47,7 @@ TEST(WeightedGraphTest, RemoveNode) {
 }
 
 TEST(WeightedGraphTest, GetIDs) {
+    using namespace anagraph;
     WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -63,6 +67,7 @@ TEST(WeightedGraphTest, GetIDs) {
 }
 
 TEST(WeightedGraphTest, AddEdge) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
 
     WeightedGraph graph;
@@ -80,6 +85,7 @@ TEST(WeightedGraphTest, AddEdge) {
 }
 
 TEST(WeightedGraphTest, RemoveEdge) {
+    using namespace anagraph;
     WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -94,6 +100,7 @@ TEST(WeightedGraphTest, RemoveEdge) {
 }
 
 TEST(WeightedGraphTest, GetAdjacents) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedGraph graph;
     graph.setNode(0);
@@ -113,6 +120,7 @@ TEST(WeightedGraphTest, GetAdjacents) {
 }
 
 TEST(WeightedGraphTest, GetSubgraph) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedGraph graph;
     graph.setNode(0);
@@ -137,6 +145,7 @@ TEST(WeightedGraphTest, GetSubgraph) {
 }
 
 TEST(WeightedGraphTest, Reorganize) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedGraph graph;
     graph.setNode(0);
@@ -158,6 +167,7 @@ TEST(WeightedGraphTest, Reorganize) {
 }
 
 TEST(WeightedGraphTest, toDigraph) {
+    using namespace anagraph;
     WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -179,6 +189,7 @@ TEST(WeightedGraphTest, toDigraph) {
 }
 
 TEST(WeightedGraphTest, ReadGraph) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     WeightedGraph graph;
     const std::string inputPath = datasetDirectory + "/graph.txt";
@@ -201,6 +212,7 @@ TEST(WeightedGraphTest, ReadGraph) {
 }
 
 TEST(WeightedGraphTest, WriteGraph) {
+    using namespace anagraph;
     WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);

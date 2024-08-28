@@ -5,6 +5,7 @@
 #include <cassert>
 
 TEST(WeightedSupernodeTest, DefaultConstructor) {
+    using namespace anagraph;
     WeightedSupernode node1;
     ASSERT_EQ(node1.getId(), WeightedSupernode::UNUSED_ID);
     ASSERT_FALSE(node1.isUsed());
@@ -16,6 +17,7 @@ TEST(WeightedSupernodeTest, DefaultConstructor) {
 }
 
 TEST(WeightedSupernodeTest, ConstructorWithId) {
+    using namespace anagraph;
     WeightedSupernode node2(1);
     ASSERT_EQ(node2.getId(), 1);
     ASSERT_TRUE(node2.isUsed());
@@ -27,18 +29,21 @@ TEST(WeightedSupernodeTest, ConstructorWithId) {
 }
 
 TEST(WeightedSupernodeTest, SetAndGetId) {
+    using namespace anagraph;
     WeightedSupernode node1;
     node1.setId(2);
     ASSERT_EQ(node1.getId(), 2);
 }
 
 TEST(WeightedSupernodeTest, SetAndGetParent) {
+    using namespace anagraph;
     WeightedSupernode node1;
     node1.setParent(1);
     ASSERT_EQ(node1.getParent(), 1);
 }
 
 TEST(WeightedSupernodeTest, AddAndGetChildren) {
+    using namespace anagraph;
     WeightedSupernode node1;
     node1.addChild(3);
     node1.addChild(4);
@@ -48,6 +53,7 @@ TEST(WeightedSupernodeTest, AddAndGetChildren) {
 }
 
 TEST(WeightedSupernodeTest, SetAndGetAdjacent) {
+    using namespace anagraph;
     WeightedSupernode node1;
     node1.setAdjacent(5, 1.5);
     ASSERT_EQ(node1.getAdjacents().size(), static_cast<size_t>(1));
@@ -56,6 +62,7 @@ TEST(WeightedSupernodeTest, SetAndGetAdjacent) {
 }
 
 TEST(WeightedSupernodeTest, UpdateAdjacent) {
+    using namespace anagraph;
     WeightedSupernode node1;
     node1.setAdjacent(5, 1.5);
     ASSERT_EQ(node1.getAdjacents().at(5), 1.5);
@@ -66,6 +73,7 @@ TEST(WeightedSupernodeTest, UpdateAdjacent) {
 }
 
 TEST(WeightedSupernodeTest, RemoveAdjacent) {
+    using namespace anagraph;
     WeightedSupernode node1;
     node1.setAdjacent(5, 1.5);
     ASSERT_EQ(node1.getAdjacents().at(5), 1.5);
@@ -74,6 +82,7 @@ TEST(WeightedSupernodeTest, RemoveAdjacent) {
 }
 
 TEST(WeightedSupernodeTest, Clear) {
+    using namespace anagraph;
     WeightedSupernode node1;
     node1.setId(2);
     node1.setParent(1);

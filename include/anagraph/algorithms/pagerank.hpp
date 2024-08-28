@@ -8,6 +8,9 @@
 
 #include <vector>
 
+namespace anagraph {
+namespace pagerank {
+
 /**
  * @brief Compute the PageRank of a graph
  * 
@@ -145,5 +148,8 @@ std::vector<double> fora(const Digraph &graph, const std::vector<double> source,
  * @note The graph must be connected, and has sequential node ids
  */
 std::vector<double> fora(const Graph &graph, const std::vector<double> source, const double alpha, const double epsilon);
+
+} // namespace pagerank
+} // namespace anagraph
 
 #endif // PAGERANK_HPP

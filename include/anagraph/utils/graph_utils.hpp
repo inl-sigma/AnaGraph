@@ -5,6 +5,8 @@
 
 #include <tuple>
 
+namespace anagraph {
+
 enum class FileExtension {
     TXT,
     CSV,
@@ -23,5 +25,7 @@ enum class GmlObjectType {
     EDGE,
     WEIGHT
 };
+
+} // namespace anagraph
 
 #endif // GRAPH_UTILS_HPP

@@ -4,6 +4,7 @@
 #include <spdlog/spdlog.h>
 
 TEST(SimilarityTest, CosineSimilarity) {
+    using namespace anagraph;
     std::vector<double> v1 = {1.0, 2.0, 3.0};
     std::vector<double> v2 = {4.0, 5.0, 6.0};
     double result = similarity::cosineSimilarity(v1, v2);
@@ -11,6 +12,7 @@ TEST(SimilarityTest, CosineSimilarity) {
 }
 
 TEST(SimilarityTest, NDCG) {
+    using namespace anagraph;
     std::vector<double> expected = {3.0, 2.0, 3.0, 0.0, 1.0, 2.0, 4.0, 5.0};
     std::vector<double> answer = {3.0, 2.0, 3.0, 0.0, 1.0, 2.0, 6.0, 7.0};
     double result = similarity::nDCG(expected, answer, 4);
@@ -21,6 +23,7 @@ TEST(SimilarityTest, NDCG) {
 }
 
 TEST(SimilarityTest, KLdivergence) {
+    using namespace anagraph;
     std::vector<double> p = {0.1, 0.2, 0.7};
     std::vector<double> q = {0.2, 0.3, 0.5};
     double result = similarity::KLdivergence(p, q);
@@ -28,6 +31,7 @@ TEST(SimilarityTest, KLdivergence) {
 }
 
 TEST(SimilarityTest, JSdivergence) {
+    using namespace anagraph;
     std::vector<double> p = {0.1, 0.2, 0.7};
     std::vector<double> q = {0.2, 0.3, 0.5};
     double result = similarity::JSdivergence(p, q);
@@ -35,6 +39,7 @@ TEST(SimilarityTest, JSdivergence) {
 }
 
 TEST(SimilarityTest, DirectedAccuracy) {
+    using namespace anagraph;
     Digraph expected;
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
@@ -54,6 +59,7 @@ TEST(SimilarityTest, DirectedAccuracy) {
 }
 
 TEST(SimilarityTest, UndirectedAccuracy) {
+    using namespace anagraph;
     Graph expected;
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
@@ -74,6 +80,7 @@ TEST(SimilarityTest, UndirectedAccuracy) {
 
 
 TEST(SimilarityTest, DirectedPrecision) {
+    using namespace anagraph;
     Digraph expected;
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
@@ -93,6 +100,7 @@ TEST(SimilarityTest, DirectedPrecision) {
 }
 
 TEST(SimilarityTest, UndirectedPrecision) {
+    using namespace anagraph;
     Graph expected;
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
@@ -112,6 +120,7 @@ TEST(SimilarityTest, UndirectedPrecision) {
 }
 
 TEST(SimilarityTest, DirectedRecall) {
+    using namespace anagraph;
     Digraph expected;
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
@@ -131,6 +140,7 @@ TEST(SimilarityTest, DirectedRecall) {
 }
 
 TEST(SimilarityTest, UndirectedRecall) {
+    using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     Graph expected;
     expected.addEdge(1, 2);
@@ -151,6 +161,7 @@ TEST(SimilarityTest, UndirectedRecall) {
 }
 
 TEST(SimilarityTest, DirectedFMeasure) {
+    using namespace anagraph;
     Digraph expected;
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
@@ -170,6 +181,7 @@ TEST(SimilarityTest, DirectedFMeasure) {
 }
 
 TEST(SimilarityTest, UndirectedFMeasure) {
+    using namespace anagraph;
     Graph expected;
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
