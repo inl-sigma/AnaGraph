@@ -7,6 +7,10 @@
 #include <filesystem>
 #include <string>
 
+namespace {
+    const std::string datasetDirectory = PROJECT_SOURCE_DIR + std::string("/dataset");
+}
+
 TEST(DigraphTest, GetNode) {
     Digraph graph;
     graph.setNode(0);
@@ -139,7 +143,8 @@ TEST(DigraphTest, ReadGraph) {
     Digraph graph;
     // output current directory
     spdlog::info("current directory: {}", std::filesystem::current_path().string());
-    graph.readGraph("../../dataset/graph.txt", FileExtension::TXT);
+    const std::string inputPath = datasetDirectory + "/graph.txt";
+    graph.readGraph(inputPath, FileExtension::TXT);
 
     EXPECT_EQ(graph.size(), static_cast<size_t>(6));
     EXPECT_TRUE(graph.getAdjacents(0).contains(1));
@@ -170,5 +175,6 @@ TEST(DigraphTest, WriteGraph) {
     graph.addEdge(2, 4);
     graph.addEdge(4, 5);
 
-    graph.writeGraph("../../dataset/digraph_output.txt", FileExtension::TXT);
+    const std::string outputPath = datasetDirectory + "/output/digraph_output.txt";
+    graph.writeGraph(outputPath, FileExtension::TXT);
 }

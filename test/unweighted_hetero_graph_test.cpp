@@ -7,6 +7,10 @@
 #include <string>
 #include <unordered_set>
 
+namespace {
+    const std::string datasetDirectory = PROJECT_SOURCE_DIR + std::string("/dataset");
+}
+
 TEST(HeteroGraphTest, GetNode) {
     HeteroGraph<int> graph;
     graph.setNode(0);
@@ -221,7 +225,8 @@ TEST(HeteroGraphTest, AnyAttributes) {
 
 TEST(HeteroGraphTest, ReadGraph) {
     HeteroGraph<int> graph;
-    graph.readGraph("../../dataset/graph.txt", FileExtension::TXT);
+    const std::string inputPath = datasetDirectory + "/graph.txt";
+    graph.readGraph(inputPath, FileExtension::TXT);
 
     EXPECT_EQ(graph.size(), static_cast<size_t>(6));
     EXPECT_TRUE(graph.getAdjacents(0).contains(1));
@@ -255,5 +260,6 @@ TEST(HeteroGraphTest, WriteGraph) {
     graph.addEdge(2, 4);
     graph.addEdge(4, 5);
 
-    graph.writeGraph("../../dataset/unweighted_hetero_graph_output.txt", FileExtension::TXT);
+    const std::string outputPath = datasetDirectory + "/output/unweighted_hetero_graph_output.txt";
+    graph.writeGraph(outputPath, FileExtension::TXT);
 }

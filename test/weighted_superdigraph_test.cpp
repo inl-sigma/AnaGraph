@@ -3,6 +3,10 @@
 #include <gtest/gtest.h>
 #include <spdlog/spdlog.h>
 
+namespace {
+    const std::string datasetDirectory = PROJECT_SOURCE_DIR + std::string("/dataset");
+}
+
 TEST(WeightedSuperDigraphTest, SetNode) {
     spdlog::set_level(spdlog::level::debug);
     WeightedSuperDigraph graph;
@@ -274,7 +278,8 @@ TEST(WeightedSuperDigraphTest, Size) {
 TEST(WeightedSuperDigraphTest, ReadGraph) {
     spdlog::set_level(spdlog::level::debug);
     WeightedSuperDigraph graph;
-    graph.readGraph("../../dataset/input", FileExtension::TXT);
+    const std::string inputPath = datasetDirectory + "/input";
+    graph.readGraph(inputPath, FileExtension::TXT);
 
     EXPECT_EQ(graph.size(), static_cast<size_t>(6));
     EXPECT_EQ(graph.getWeight(0, 1), 1.0);
@@ -311,5 +316,6 @@ TEST(WeightedSuperDigraphTest, WriteGraph) {
     graph.addEdge(3, 4, 3.0);
     graph.addEdge(5, 6, 2.0);
 
-    graph.writeGraph("../../dataset/output/directed_test", FileExtension::TXT);
+    const std::string outputDir = datasetDirectory + "/output/directed_supergraph_test";
+    graph.writeGraph(outputDir, FileExtension::TXT);
 }

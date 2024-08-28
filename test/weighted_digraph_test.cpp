@@ -7,6 +7,10 @@
 #include <filesystem>
 #include <string>
 
+namespace {
+    const std::string datasetDirectory = PROJECT_SOURCE_DIR + std::string("/dataset");
+}
+
 TEST(WeightedDigraphTest, GetNode) {
     WeightedDigraph graph;
     graph.setNode(0);
@@ -158,7 +162,8 @@ TEST(WeightedDigraphTest, ReadGraph) {
     WeightedDigraph graph;
     // output current directory
     spdlog::info("current directory: {}", std::filesystem::current_path().string());
-    graph.readGraph("../../dataset/graph.txt", FileExtension::TXT);
+    const std::string inputPath = datasetDirectory + "/graph.txt";
+    graph.readGraph(inputPath, FileExtension::TXT);
 
     EXPECT_EQ(graph.size(), static_cast<size_t>(6));
     EXPECT_EQ(graph.getWeight(0, 1), 1.0);
@@ -188,5 +193,6 @@ TEST(WeightedDigraphTest, WriteGraph) {
     graph.addEdge(2, 4, 2.5);
     graph.addEdge(4, 5, 0.5);
 
-    graph.writeGraph("../../dataset/weighted_digraph_output.txt", FileExtension::TXT);
+    const std::string outputPath = datasetDirectory + "/output/weighted_digraph_output.txt";
+    graph.writeGraph(outputPath, FileExtension::TXT);
 }
