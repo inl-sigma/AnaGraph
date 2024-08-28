@@ -3,10 +3,10 @@
 #ifndef SUPERGRAPH_HPP
 #define SUPERGRAPH_HPP
 
-#include "anagraph/components/graph_interface.hpp"
 #include "anagraph/components/graph_parser.hpp"
 #include "anagraph/components/graph_writer.hpp"
 #include "anagraph/components/weighted_graph.hpp"
+#include "anagraph/interfaces/graph_interface.hpp"
 #include "anagraph/utils/graph_utils.hpp"
 
 #include <unordered_map>

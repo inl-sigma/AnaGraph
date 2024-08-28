@@ -3,9 +3,9 @@
 #ifndef UNWEIGHTED_GRAPH_HPP
 #define UNWEIGHTED_GRAPH_HPP
 
-#include "anagraph/components/graph_interface.hpp"
 #include "anagraph/components/graph_parser.hpp"
 #include "anagraph/components/graph_writer.hpp"
+#include "anagraph/interfaces/graph_interface.hpp"
 #include "anagraph/utils/graph_utils.hpp"
 
 #include <unordered_set>
