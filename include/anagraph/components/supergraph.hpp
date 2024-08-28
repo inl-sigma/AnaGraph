@@ -6,14 +6,16 @@
 #include "anagraph/components/graph_parser.hpp"
 #include "anagraph/components/graph_writer.hpp"
 #include "anagraph/components/weighted_graph.hpp"
-#include "anagraph/interfaces/graph_interface.hpp"
+#include "anagraph/interfaces/weighted_node_interface.hpp"
+#include "anagraph/interfaces/weighted_digraph_interface.hpp"
+#include "anagraph/interfaces/weighted_graph_interface.hpp"
 #include "anagraph/utils/graph_utils.hpp"
 
 #include <unordered_map>
 
 namespace anagraph {
 
-class WeightedSupernode : IWeightedNode {
+class WeightedSupernode : interface::IWeightedNode {
 private:
     WeightedNode node;
     int parent = ROOT; /**< parent is implemented as type int, because this relation is a kind of attributed edge */
@@ -170,7 +172,7 @@ public:
  * Each node in the superdigraph is a supernode that contains a set of nodes and edges.
  * The superdigraph is used to represent a kind of hierarchy of digraph.
  */
-class WeightedSuperDigraph : public IWeightedDigraph {
+class WeightedSuperDigraph : public interface::IWeightedDigraph {
 private:
     std::vector<WeightedSupernode> nodes;
     std::unordered_set<int> usedNodes;
@@ -387,7 +389,7 @@ private:
  * Each node in the supergraph is a supernode that contains a set of nodes and edges.
  * The supergraph is used to represent a kind of hierarchy of graph.
  */
-class WeightedSupergraph : public IWeightedGraph {
+class WeightedSupergraph : public interface::IWeightedGraph {
 private:
     WeightedSuperDigraph digraph;
 

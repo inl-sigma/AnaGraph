@@ -5,7 +5,9 @@
 
 #include "anagraph/components/graph_parser.hpp"
 #include "anagraph/components/graph_writer.hpp"
-#include "anagraph/interfaces/graph_interface.hpp"
+#include "anagraph/interfaces/unweighted_node_interface.hpp"
+#include "anagraph/interfaces/unweighted_digraph_interface.hpp"
+#include "anagraph/interfaces/unweighted_graph_interface.hpp"
 #include "anagraph/utils/graph_utils.hpp"
 
 #include <unordered_set>
@@ -13,7 +15,7 @@
 
 namespace anagraph {
 
-class Node : public INode {
+class Node : public interface::INode {
 private:
     int id;
     std::unordered_set<int> adjacents;
@@ -97,7 +99,7 @@ public:
     void clear() override;
 };
 
-class Digraph : public IDigraph {
+class Digraph : public interface::IDigraph {
 private:
     std::vector<Node> nodes;
     std::unordered_set<int> usedNodes;
@@ -231,7 +233,7 @@ private:
     void writeGraphHelper(std::string filePath, IGraphWriter &writer, std::vector<EdgeObject> &edges) const;
 };
 
-class Graph : public IGraph {
+class Graph : public interface::IGraph {
 private:
     Digraph digraph;
 

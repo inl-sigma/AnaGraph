@@ -5,7 +5,9 @@
 
 #include "anagraph/components/graph_parser.hpp"
 #include "anagraph/components/graph_writer.hpp"
-#include "anagraph/interfaces/graph_interface.hpp"
+#include "anagraph/interfaces/weighted_node_interface.hpp"
+#include "anagraph/interfaces/weighted_digraph_interface.hpp"
+#include "anagraph/interfaces/weighted_graph_interface.hpp"
 #include "anagraph/utils/graph_utils.hpp"
 
 #include <memory>
@@ -22,7 +24,7 @@ namespace anagraph {
  * The weightedNode class provides a way to represent a weighted node using an adjacency list.
  * It supports adding adjacent nodes and accessing the attributes of the node.
  */
-class WeightedNode : public IWeightedNode {
+class WeightedNode : public interface::IWeightedNode {
 private:
     int id; /**< The id of the node */
     std::unordered_map<int, double> adjacents; /**< The adjacent nodes of the node */
@@ -120,7 +122,7 @@ public:
  * The WeightedGraph class provides a way to represent a weighted graph using an adjacency list.
  * It supports adding edges between vertices and accessing the adjacency list of a node.
  */
-class WeightedDigraph : public IWeightedDigraph {
+class WeightedDigraph : public interface::IWeightedDigraph {
 private:
     std::vector<WeightedNode> nodes; /**< The adjacency list representing the graph. */
     std::unordered_set<int> usedNodes; /**< The set of used nodes. */
@@ -298,7 +300,7 @@ private:
  * The WeightedGraph class provides a way to represent a weighted graph using an adjacency list.
  * It supports adding edges between vertices and accessing the adjacency list of a node.
  */
-class WeightedGraph : public IWeightedGraph {
+class WeightedGraph : public interface::IWeightedGraph {
 private:
     WeightedDigraph digraph; /**< The directed weighted graph, treated as undirected one. */
 

@@ -5,7 +5,12 @@
 
 #include "anagraph/components/unweighted_graph.hpp"
 #include "anagraph/components/weighted_graph.hpp"
-#include "anagraph/interfaces/heterogeneous_graph_if.hpp"
+#include "anagraph/interfaces/unweighted_hetero_node_interface.hpp"
+#include "anagraph/interfaces/unweighted_hetero_digraph_interface.hpp"
+#include "anagraph/interfaces/unweighted_hetero_graph_interface.hpp"
+#include "anagraph/interfaces/weighted_hetero_node_interface.hpp"
+#include "anagraph/interfaces/weighted_hetero_digraph_interface.hpp"
+#include "anagraph/interfaces/weighted_hetero_graph_interface.hpp"
 
 #include <memory>
 #include <unordered_map>
@@ -14,7 +19,7 @@
 namespace anagraph {
 
 template <typename T>
-class HeteroNode : public IHeteroNode<T> {
+class HeteroNode : public interface::IHeteroNode<T> {
 private:
     static const int UNUSED_ID; /**< The default value for an unused node */
     Node node;
@@ -109,7 +114,7 @@ public:
  * It supports adding edges between vertices and accessing the adjacency list of a node.
  */
 template <typename T>
-class HeteroDigraph : public IHeteroDigraph<T> {
+class HeteroDigraph : public interface::IHeteroDigraph<T> {
 private:
     std::vector<HeteroNode<T>> nodes; /**< The nodes of the graph */
     std::unordered_set<int> usedNodes; /**< The set of used nodes */
@@ -278,7 +283,7 @@ private:
  * It supports adding edges between vertices and accessing the adjacency list of a node.
  */
 template <typename T>
-class HeteroGraph : public IHeteroDigraph<T> {
+class HeteroGraph : public interface::IHeteroDigraph<T> {
 private:
     HeteroDigraph<T> digraph;
 
@@ -431,7 +436,7 @@ public:
  * It supports adding adjacent nodes and accessing the attributes of the node.
  */
 template <typename T>
-class WeightedHeteroNode : public IWeightedHeteroNode<T> {
+class WeightedHeteroNode : public interface::IWeightedHeteroNode<T> {
 private:
     static const int UNUSED_ID; /**< The default value for an unused node */
     WeightedNode weightedNode;
@@ -557,7 +562,7 @@ public:
  * It supports adding edges between vertices and accessing the adjacency list of a node.
  */
 template <typename T>
-class WeightedHeteroDigraph : public IWeightedHeteroDigraph<T> {
+class WeightedHeteroDigraph : public interface::IWeightedHeteroDigraph<T> {
 private:
     std::vector<WeightedHeteroNode<T>> nodes; /**< The nodes of the graph */
     std::unordered_set<int> usedNodes; /**< The set of used nodes */
@@ -754,7 +759,7 @@ private:
  * It supports adding edges between vertices and accessing the adjacency list of a node.
  */
 template <typename T>
-class WeightedHeteroGraph : public IWeightedHeteroGraph<T> {
+class WeightedHeteroGraph : public interface::IWeightedHeteroGraph<T> {
 private:
     WeightedHeteroDigraph<T> digraph; /**< directed graph object, treated as undirected */
 
