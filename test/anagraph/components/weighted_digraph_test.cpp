@@ -13,22 +13,22 @@ namespace {
 
 TEST(WeightedDigraphTest, GetNode) {
     using namespace anagraph;
-    graph::WeightedDigraph graph;
+    graph_structure::WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
 
-    const graph::WeightedNode& node1 = graph.getNode(0);
+    const graph_structure::WeightedNode& node1 = graph.getNode(0);
     EXPECT_EQ(node1.getId(), 0);
-    const graph::WeightedNode& node2 = graph.getNode(1);
+    const graph_structure::WeightedNode& node2 = graph.getNode(1);
     EXPECT_EQ(node2.getId(), 1);
-    const graph::WeightedNode& node3 = graph.getNode(2);
+    const graph_structure::WeightedNode& node3 = graph.getNode(2);
     EXPECT_EQ(node3.getId(), 2);
 }
 
 TEST(WeightedDigraphTest, SetNode) {
     using namespace anagraph;
-    graph::WeightedDigraph graph;
+    graph_structure::WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -38,7 +38,7 @@ TEST(WeightedDigraphTest, SetNode) {
 
 TEST(WeightedDigraphTest, RemoveNode) {
     using namespace anagraph;
-    graph::WeightedDigraph graph;
+    graph_structure::WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -49,7 +49,7 @@ TEST(WeightedDigraphTest, RemoveNode) {
 
 TEST(WeightedDigraphTest, GetIDs) {
     using namespace anagraph;
-    graph::WeightedDigraph graph;
+    graph_structure::WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -71,7 +71,7 @@ TEST(WeightedDigraphTest, AddEdge) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
 
-    graph::WeightedDigraph graph;
+    graph_structure::WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -88,7 +88,7 @@ TEST(WeightedDigraphTest, AddEdge) {
 
 TEST(WeightedDigraphTest, RemoveEdge) {
     using namespace anagraph;
-    graph::WeightedDigraph graph;
+    graph_structure::WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -105,7 +105,7 @@ TEST(WeightedDigraphTest, RemoveEdge) {
 TEST(WeightedDigraphTest, GetAdjacents) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
-    graph::WeightedDigraph graph;
+    graph_structure::WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -125,7 +125,7 @@ TEST(WeightedDigraphTest, GetAdjacents) {
 TEST(WeightedDigraphTest, GetSubgraph) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
-    graph::WeightedDigraph graph;
+    graph_structure::WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -137,7 +137,7 @@ TEST(WeightedDigraphTest, GetSubgraph) {
 
     std::unordered_set<int> indices = {0, 1, 3};
     spdlog::debug("create subgraph");
-    graph::WeightedDigraph subgraph = graph.getSubgraph(indices);
+    graph_structure::WeightedDigraph subgraph = graph.getSubgraph(indices);
 
     spdlog::debug("calculate subgraph size");
     EXPECT_EQ(subgraph.size(), static_cast<size_t>(3));
@@ -150,7 +150,7 @@ TEST(WeightedDigraphTest, GetSubgraph) {
 TEST(WeightedDigraphTest, Reorganize) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
-    graph::WeightedDigraph graph;
+    graph_structure::WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(2);
     graph.setNode(4);
@@ -169,7 +169,7 @@ TEST(WeightedDigraphTest, Reorganize) {
 
 TEST(WeightedDigraphTest, ReadGraph) {
     using namespace anagraph;
-    graph::WeightedDigraph graph;
+    graph_structure::WeightedDigraph graph;
     // output current directory
     spdlog::info("current directory: {}", std::filesystem::current_path().string());
     const std::string inputPath = datasetDirectory + "/graph.txt";
@@ -189,7 +189,7 @@ TEST(WeightedDigraphTest, ReadGraph) {
 
 TEST(WeightedDigraphTest, WriteGraph) {
     using namespace anagraph;
-    graph::WeightedDigraph graph;
+    graph_structure::WeightedDigraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);

@@ -3,7 +3,7 @@
 #include <spdlog/spdlog.h>
 
 namespace anagraph {
-namespace graph {
+namespace graph_structure {
 
 const int Node::UNUSED_ID = -1;
 

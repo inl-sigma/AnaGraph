@@ -17,7 +17,7 @@ namespace anagraph {
 
 class WeightedSupernode : interface::IWeightedNode {
 private:
-    graph::WeightedNode node;
+    graph_structure::WeightedNode node;
     int parent = ROOT; /**< parent is implemented as type int, because this relation is a kind of attributed edge */
     std::unordered_set<int> children;
 

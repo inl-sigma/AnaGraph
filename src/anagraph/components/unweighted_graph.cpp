@@ -5,7 +5,7 @@
 #include <set>
 
 namespace anagraph {
-namespace graph {
+namespace graph_structure {
 
 Graph::Graph(std::string filePath, FileExtension extName) {
     readGraph(filePath, extName);

@@ -90,7 +90,7 @@ namespace {
 TEST(PageRankTest, TestDirectedPageRank) {
     using namespace anagraph;
     // Create a graph
-    graph::WeightedDigraph digraph(datasetFile, FileExtension::TXT);
+    graph_structure::WeightedDigraph digraph(datasetFile, FileExtension::TXT);
 
     spdlog::set_level(spdlog::level::debug);
 
@@ -104,7 +104,7 @@ TEST(PageRankTest, TestDirectedPageRank) {
 
 TEST(PageRankTest, WeightedDigraphForwardPushTest) {
     using namespace anagraph;
-    graph::WeightedDigraph digraph(datasetFile, FileExtension::TXT);
+    graph_structure::WeightedDigraph digraph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
@@ -119,7 +119,7 @@ TEST(PageRankTest, WeightedDigraphForwardPushTest) {
 
 TEST(PageRankTest, WeightedGraphForwardPushTest) {
     using namespace anagraph;
-    graph::WeightedGraph graph(datasetFile, FileExtension::TXT);
+    graph_structure::WeightedGraph graph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
@@ -134,7 +134,7 @@ TEST(PageRankTest, WeightedGraphForwardPushTest) {
 
 TEST(PageRankTest, DigraphForwardPushTest) {
     using namespace anagraph;
-    graph::Digraph digraph(datasetFile, FileExtension::TXT);
+    graph_structure::Digraph digraph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
@@ -149,7 +149,7 @@ TEST(PageRankTest, DigraphForwardPushTest) {
 
 TEST(PageRankTest, GraphForwardPushTest) {
     using namespace anagraph;
-    graph::Graph graph(datasetFile, FileExtension::TXT);
+    graph_structure::Graph graph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
@@ -164,7 +164,7 @@ TEST(PageRankTest, GraphForwardPushTest) {
 
 TEST(PageRankTest, WeightedDigraphForaTest) {
     using namespace anagraph;
-    graph::WeightedDigraph digraph(datasetFile, FileExtension::TXT);
+    graph_structure::WeightedDigraph digraph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
@@ -181,7 +181,7 @@ TEST(PageRankTest, WeightedDigraphForaTest) {
 
 TEST(PageRankTest, WeightedGraphForaTest) {
     using namespace anagraph;
-    graph::WeightedGraph graph(datasetFile, FileExtension::TXT);
+    graph_structure::WeightedGraph graph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
@@ -198,7 +198,7 @@ TEST(PageRankTest, WeightedGraphForaTest) {
 
 TEST(PageRankTest, DigraphForaTest) {
     using namespace anagraph;
-    graph::Digraph digraph(datasetFile, FileExtension::TXT);
+    graph_structure::Digraph digraph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank
@@ -215,7 +215,7 @@ TEST(PageRankTest, DigraphForaTest) {
 
 TEST(PageRankTest, GraphForaTest) {
     using namespace anagraph;
-    graph::Graph graph(datasetFile, FileExtension::TXT);
+    graph_structure::Graph graph(datasetFile, FileExtension::TXT);
     spdlog::set_level(spdlog::level::debug);
 
     // Compute the PageRank

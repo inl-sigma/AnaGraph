@@ -14,7 +14,7 @@
 #include <vector>
 
 namespace anagraph {
-namespace graph {
+namespace graph_structure {
 
 class Graph : public interface::IGraph {
 private:

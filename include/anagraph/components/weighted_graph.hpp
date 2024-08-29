@@ -15,7 +15,7 @@
 #include <vector>
 
 namespace anagraph {
-namespace graph {
+namespace graph_structure {
 
 /**
  * @class WeightedGraph

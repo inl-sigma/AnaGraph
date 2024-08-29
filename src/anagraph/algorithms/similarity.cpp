@@ -9,7 +9,7 @@
 
 namespace {
     using namespace anagraph;
-    std::tuple<int, int, int, int> calcConfusionMatrix(const graph::Digraph &expected, const graph::Digraph &answer) {
+    std::tuple<int, int, int, int> calcConfusionMatrix(const graph_structure::Digraph &expected, const graph_structure::Digraph &answer) {
         int tp = 0;
         int fp = 0;
         int fn = 0;
@@ -39,7 +39,7 @@ namespace {
         return std::make_tuple(tp, fp, fn, tn);
     }
 
-    std::tuple<int, int, int, int> calcConfusionMatrix(const graph::Graph &expected, const graph::Graph &answer) {
+    std::tuple<int, int, int, int> calcConfusionMatrix(const graph_structure::Graph &expected, const graph_structure::Graph &answer) {
         int tp = 0;
         int fp = 0;
         int fn = 0;
@@ -168,7 +168,7 @@ double JSdivergence(const std::vector<double>& p, const std::vector<double>& q) 
     return (KLdivergence(p, m) + KLdivergence(q, m)) / 2;
 }
 
-double accuracy(const graph::Digraph &expected, const graph::Digraph &answer) {
+double accuracy(const graph_structure::Digraph &expected, const graph_structure::Digraph &answer) {
     auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
     spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
     if (tp + fp + fn + tn == 0) {
@@ -178,7 +178,7 @@ double accuracy(const graph::Digraph &expected, const graph::Digraph &answer) {
     }
 }
 
-double accuracy(const graph::Graph &expected, const graph::Graph &answer) {
+double accuracy(const graph_structure::Graph &expected, const graph_structure::Graph &answer) {
     auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
     spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
     if (tp + fp + fn + tn == 0) {
@@ -188,7 +188,7 @@ double accuracy(const graph::Graph &expected, const graph::Graph &answer) {
     }
 }
 
-double precision(const graph::Digraph &expected, const graph::Digraph &answer) {
+double precision(const graph_structure::Digraph &expected, const graph_structure::Digraph &answer) {
     auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
     spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
     if (tp + fp == 0) {
@@ -198,7 +198,7 @@ double precision(const graph::Digraph &expected, const graph::Digraph &answer) {
     }
 }
 
-double precision(const graph::Graph &expected, const graph::Graph &answer) {
+double precision(const graph_structure::Graph &expected, const graph_structure::Graph &answer) {
     auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
     spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
     if (tp + fp == 0) {
@@ -208,7 +208,7 @@ double precision(const graph::Graph &expected, const graph::Graph &answer) {
     }
 }
 
-double recall(const graph::Digraph &expected, const graph::Digraph &answer) {
+double recall(const graph_structure::Digraph &expected, const graph_structure::Digraph &answer) {
     auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
     spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
     if (tp + fn == 0) {
@@ -218,7 +218,7 @@ double recall(const graph::Digraph &expected, const graph::Digraph &answer) {
     }
 }
 
-double recall(const graph::Graph &expected, const graph::Graph &answer) {
+double recall(const graph_structure::Graph &expected, const graph_structure::Graph &answer) {
     auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
     spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
     if (tp + fn == 0) {
@@ -228,7 +228,7 @@ double recall(const graph::Graph &expected, const graph::Graph &answer) {
     }
 }
 
-double fMeasure(const graph::Digraph &expected, const graph::Digraph &answer) {
+double fMeasure(const graph_structure::Digraph &expected, const graph_structure::Digraph &answer) {
     auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
     spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
     const double precisionValue = ((tp + fp)) != 0 ? static_cast<double>(tp) / (tp + fp) : 0.0;
@@ -236,7 +236,7 @@ double fMeasure(const graph::Digraph &expected, const graph::Digraph &answer) {
     return 2 * (precisionValue * recallValue) / (precisionValue + recallValue);
 }
 
-double fMeasure(const graph::Graph &expected, const graph::Graph &answer) {
+double fMeasure(const graph_structure::Graph &expected, const graph_structure::Graph &answer) {
     auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
     spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
     const double precisionValue = ((tp + fp)) != 0 ? static_cast<double>(tp) / (tp + fp) : 0.0;

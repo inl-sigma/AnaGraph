@@ -6,7 +6,7 @@
 #include "anagraph/interfaces/unweighted_node_interface.hpp"
 
 namespace anagraph {
-namespace graph {
+namespace graph_structure {
 
 class Node : public interface::INode {
 private:

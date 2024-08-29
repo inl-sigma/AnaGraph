@@ -6,7 +6,7 @@
 #include <stdexcept>
 
 namespace anagraph {
-namespace graph {
+namespace graph_structure {
 
 WeightedDigraph::WeightedDigraph() {
     usedNodes = std::unordered_set<int>();

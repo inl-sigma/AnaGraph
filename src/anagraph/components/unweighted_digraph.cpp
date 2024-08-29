@@ -5,7 +5,7 @@
 #include <set>
 
 namespace anagraph {
-namespace graph {
+namespace graph_structure {
 
 Node Digraph::getNode(int id) const {
     if (id < 0 || id >= static_cast<int>(nodes.size())) {

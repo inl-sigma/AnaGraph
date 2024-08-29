@@ -23,7 +23,7 @@ namespace pagerank {
  * 
  * @note The graph must be connected, and has sequential node ids
  */
-std::vector<double> pageRank(const graph::WeightedDigraph &graph, const double alpha, const int iter);
+std::vector<double> pageRank(const graph_structure::WeightedDigraph &graph, const double alpha, const int iter);
 
 /**
  * @brief Compute the PageRank of a graph
@@ -36,7 +36,7 @@ std::vector<double> pageRank(const graph::WeightedDigraph &graph, const double a
  * 
  * @note The graph must be connected, and has sequential node ids
  */
-std::vector<double> pageRank(const graph::WeightedDigraph &graph /**, const double alpha = 0.15, int iter = 100000 */);
+std::vector<double> pageRank(const graph_structure::WeightedDigraph &graph /**, const double alpha = 0.15, int iter = 100000 */);
 
 /**
  * Calculates the forward push algorithm for PageRank.
@@ -50,7 +50,7 @@ std::vector<double> pageRank(const graph::WeightedDigraph &graph /**, const doub
  * @param thr The convergence threshold for the algorithm.
  * @return A tuple containing two vectors: the final PageRank scores and the residual errors.
  */
-std::tuple<std::vector<double>, std::vector<double>> forwardPush(const graph::WeightedDigraph &graph, const std::vector<double> source, const double alpha, const double thr);
+std::tuple<std::vector<double>, std::vector<double>> forwardPush(const graph_structure::WeightedDigraph &graph, const std::vector<double> source, const double alpha, const double thr);
 
 /**
  * Calculates the forward push algorithm for PageRank.
@@ -64,7 +64,7 @@ std::tuple<std::vector<double>, std::vector<double>> forwardPush(const graph::We
  * @param thr The convergence threshold for the algorithm.
  * @return A tuple containing two vectors: the final PageRank scores and the residual errors.
  */
-std::tuple<std::vector<double>, std::vector<double>> forwardPush(const graph::WeightedGraph &graph, const std::vector<double> source, const double alpha, const double thr);
+std::tuple<std::vector<double>, std::vector<double>> forwardPush(const graph_structure::WeightedGraph &graph, const std::vector<double> source, const double alpha, const double thr);
 
 /**
  * Calculates the forward push algorithm for PageRank.
@@ -78,7 +78,7 @@ std::tuple<std::vector<double>, std::vector<double>> forwardPush(const graph::We
  * @param thr The convergence threshold for the algorithm.
  * @return A tuple containing two vectors: the final PageRank scores and the residual errors.
  */
-std::tuple<std::vector<double>, std::vector<double>> forwardPush(const graph::Digraph &graph, const std::vector<double> source, const double alpha, const double thr);
+std::tuple<std::vector<double>, std::vector<double>> forwardPush(const graph_structure::Digraph &graph, const std::vector<double> source, const double alpha, const double thr);
 
 /**
  * Calculates the forward push algorithm for PageRank.
@@ -92,7 +92,7 @@ std::tuple<std::vector<double>, std::vector<double>> forwardPush(const graph::Di
  * @param thr The convergence threshold for the algorithm.
  * @return A tuple containing two vectors: the final PageRank scores and the residual errors.
  */
-std::tuple<std::vector<double>, std::vector<double>> forwardPush(const graph::Graph &graph, const std::vector<double> source, const double alpha, const double thr);
+std::tuple<std::vector<double>, std::vector<double>> forwardPush(const graph_structure::Graph &graph, const std::vector<double> source, const double alpha, const double thr);
 
 /**
  * @brief Compute the PageRank of a graph using the combination of forward push algorithm and random walk
@@ -106,7 +106,7 @@ std::tuple<std::vector<double>, std::vector<double>> forwardPush(const graph::Gr
  * 
  * @note The graph must be connected, and has sequential node ids
  */
-std::vector<double> fora(const graph::WeightedDigraph &graph, const std::vector<double> source, const double alpha, const double epsilon);
+std::vector<double> fora(const graph_structure::WeightedDigraph &graph, const std::vector<double> source, const double alpha, const double epsilon);
 
 /**
  * @brief Compute the PageRank of a graph using the combination of forward push algorithm and random walk
@@ -120,7 +120,7 @@ std::vector<double> fora(const graph::WeightedDigraph &graph, const std::vector<
  * 
  * @note The graph must be connected, and has sequential node ids
  */
-std::vector<double> fora(const graph::WeightedGraph &graph, const std::vector<double> source, const double alpha, const double epsilon);
+std::vector<double> fora(const graph_structure::WeightedGraph &graph, const std::vector<double> source, const double alpha, const double epsilon);
 
 /**
  * @brief Compute the PageRank of a graph using the combination of forward push algorithm and random walk
@@ -134,7 +134,7 @@ std::vector<double> fora(const graph::WeightedGraph &graph, const std::vector<do
  * 
  * @note The graph must be connected, and has sequential node ids
  */
-std::vector<double> fora(const graph::Digraph &graph, const std::vector<double> source, const double alpha, const double epsilon);
+std::vector<double> fora(const graph_structure::Digraph &graph, const std::vector<double> source, const double alpha, const double epsilon);
 
 /**
  * @brief Compute the PageRank of a graph using the combination of forward push algorithm and random walk
@@ -148,7 +148,7 @@ std::vector<double> fora(const graph::Digraph &graph, const std::vector<double> 
  * 
  * @note The graph must be connected, and has sequential node ids
  */
-std::vector<double> fora(const graph::Graph &graph, const std::vector<double> source, const double alpha, const double epsilon);
+std::vector<double> fora(const graph_structure::Graph &graph, const std::vector<double> source, const double alpha, const double epsilon);
 
 } // namespace pagerank
 } // namespace anagraph

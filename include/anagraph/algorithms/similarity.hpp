@@ -71,7 +71,7 @@ namespace similarity {
      * @param answer The answer Digraph to be evaluated.
      * @return The accuracy of the answer as a double value.
      */
-    double accuracy(const graph::Digraph &expected, const graph::Digraph &answer);
+    double accuracy(const graph_structure::Digraph &expected, const graph_structure::Digraph &answer);
 
     /**
      * Calculates the accuracy of a given answer compared to the expected result.
@@ -80,7 +80,7 @@ namespace similarity {
      * @param answer The answer graph to be evaluated.
      * @return The accuracy of the answer as a double value.
      */
-    double accuracy(const graph::Graph &expected, const graph::Graph &answer);
+    double accuracy(const graph_structure::Graph &expected, const graph_structure::Graph &answer);
 
     /**
      * Calculates the precision of a given expected digraph and answer digraph.
@@ -89,7 +89,7 @@ namespace similarity {
      * @param answer The answer digraph.
      * @return The precision value.
      */
-    double precision(const graph::Digraph &expected, const graph::Digraph &answer);
+    double precision(const graph_structure::Digraph &expected, const graph_structure::Digraph &answer);
 
     /**
      * Calculates the precision of a given expected graph and answer graph.
@@ -98,7 +98,7 @@ namespace similarity {
      * @param answer The answer graph.
      * @return The precision value.
      */
-    double precision(const graph::Graph &expected, const graph::Graph &answer);
+    double precision(const graph_structure::Graph &expected, const graph_structure::Graph &answer);
 
     /**
      * Calculates the recall value between two directed graphs.
@@ -107,7 +107,7 @@ namespace similarity {
      * @param answer The actual directed graph.
      * @return The recall value between the two graphs.
      */
-    double recall(const graph::Digraph &expected, const graph::Digraph &answer);
+    double recall(const graph_structure::Digraph &expected, const graph_structure::Digraph &answer);
 
     /**
      * Calculates the recall value between two graphs.
@@ -116,7 +116,7 @@ namespace similarity {
      * @param answer The actual graph.
      * @return The recall value between the two graphs.
      */
-    double recall(const graph::Graph &expected, const graph::Graph &answer);
+    double recall(const graph_structure::Graph &expected, const graph_structure::Graph &answer);
 
     /**
      * Calculates the F-measure between the expected and answer digraphs.
@@ -125,7 +125,7 @@ namespace similarity {
      * @param answer The answer digraph.
      * @return The F-measure value.
      */
-    double fMeasure(const graph::Digraph &expected, const graph::Digraph &answer);
+    double fMeasure(const graph_structure::Digraph &expected, const graph_structure::Digraph &answer);
 
     /**
      * Calculates the F-measure between the expected and answer graphs.
@@ -134,7 +134,7 @@ namespace similarity {
      * @param answer The answer graph.
      * @return The F-measure value.
      */
-    double fMeasure(const graph::Graph &expected, const graph::Graph &answer);
+    double fMeasure(const graph_structure::Graph &expected, const graph_structure::Graph &answer);
 
 } // namespace similarity
 } // namespace anagraph

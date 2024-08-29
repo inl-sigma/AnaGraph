@@ -3,7 +3,7 @@
 #include <spdlog/spdlog.h>
 
 namespace anagraph {
-namespace graph {
+namespace graph_structure {
 
 WeightedNode::WeightedNode() {
     id = UNUSED_ID;

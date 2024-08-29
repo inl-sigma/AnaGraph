@@ -25,7 +25,7 @@ template <typename T>
 class HeteroNode : public interface::IHeteroNode<T> {
 private:
     static const int UNUSED_ID; /**< The default value for an unused node */
-    graph::Node node;
+    graph_structure::Node node;
     T attributes;
     bool isAttrEnabled;
 
@@ -33,20 +33,20 @@ public:
     /**
      * @brief Constructs a HeteroNode object.
      */
-    HeteroNode() : node(graph::Node()), attributes(T()), isAttrEnabled(false) {};
+    HeteroNode() : node(graph_structure::Node()), attributes(T()), isAttrEnabled(false) {};
 
     /**
      * @brief Constructs a HeteroNode object with the specified id.
      * @param id The id of the node.
      */
-    HeteroNode(int id) : node(graph::Node(id)), attributes(T()), isAttrEnabled(false) {};
+    HeteroNode(int id) : node(graph_structure::Node(id)), attributes(T()), isAttrEnabled(false) {};
 
     /**
      * @brief Constructs a HeteroNode object with the specified id and attributes.
      * @param id The id of the node.
      * @param attributes The attributes of the node.
      */
-    HeteroNode(int id, T attributes) : node(graph::Node(id)), attributes(attributes), isAttrEnabled(true) {};
+    HeteroNode(int id, T attributes) : node(graph_structure::Node(id)), attributes(attributes), isAttrEnabled(true) {};
 
     /**
      * @brief Get the id of the node.
@@ -442,7 +442,7 @@ template <typename T>
 class WeightedHeteroNode : public interface::IWeightedHeteroNode<T> {
 private:
     static const int UNUSED_ID; /**< The default value for an unused node */
-    graph::WeightedNode weightedNode;
+    graph_structure::WeightedNode weightedNode;
     T attributes;
     bool isAttrEnabled;
 
@@ -450,14 +450,14 @@ public:
     /**
      * @brief Constructs a weightedNode object.
      */
-    WeightedHeteroNode() : weightedNode(graph::WeightedNode()), attributes(T()), isAttrEnabled(false) {
+    WeightedHeteroNode() : weightedNode(graph_structure::WeightedNode()), attributes(T()), isAttrEnabled(false) {
     };
 
     /**
      * @brief Constructs a weightedNode object with the specified id.
      * @param id The id of the node.
      */
-    WeightedHeteroNode(int id) : weightedNode(graph::WeightedNode(id)), attributes(T()), isAttrEnabled(false) {
+    WeightedHeteroNode(int id) : weightedNode(graph_structure::WeightedNode(id)), attributes(T()), isAttrEnabled(false) {
     };
 
     /**
@@ -465,7 +465,7 @@ public:
      * @param id The id of the node.
      * @param attributes The attributes of the node.
      */
-    WeightedHeteroNode(int id, T attributes) : weightedNode(graph::WeightedNode(id)), attributes(attributes), isAttrEnabled(true) {
+    WeightedHeteroNode(int id, T attributes) : weightedNode(graph_structure::WeightedNode(id)), attributes(attributes), isAttrEnabled(true) {
     };
 
     /**
