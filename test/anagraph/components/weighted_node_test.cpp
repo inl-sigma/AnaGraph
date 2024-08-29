@@ -6,34 +6,34 @@
 
 TEST(WeightedNodeTest, DefaultConstructor) {
     using namespace anagraph;
-    WeightedNode node1;
-    EXPECT_EQ(node1.getId(), WeightedNode::UNUSED_ID);
+    graph::WeightedNode node1;
+    EXPECT_EQ(node1.getId(), graph::WeightedNode::UNUSED_ID);
     EXPECT_TRUE(node1.getAdjacents().empty());
 }
 
 TEST(WeightedNodeTest, ConstructorWithId) {
     using namespace anagraph;
-    WeightedNode node2(1);
+    graph::WeightedNode node2(1);
     EXPECT_EQ(node2.getId(), 1);
     EXPECT_TRUE(node2.getAdjacents().empty());
 }
 
 TEST(WeightedNodeTest, CopyConstructor) {
     using namespace anagraph;
-    WeightedNode node1;
+    graph::WeightedNode node1;
     node1.setId(std::rand());
     node1.setAdjacent(4, 1.5);
-    WeightedNode node2(node1);
+    graph::WeightedNode node2(node1);
     EXPECT_EQ(node2.getId(), node1.getId());
     EXPECT_EQ(node2.getAdjacents(), node1.getAdjacents());
 }
 
 TEST(WeightedNodeTest, MoveConstructor) {
     using namespace anagraph;
-    WeightedNode node1;
+    graph::WeightedNode node1;
     node1.setId(0);
     node1.setAdjacent(4, 1.5);
-    WeightedNode node2(std::move(node1));
+    graph::WeightedNode node2(std::move(node1));
     EXPECT_EQ(node2.getId(), 0);
     EXPECT_EQ(node2.getAdjacents().at(4), 1.5);
     EXPECT_FALSE(node1.isUsed());
@@ -42,7 +42,7 @@ TEST(WeightedNodeTest, MoveConstructor) {
 
 TEST(WeightedNodeTest, SetAndGetId) {
     using namespace anagraph;
-    WeightedNode node1;
+    graph::WeightedNode node1;
     node1.setId(3);
     EXPECT_EQ(node1.getId(), 3);
     node1.setId(4);
@@ -53,9 +53,9 @@ TEST(WeightedNodeTest, SetAndGetId) {
 
 TEST(WeightedNodeTest, IsUsed) {
     using namespace anagraph;
-    WeightedNode node1;
-    WeightedNode node2(1);
-    WeightedNode node3(2);
+    graph::WeightedNode node1;
+    graph::WeightedNode node2(1);
+    graph::WeightedNode node3(2);
     EXPECT_FALSE(node1.isUsed());
     EXPECT_TRUE(node2.isUsed());
     EXPECT_TRUE(node3.isUsed());
@@ -63,7 +63,7 @@ TEST(WeightedNodeTest, IsUsed) {
 
 TEST(WeightedNodeTest, SetAndGetAdjacents) {
     using namespace anagraph;
-    WeightedNode node1;
+    graph::WeightedNode node1;
     node1.setAdjacent(4, 1.5);
     node1.setAdjacent(5, 2.0);
     const auto& adjacents = node1.getAdjacents();
@@ -74,7 +74,7 @@ TEST(WeightedNodeTest, SetAndGetAdjacents) {
 
 TEST(WeightedNodeTest, UpdateAdjacent) {
     using namespace anagraph;
-    WeightedNode node1;
+    graph::WeightedNode node1;
     node1.setAdjacent(4, 1.5);
     node1.updateAdjacent(4, 0.5);
     node1.updateAdjacent(5, 1.5);
@@ -85,7 +85,7 @@ TEST(WeightedNodeTest, UpdateAdjacent) {
 
 TEST(WeightedNodeTest, RemoveAdjacent) {
     using namespace anagraph;
-    WeightedNode node1;
+    graph::WeightedNode node1;
     node1.setAdjacent(4, 1.5);
     node1.setAdjacent(5, 2.0);
     EXPECT_EQ(static_cast<int>(node1.getAdjacents().size()), 2);
@@ -97,10 +97,10 @@ TEST(WeightedNodeTest, RemoveAdjacent) {
 
 TEST(WeightedNodeTest, Clear) {
     using namespace anagraph;
-    WeightedNode node1;
+    graph::WeightedNode node1;
     node1.setAdjacent(4, 1.5);
     node1.clear();
     EXPECT_FALSE(node1.isUsed());
-    EXPECT_EQ(node1.getId(), WeightedNode::UNUSED_ID);
+    EXPECT_EQ(node1.getId(), graph::WeightedNode::UNUSED_ID);
     EXPECT_TRUE(node1.getAdjacents().empty());
 }

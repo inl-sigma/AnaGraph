@@ -11,7 +11,7 @@
 namespace anagraph {
 namespace pagerank {
 
-std::vector<double> pageRank(const WeightedDigraph &graph, const double alpha, const int iter) {
+std::vector<double> pageRank(const graph::WeightedDigraph &graph, const double alpha, const int iter) {
     spdlog::debug("called pageRank with alpha = {} and iter = {}", alpha, iter);
     const int size = graph.size();
     std::vector<double> pr(size, 0); /**< the vector meaning the pagerank */
@@ -69,11 +69,11 @@ std::vector<double> pageRank(const WeightedDigraph &graph, const double alpha, c
     return pr;
 }
 
-std::vector<double> pageRank(const WeightedDigraph &graph) {
+std::vector<double> pageRank(const graph::WeightedDigraph &graph) {
     return pageRank(graph, 0.15, 1000000);
 }
 
-std::tuple<std::vector<double>, std::vector<double>> forwardPush(const WeightedDigraph &graph, const std::vector<double> source, const double alpha, const double thr) {
+std::tuple<std::vector<double>, std::vector<double>> forwardPush(const graph::WeightedDigraph &graph, const std::vector<double> source, const double alpha, const double thr) {
     const int size = graph.size();
     std::vector<double> ppr(size, 0); /**< the vector meaning the reserve/approximated PPR */
     std::vector<double> residue = source; /**< the vector meaning the residue */
@@ -139,8 +139,8 @@ std::tuple<std::vector<double>, std::vector<double>> forwardPush(const WeightedD
     return std::tie(ppr, residue);
 }
 
-std::tuple<std::vector<double>, std::vector<double>> forwardPush(const WeightedGraph &graph, const std::vector<double> source, const double alpha, const double thr) {
-    WeightedDigraph digraph = graph.toDigraph();
+std::tuple<std::vector<double>, std::vector<double>> forwardPush(const graph::WeightedGraph &graph, const std::vector<double> source, const double alpha, const double thr) {
+    graph::WeightedDigraph digraph = graph.toDigraph();
     return forwardPush(digraph, source, alpha, thr);
 }
 
@@ -209,7 +209,7 @@ std::tuple<std::vector<double>, std::vector<double>> forwardPush(const graph::Gr
     return forwardPush(digraph, source, alpha, thr);
 }
 
-std::vector<double> fora(const WeightedDigraph &graph, const std::vector<double> source, const double alpha, const double epsilon) {
+std::vector<double> fora(const graph::WeightedDigraph &graph, const std::vector<double> source, const double alpha, const double epsilon) {
     const int size = graph.size();
     std::vector<double> outWeightSum(size, 0); /**< the vector meaning the sum of the out weights */
     for (int src = 0; src < size; src++) {
@@ -281,8 +281,8 @@ std::vector<double> fora(const WeightedDigraph &graph, const std::vector<double>
     return ppr;
 }
 
-std::vector<double> fora(const WeightedGraph &graph, const std::vector<double> source, const double alpha, const double epsilon) {
-    WeightedDigraph digraph = graph.toDigraph();
+std::vector<double> fora(const graph::WeightedGraph &graph, const std::vector<double> source, const double alpha, const double epsilon) {
+    graph::WeightedDigraph digraph = graph.toDigraph();
     return fora(digraph, source, alpha, epsilon);
 }
 

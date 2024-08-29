@@ -7,6 +7,7 @@
 #include "anagraph/components/unweighted_graph.hpp"
 #include "anagraph/components/unweighted_node.hpp"
 #include "anagraph/components/weighted_graph.hpp"
+#include "anagraph/components/weighted_node.hpp"
 #include "anagraph/interfaces/unweighted_hetero_node_interface.hpp"
 #include "anagraph/interfaces/unweighted_hetero_digraph_interface.hpp"
 #include "anagraph/interfaces/unweighted_hetero_graph_interface.hpp"
@@ -441,7 +442,7 @@ template <typename T>
 class WeightedHeteroNode : public interface::IWeightedHeteroNode<T> {
 private:
     static const int UNUSED_ID; /**< The default value for an unused node */
-    WeightedNode weightedNode;
+    graph::WeightedNode weightedNode;
     T attributes;
     bool isAttrEnabled;
 
@@ -449,14 +450,14 @@ public:
     /**
      * @brief Constructs a weightedNode object.
      */
-    WeightedHeteroNode() : weightedNode(WeightedNode()), attributes(T()), isAttrEnabled(false) {
+    WeightedHeteroNode() : weightedNode(graph::WeightedNode()), attributes(T()), isAttrEnabled(false) {
     };
 
     /**
      * @brief Constructs a weightedNode object with the specified id.
      * @param id The id of the node.
      */
-    WeightedHeteroNode(int id) : weightedNode(WeightedNode(id)), attributes(T()), isAttrEnabled(false) {
+    WeightedHeteroNode(int id) : weightedNode(graph::WeightedNode(id)), attributes(T()), isAttrEnabled(false) {
     };
 
     /**
@@ -464,7 +465,7 @@ public:
      * @param id The id of the node.
      * @param attributes The attributes of the node.
      */
-    WeightedHeteroNode(int id, T attributes) : weightedNode(WeightedNode(id)), attributes(attributes), isAttrEnabled(true) {
+    WeightedHeteroNode(int id, T attributes) : weightedNode(graph::WeightedNode(id)), attributes(attributes), isAttrEnabled(true) {
     };
 
     /**

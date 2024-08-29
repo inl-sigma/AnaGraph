@@ -12,22 +12,22 @@ namespace {
 
 TEST(WeightedGraphTest, GetNode) {
     using namespace anagraph;
-    WeightedGraph graph;
+    graph::WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
 
-    const WeightedNode& node1 = graph.getNode(0);
+    const graph::WeightedNode& node1 = graph.getNode(0);
     EXPECT_EQ(node1.getId(), 0);
-    const WeightedNode& node2 = graph.getNode(1);
+    const graph::WeightedNode& node2 = graph.getNode(1);
     EXPECT_EQ(node2.getId(), 1);
-    const WeightedNode& node3 = graph.getNode(2);
+    const graph::WeightedNode& node3 = graph.getNode(2);
     EXPECT_EQ(node3.getId(), 2);
 }
 
 TEST(WeightedGraphTest, SetNode) {
     using namespace anagraph;
-    WeightedGraph graph;
+    graph::WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -37,7 +37,7 @@ TEST(WeightedGraphTest, SetNode) {
 
 TEST(WeightedGraphTest, RemoveNode) {
     using namespace anagraph;
-    WeightedGraph graph;
+    graph::WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -48,7 +48,7 @@ TEST(WeightedGraphTest, RemoveNode) {
 
 TEST(WeightedGraphTest, GetIDs) {
     using namespace anagraph;
-    WeightedGraph graph;
+    graph::WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -70,7 +70,7 @@ TEST(WeightedGraphTest, AddEdge) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
 
-    WeightedGraph graph;
+    graph::WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -86,7 +86,7 @@ TEST(WeightedGraphTest, AddEdge) {
 
 TEST(WeightedGraphTest, RemoveEdge) {
     using namespace anagraph;
-    WeightedGraph graph;
+    graph::WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -102,7 +102,7 @@ TEST(WeightedGraphTest, RemoveEdge) {
 TEST(WeightedGraphTest, GetAdjacents) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
-    WeightedGraph graph;
+    graph::WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -122,7 +122,7 @@ TEST(WeightedGraphTest, GetAdjacents) {
 TEST(WeightedGraphTest, GetSubgraph) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
-    WeightedGraph graph;
+    graph::WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -134,7 +134,7 @@ TEST(WeightedGraphTest, GetSubgraph) {
 
     std::unordered_set<int> indices = {0, 1, 3};
     spdlog::debug("create subgraph");
-    WeightedGraph subgraph = graph.getSubgraph(indices);
+    graph::WeightedGraph subgraph = graph.getSubgraph(indices);
 
     spdlog::debug("calculate subgraph size");
     EXPECT_EQ(subgraph.size(), static_cast<size_t>(3));
@@ -147,7 +147,7 @@ TEST(WeightedGraphTest, GetSubgraph) {
 TEST(WeightedGraphTest, Reorganize) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
-    WeightedGraph graph;
+    graph::WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(2);
     graph.setNode(4);
@@ -168,7 +168,7 @@ TEST(WeightedGraphTest, Reorganize) {
 
 TEST(WeightedGraphTest, toDigraph) {
     using namespace anagraph;
-    WeightedGraph graph;
+    graph::WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -178,7 +178,7 @@ TEST(WeightedGraphTest, toDigraph) {
     graph.addEdge(0, 2, 2.5);
     graph.addEdge(1, 3, 3.0);
 
-    WeightedDigraph digraph = graph.toDigraph();
+    graph::WeightedDigraph digraph = graph.toDigraph();
     EXPECT_EQ(digraph.size(), static_cast<size_t>(4));
     EXPECT_DOUBLE_EQ(digraph.getWeight(0, 1), 5.0);
     EXPECT_DOUBLE_EQ(digraph.getWeight(1, 0), 5.0);
@@ -191,7 +191,7 @@ TEST(WeightedGraphTest, toDigraph) {
 TEST(WeightedGraphTest, ReadGraph) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
-    WeightedGraph graph;
+    graph::WeightedGraph graph;
     const std::string inputPath = datasetDirectory + "/graph.txt";
     graph.readGraph(inputPath, FileExtension::TXT);
 
@@ -213,7 +213,7 @@ TEST(WeightedGraphTest, ReadGraph) {
 
 TEST(WeightedGraphTest, WriteGraph) {
     using namespace anagraph;
-    WeightedGraph graph;
+    graph::WeightedGraph graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
