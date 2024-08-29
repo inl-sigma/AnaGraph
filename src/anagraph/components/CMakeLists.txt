@@ -1,7 +1,9 @@
 add_library(graphcomponents STATIC 
     graph_parser.cpp
     graph_writer.cpp
+    unweighted_digraph.cpp
     unweighted_graph.cpp
+    unweighted_node.cpp
     weighted_graph.cpp
     heterogeneous_graph.cpp
     supergraph.cpp

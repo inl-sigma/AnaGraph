@@ -1,13 +1,12 @@
 #pragma once
 
-#ifndef UNWEIGHTED_GRAPH_HPP
-#define UNWEIGHTED_GRAPH_HPP
+#ifndef UNWEIGHTED_DIGRAPH_HPP
+#define UNWEIGHTED_DIGRAPH_HPP
 
+#include "anagraph/components/unweighted_node.hpp"
 #include "anagraph/components/graph_parser.hpp"
 #include "anagraph/components/graph_writer.hpp"
-#include "anagraph/components/unweighted_node.hpp"
-#include "anagraph/components/unweighted_digraph.hpp"
-#include "anagraph/interfaces/unweighted_graph_interface.hpp"
+#include "anagraph/interfaces/unweighted_digraph_interface.hpp"
 #include "anagraph/utils/graph_utils.hpp"
 
 #include <unordered_set>
@@ -16,28 +15,29 @@
 namespace anagraph {
 namespace graph {
 
-class Graph : public interface::IGraph {
+class Digraph : public interface::IDigraph {
 private:
-    Digraph digraph;
+    std::vector<Node> nodes;
+    std::unordered_set<int> usedNodes;
 
 public:
     /**
-     * @brief Default constructor for the Graph class.
+     * @brief Default constructor for the Digraph class.
      */
-    Graph() = default;
+    Digraph() = default;
 
     /**
-     * @brief Constructs a new Graph object with the given file path and extension name.
+     * @brief Constructs a new Digraph object with the given file path and extension name.
      *
      * @param filePath The path of the file to import the graph from
      * @param extName The extension of the file
      */
-    Graph(std::string filePath, FileExtension extName);
+    Digraph(std::string filePath, FileExtension extName);
 
     /**
-     * @brief Copy constructor for the Graph class.
+     * @brief Copy constructor for the Digraph class.
      */
-    Graph(const Graph& graph) = default;
+    Digraph(const Digraph& digraph) = default;
 
         /** 
      * @brief Get the attributes of a node.
@@ -98,7 +98,7 @@ public:
      * @param indices The indices of the nodes to include in the subgraph
      * @return A subgraph of the graph
      */
-    Graph getSubgraph(std::unordered_set<int> indices) const;
+    Digraph getSubgraph(std::unordered_set<int> indices) const;
 
     /**
      * @brief Reorganize the graph.
@@ -107,12 +107,6 @@ public:
      * It can be used to delete unnecessary nodes.
      */
     void reorganize();
-
-    /**
-     * @brief Convert the graph to a digraph.
-     * @return A digraph representation of the graph
-     */
-    Digraph toDigraph() const;
 
     /**
      * @brief Get the number of nodes in the graph.
@@ -132,9 +126,30 @@ public:
      * @param extName The extension of the file
      */
     void writeGraph(std::string filePath, FileExtension extName) const override;
+
+private:
+    /**
+     * @brief Read a graph from a file.
+     * @param filePath The path of the file to import the graph from
+     * @param parser The parser to use to read the graph
+     * 
+     * This method is used to read a graph from a file.
+     * It uses the specified parser to read the graph.
+     */
+    void readGraphHelper(std::string filePath, IGraphParser &parser);
+
+    /**
+     * @brief Write the graph to a file.
+     * @param filePath The path of the file to export the graph to
+     * @param writer The writer to use to write the graph
+     * 
+     * This method is used to write the graph to a file.
+     * It uses the specified writer to write the graph.
+     */
+    void writeGraphHelper(std::string filePath, IGraphWriter &writer, std::vector<EdgeObject> &edges) const;
 };
 
 } // namespace graph
 } // namespace anagraph
 
-#endif // UNWEIGHTED_GRAPH_HPP
+#endif // UNWEIGHTED_DIGRAPH_HPP
