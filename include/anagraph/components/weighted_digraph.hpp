@@ -1,57 +1,61 @@
 #pragma once
 
-#ifndef WEIGHTED_GRAPH_HPP
-#define WEIGHTED_GRAPH_HPP
+#ifndef WEIGHTED_DIGRAPH_HPP
+#define WEIGHTED_DIGRAPH_HPP
 
+#include "anagraph/components/weighted_node.hpp"
 #include "anagraph/components/graph_parser.hpp"
 #include "anagraph/components/graph_writer.hpp"
-#include "anagraph/components/weighted_digraph.hpp"
-#include "anagraph/interfaces/weighted_graph_interface.hpp"
+#include "anagraph/interfaces/weighted_digraph_interface.hpp"
 #include "anagraph/utils/graph_utils.hpp"
 
-#include <memory>
-#include <string>
-#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 namespace anagraph {
 namespace graph {
 
 /**
- * @class WeightedGraph
+ * @class WeightedDigraph
  * @brief Represents a weighted graph data structure.
  * 
  * @note This WeightedGraph class is indexed as 0-origin and allowed to have self-loops.
  * The WeightedGraph class provides a way to represent a weighted graph using an adjacency list.
  * It supports adding edges between vertices and accessing the adjacency list of a node.
  */
-class WeightedGraph : public interface::IWeightedGraph {
+class WeightedDigraph : public interface::IWeightedDigraph {
 private:
-    WeightedDigraph digraph; /**< The directed weighted graph, treated as undirected one. */
+    std::vector<WeightedNode> nodes; /**< The adjacency list representing the graph. */
+    std::unordered_set<int> usedNodes; /**< The set of used nodes. */
 
 public:
     /**
      * @brief Constructs a WeightedGraph object.
      */
-    WeightedGraph();
+    WeightedDigraph();
 
     /**
      * @brief Constructs a WeightedGraph object with the file.
      * @param filePath The path to the file containing the graph data.
      */
-    WeightedGraph(std::string filePath, FileExtension extName);
+    WeightedDigraph(std::string filePath, FileExtension extName);
 
     /**
      * @brief Copy constructor for the WeightedGraph object.
      */
-    WeightedGraph(const WeightedGraph &graph) 
-        : digraph(graph.digraph) {
+    WeightedDigraph(const WeightedDigraph &graph) 
+        : nodes(graph.nodes), usedNodes(graph.usedNodes) {
     }
 
     /**
      * @brief Assignment operator for the WeightedGraph object.
      */
-    WeightedGraph& operator=(const WeightedGraph& digraph);
+    WeightedDigraph& operator=(const WeightedDigraph& graph);
+
+    /**
+     * @brief Get the id of the graph.
+     */
+    std::unordered_set<int> getIds() const override;
 
     /** 
      * @brief Get the attributes of a node.
@@ -69,11 +73,6 @@ public:
      * @param id The node to add
      */
     void setNode(int id) override;
-
-    /**
-     * @brief Get the id of the graph.
-     */
-    std::unordered_set<int> getIds() const override;
 
     /**
      * @brief Set a node to the graph.
@@ -143,7 +142,7 @@ public:
      * @param indices The indices of the nodes to include in the subgraph
      * @return A subgraph of the graph
      */
-    WeightedGraph getSubgraph(std::unordered_set<int> indices) const;
+    WeightedDigraph getSubgraph(std::unordered_set<int> indices) const;
 
     /**
      * @brief Reorganize the graph.
@@ -159,13 +158,6 @@ public:
     size_t size() const override;
 
     /**
-     * Converts the graph to a weighted directed graph.
-     * 
-     * @return The weighted directed graph representation of the graph.
-     */
-    virtual WeightedDigraph toDigraph() const;
-
-    /**
      * @brief Read a graph from a file.
      * @param filename The name of the file to import the graph from
      * @param extName The extension of the file
@@ -178,9 +170,30 @@ public:
      * @param extName The extension of the file
      */
     void writeGraph(std::string filename, FileExtension extName) const override;
+
+private:
+    /**
+     * @brief Read a graph from a file.
+     * @param filename The name of the file to import the graph from
+     * @param parser The parser to use to read the graph
+     * 
+     * This method is used to read a graph from a file.
+     * It uses the specified parser to read the graph.
+     */
+    void readGraphHelper(std::string filename, IGraphParser &parser);
+
+    /**
+     * @brief Write the graph to a file.
+     * @param filename The name of the file to export the graph to
+     * @param writer The writer to use to write the graph
+     * 
+     * This method is used to write the graph to a file.
+     * It uses the specified writer to write the graph.
+     */
+    void writeGraphHelper(std::string filename, IGraphWriter &writer, std::vector<WeightedEdgeObject>) const;
 };
-    
+
 } // namespace graph
 } // namespace anagraph
 
-#endif // WEIGHTED_GRAPH_HPP
+#endif // WEIGHTED_DIGRAPH_HPP

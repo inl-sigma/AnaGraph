@@ -4,7 +4,9 @@ add_library(graphcomponents STATIC
     unweighted_digraph.cpp
     unweighted_graph.cpp
     unweighted_node.cpp
+    weighted_digraph.cpp
     weighted_graph.cpp
+    weighted_node.cpp
     heterogeneous_graph.cpp
     supergraph.cpp
 )
