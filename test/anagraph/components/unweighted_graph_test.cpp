@@ -12,7 +12,7 @@ namespace {
 }
 
 TEST(GraphTest, GetNode) {
-    using namespace anagraph;
+    using namespace anagraph::graph;
     Graph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -27,7 +27,7 @@ TEST(GraphTest, GetNode) {
 }
 
 TEST(GraphTest, SetNode) {
-    using namespace anagraph;
+    using namespace anagraph::graph;
     Graph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -37,7 +37,7 @@ TEST(GraphTest, SetNode) {
 }
 
 TEST(GraphTest, RemoveNode) {
-    using namespace anagraph;
+    using namespace anagraph::graph;
     Graph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -48,7 +48,7 @@ TEST(GraphTest, RemoveNode) {
 }
 
 TEST(GraphTest, GetIDs) {
-    using namespace anagraph;
+    using namespace anagraph::graph;
     Graph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -68,7 +68,7 @@ TEST(GraphTest, GetIDs) {
 }
 
 TEST(GraphTest, AddEdge) {
-    using namespace anagraph;
+    using namespace anagraph::graph;
     spdlog::set_level(spdlog::level::debug);
 
     Graph graph;
@@ -88,7 +88,7 @@ TEST(GraphTest, AddEdge) {
 }
 
 TEST(GraphTest, RemoveEdge) {
-    using namespace anagraph;
+    using namespace anagraph::graph;
     Graph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -103,7 +103,7 @@ TEST(GraphTest, RemoveEdge) {
 }
 
 TEST(GraphTest, GetSubgraph) {
-    using namespace anagraph;
+    using namespace anagraph::graph;
     spdlog::set_level(spdlog::level::debug);
     Graph graph;
     graph.setNode(0);
@@ -129,7 +129,7 @@ TEST(GraphTest, GetSubgraph) {
 }
 
 TEST(GraphTest, Reorganize) {
-    using namespace anagraph;
+    using namespace anagraph::graph;
     spdlog::set_level(spdlog::level::debug);
     Graph graph;
     graph.setNode(0);
@@ -151,12 +151,12 @@ TEST(GraphTest, Reorganize) {
 }
 
 TEST(GraphTest, ReadGraph) {
-    using namespace anagraph;
+    using namespace anagraph::graph;
     Graph graph;
     // output current directory
     spdlog::info("current directory: {}", std::filesystem::current_path().string());
     const std::string inputPath = datasetDirectory + "/graph.txt";
-    graph.readGraph(inputPath, FileExtension::TXT);
+    graph.readGraph(inputPath, anagraph::FileExtension::TXT);
 
     EXPECT_EQ(graph.size(), static_cast<size_t>(6));
     EXPECT_TRUE(graph.getAdjacents(0).contains(1));
@@ -178,7 +178,7 @@ TEST(GraphTest, ReadGraph) {
 }
 
 TEST(GraphTest, WriteGraph) {
-    using namespace anagraph;
+    using namespace anagraph::graph;
     Graph graph;
     graph.setNode(0);
     graph.setNode(1);
@@ -195,5 +195,5 @@ TEST(GraphTest, WriteGraph) {
     graph.addEdge(4, 5);
 
     const std::string outputPath = datasetDirectory + "/output/graph_output.txt";
-    graph.writeGraph(outputPath, FileExtension::TXT);
+    graph.writeGraph(outputPath, anagraph::FileExtension::TXT);
 }

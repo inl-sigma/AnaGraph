@@ -4,6 +4,7 @@
 #define PAGERANK_HPP
 
 #include "anagraph/components/weighted_graph.hpp"
+#include "anagraph/components/unweighted_digraph.hpp"
 #include "anagraph/components/unweighted_graph.hpp"
 
 #include <vector>
@@ -77,7 +78,7 @@ std::tuple<std::vector<double>, std::vector<double>> forwardPush(const WeightedG
  * @param thr The convergence threshold for the algorithm.
  * @return A tuple containing two vectors: the final PageRank scores and the residual errors.
  */
-std::tuple<std::vector<double>, std::vector<double>> forwardPush(const Digraph &graph, const std::vector<double> source, const double alpha, const double thr);
+std::tuple<std::vector<double>, std::vector<double>> forwardPush(const graph::Digraph &graph, const std::vector<double> source, const double alpha, const double thr);
 
 /**
  * Calculates the forward push algorithm for PageRank.
@@ -91,7 +92,7 @@ std::tuple<std::vector<double>, std::vector<double>> forwardPush(const Digraph &
  * @param thr The convergence threshold for the algorithm.
  * @return A tuple containing two vectors: the final PageRank scores and the residual errors.
  */
-std::tuple<std::vector<double>, std::vector<double>> forwardPush(const Graph &graph, const std::vector<double> source, const double alpha, const double thr);
+std::tuple<std::vector<double>, std::vector<double>> forwardPush(const graph::Graph &graph, const std::vector<double> source, const double alpha, const double thr);
 
 /**
  * @brief Compute the PageRank of a graph using the combination of forward push algorithm and random walk
@@ -133,7 +134,7 @@ std::vector<double> fora(const WeightedGraph &graph, const std::vector<double> s
  * 
  * @note The graph must be connected, and has sequential node ids
  */
-std::vector<double> fora(const Digraph &graph, const std::vector<double> source, const double alpha, const double epsilon);
+std::vector<double> fora(const graph::Digraph &graph, const std::vector<double> source, const double alpha, const double epsilon);
 
 /**
  * @brief Compute the PageRank of a graph using the combination of forward push algorithm and random walk
@@ -147,7 +148,7 @@ std::vector<double> fora(const Digraph &graph, const std::vector<double> source,
  * 
  * @note The graph must be connected, and has sequential node ids
  */
-std::vector<double> fora(const Graph &graph, const std::vector<double> source, const double alpha, const double epsilon);
+std::vector<double> fora(const graph::Graph &graph, const std::vector<double> source, const double alpha, const double epsilon);
 
 } // namespace pagerank
 } // namespace anagraph

@@ -3,7 +3,9 @@
 #ifndef HETEROGENEOUS_GRAPH_HPP
 #define HETEROGENEOUS_GRAPH_HPP
 
+#include "anagraph/components/unweighted_digraph.hpp"
 #include "anagraph/components/unweighted_graph.hpp"
+#include "anagraph/components/unweighted_node.hpp"
 #include "anagraph/components/weighted_graph.hpp"
 #include "anagraph/interfaces/unweighted_hetero_node_interface.hpp"
 #include "anagraph/interfaces/unweighted_hetero_digraph_interface.hpp"
@@ -22,7 +24,7 @@ template <typename T>
 class HeteroNode : public interface::IHeteroNode<T> {
 private:
     static const int UNUSED_ID; /**< The default value for an unused node */
-    Node node;
+    graph::Node node;
     T attributes;
     bool isAttrEnabled;
 
@@ -30,20 +32,20 @@ public:
     /**
      * @brief Constructs a HeteroNode object.
      */
-    HeteroNode() : node(Node()), attributes(T()), isAttrEnabled(false) {};
+    HeteroNode() : node(graph::Node()), attributes(T()), isAttrEnabled(false) {};
 
     /**
      * @brief Constructs a HeteroNode object with the specified id.
      * @param id The id of the node.
      */
-    HeteroNode(int id) : node(Node(id)), attributes(T()), isAttrEnabled(false) {};
+    HeteroNode(int id) : node(graph::Node(id)), attributes(T()), isAttrEnabled(false) {};
 
     /**
      * @brief Constructs a HeteroNode object with the specified id and attributes.
      * @param id The id of the node.
      * @param attributes The attributes of the node.
      */
-    HeteroNode(int id, T attributes) : node(Node(id)), attributes(attributes), isAttrEnabled(true) {};
+    HeteroNode(int id, T attributes) : node(graph::Node(id)), attributes(attributes), isAttrEnabled(true) {};
 
     /**
      * @brief Get the id of the node.

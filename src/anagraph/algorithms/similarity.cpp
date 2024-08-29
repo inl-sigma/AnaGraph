@@ -9,7 +9,7 @@
 
 namespace {
     using namespace anagraph;
-    std::tuple<int, int, int, int> calcConfusionMatrix(const Digraph &expected, const Digraph &answer) {
+    std::tuple<int, int, int, int> calcConfusionMatrix(const graph::Digraph &expected, const graph::Digraph &answer) {
         int tp = 0;
         int fp = 0;
         int fn = 0;
@@ -39,7 +39,7 @@ namespace {
         return std::make_tuple(tp, fp, fn, tn);
     }
 
-    std::tuple<int, int, int, int> calcConfusionMatrix(const Graph &expected, const Graph &answer) {
+    std::tuple<int, int, int, int> calcConfusionMatrix(const graph::Graph &expected, const graph::Graph &answer) {
         int tp = 0;
         int fp = 0;
         int fn = 0;
@@ -168,7 +168,7 @@ double JSdivergence(const std::vector<double>& p, const std::vector<double>& q) 
     return (KLdivergence(p, m) + KLdivergence(q, m)) / 2;
 }
 
-double accuracy(const Digraph &expected, const Digraph &answer) {
+double accuracy(const graph::Digraph &expected, const graph::Digraph &answer) {
     auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
     spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
     if (tp + fp + fn + tn == 0) {
@@ -178,7 +178,7 @@ double accuracy(const Digraph &expected, const Digraph &answer) {
     }
 }
 
-double accuracy(const Graph &expected, const Graph &answer) {
+double accuracy(const graph::Graph &expected, const graph::Graph &answer) {
     auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
     spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
     if (tp + fp + fn + tn == 0) {
@@ -188,7 +188,7 @@ double accuracy(const Graph &expected, const Graph &answer) {
     }
 }
 
-double precision(const Digraph &expected, const Digraph &answer) {
+double precision(const graph::Digraph &expected, const graph::Digraph &answer) {
     auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
     spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
     if (tp + fp == 0) {
@@ -198,7 +198,7 @@ double precision(const Digraph &expected, const Digraph &answer) {
     }
 }
 
-double precision(const Graph &expected, const Graph &answer) {
+double precision(const graph::Graph &expected, const graph::Graph &answer) {
     auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
     spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
     if (tp + fp == 0) {
@@ -208,7 +208,7 @@ double precision(const Graph &expected, const Graph &answer) {
     }
 }
 
-double recall(const Digraph &expected, const Digraph &answer) {
+double recall(const graph::Digraph &expected, const graph::Digraph &answer) {
     auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
     spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
     if (tp + fn == 0) {
@@ -218,7 +218,7 @@ double recall(const Digraph &expected, const Digraph &answer) {
     }
 }
 
-double recall(const Graph &expected, const Graph &answer) {
+double recall(const graph::Graph &expected, const graph::Graph &answer) {
     auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
     spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
     if (tp + fn == 0) {
@@ -228,7 +228,7 @@ double recall(const Graph &expected, const Graph &answer) {
     }
 }
 
-double fMeasure(const Digraph &expected, const Digraph &answer) {
+double fMeasure(const graph::Digraph &expected, const graph::Digraph &answer) {
     auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
     spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
     const double precisionValue = ((tp + fp)) != 0 ? static_cast<double>(tp) / (tp + fp) : 0.0;
@@ -236,7 +236,7 @@ double fMeasure(const Digraph &expected, const Digraph &answer) {
     return 2 * (precisionValue * recallValue) / (precisionValue + recallValue);
 }
 
-double fMeasure(const Graph &expected, const Graph &answer) {
+double fMeasure(const graph::Graph &expected, const graph::Graph &answer) {
     auto [tp, fp, fn, tn] = calcConfusionMatrix(expected, answer);
     spdlog::debug("tp/fp/fn/tn = {}/{}/{}/{}", tp, fp, fn, tn);
     const double precisionValue = ((tp + fp)) != 0 ? static_cast<double>(tp) / (tp + fp) : 0.0;

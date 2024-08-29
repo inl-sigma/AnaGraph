@@ -144,7 +144,7 @@ std::tuple<std::vector<double>, std::vector<double>> forwardPush(const WeightedG
     return forwardPush(digraph, source, alpha, thr);
 }
 
-std::tuple<std::vector<double>, std::vector<double>> forwardPush(const Digraph &graph, const std::vector<double> source, const double alpha, const double thr) {
+std::tuple<std::vector<double>, std::vector<double>> forwardPush(const graph::Digraph &graph, const std::vector<double> source, const double alpha, const double thr) {
     const int size = graph.size();
     std::vector<double> ppr(size, 0); /**< the vector meaning the reserve/approximated PPR */
     std::vector<double> residue = source; /**< the vector meaning the residue */
@@ -204,8 +204,8 @@ std::tuple<std::vector<double>, std::vector<double>> forwardPush(const Digraph &
     return std::tie(ppr, residue);
 }
 
-std::tuple<std::vector<double>, std::vector<double>> forwardPush(const Graph &graph, const std::vector<double> source, const double alpha, const double thr) {
-    Digraph digraph = graph.toDigraph();
+std::tuple<std::vector<double>, std::vector<double>> forwardPush(const graph::Graph &graph, const std::vector<double> source, const double alpha, const double thr) {
+    graph::Digraph digraph = graph.toDigraph();
     return forwardPush(digraph, source, alpha, thr);
 }
 
@@ -286,7 +286,7 @@ std::vector<double> fora(const WeightedGraph &graph, const std::vector<double> s
     return fora(digraph, source, alpha, epsilon);
 }
 
-std::vector<double> fora(const Digraph &graph, const std::vector<double> source, const double alpha, const double epsilon) {
+std::vector<double> fora(const graph::Digraph &graph, const std::vector<double> source, const double alpha, const double epsilon) {
     const int size = graph.size();
     std::vector<std::vector<int>> outEdges(size, std::vector<int>()); 
     std::vector<int> outDegree(size, 0); /**< the vector meaning the out degree of each node */
@@ -347,8 +347,8 @@ std::vector<double> fora(const Digraph &graph, const std::vector<double> source,
     return ppr;
 }
 
-std::vector<double> fora(const Graph &graph, const std::vector<double> source, const double alpha, const double epsilon) {
-    Digraph digraph = graph.toDigraph();
+std::vector<double> fora(const graph::Graph &graph, const std::vector<double> source, const double alpha, const double epsilon) {
+    graph::Digraph digraph = graph.toDigraph();
     return fora(digraph, source, alpha, epsilon);
 }
 

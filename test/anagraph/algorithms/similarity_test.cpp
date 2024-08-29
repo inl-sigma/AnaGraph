@@ -40,12 +40,12 @@ TEST(SimilarityTest, JSdivergence) {
 
 TEST(SimilarityTest, DirectedAccuracy) {
     using namespace anagraph;
-    Digraph expected;
+    graph::Digraph expected;
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
     expected.addEdge(3, 1);
 
-    Digraph answer;
+    graph::Digraph answer;
     answer.addEdge(1, 2);
     answer.addEdge(2, 3);
     answer.addEdge(3, 1);
@@ -60,12 +60,12 @@ TEST(SimilarityTest, DirectedAccuracy) {
 
 TEST(SimilarityTest, UndirectedAccuracy) {
     using namespace anagraph;
-    Graph expected;
+    graph::Graph expected;
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
     expected.addEdge(3, 4);
 
-    Graph answer;
+    graph::Graph answer;
     answer.addEdge(1, 2);
     answer.addEdge(2, 3);
     answer.addEdge(3, 4);
@@ -81,12 +81,12 @@ TEST(SimilarityTest, UndirectedAccuracy) {
 
 TEST(SimilarityTest, DirectedPrecision) {
     using namespace anagraph;
-    Digraph expected;
+    graph::Digraph expected;
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
     expected.addEdge(3, 1);
 
-    Digraph answer;
+    graph::Digraph answer;
     answer.addEdge(1, 2);
     answer.addEdge(2, 3);
     answer.addEdge(3, 1);
@@ -101,12 +101,12 @@ TEST(SimilarityTest, DirectedPrecision) {
 
 TEST(SimilarityTest, UndirectedPrecision) {
     using namespace anagraph;
-    Graph expected;
+    graph::Graph expected;
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
     expected.addEdge(3, 4);
 
-    Graph answer;
+    graph::Graph answer;
     answer.addEdge(1, 2);
     answer.addEdge(2, 3);
     answer.addEdge(3, 4);
@@ -121,12 +121,12 @@ TEST(SimilarityTest, UndirectedPrecision) {
 
 TEST(SimilarityTest, DirectedRecall) {
     using namespace anagraph;
-    Digraph expected;
+    graph::Digraph expected;
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
     expected.addEdge(3, 1);
 
-    Digraph answer;
+    graph::Digraph answer;
     answer.addEdge(1, 2);
     answer.addEdge(2, 3);
     answer.addEdge(3, 1);
@@ -142,12 +142,12 @@ TEST(SimilarityTest, DirectedRecall) {
 TEST(SimilarityTest, UndirectedRecall) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
-    Graph expected;
+    graph::Graph expected;
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
     expected.addEdge(3, 4);
 
-    Graph answer;
+    graph::Graph answer;
     answer.addEdge(1, 2);
     answer.addEdge(2, 3);
     answer.addEdge(3, 4);
@@ -162,12 +162,12 @@ TEST(SimilarityTest, UndirectedRecall) {
 
 TEST(SimilarityTest, DirectedFMeasure) {
     using namespace anagraph;
-    Digraph expected;
+    graph::Digraph expected;
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
     expected.addEdge(3, 1);
 
-    Digraph answer;
+    graph::Digraph answer;
     answer.addEdge(1, 2);
     answer.addEdge(2, 3);
     answer.addEdge(3, 1);
@@ -182,12 +182,12 @@ TEST(SimilarityTest, DirectedFMeasure) {
 
 TEST(SimilarityTest, UndirectedFMeasure) {
     using namespace anagraph;
-    Graph expected;
+    graph::Graph expected;
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
     expected.addEdge(3, 4);
 
-    Graph answer;
+    graph::Graph answer;
     answer.addEdge(1, 2);
     answer.addEdge(2, 3);
     answer.addEdge(3, 4);
