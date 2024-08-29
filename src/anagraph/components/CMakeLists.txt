@@ -7,7 +7,12 @@ add_library(graphcomponents STATIC
     weighted_digraph.cpp
     weighted_graph.cpp
     weighted_node.cpp
-    heterogeneous_graph.cpp
+    unweighted_hetero_node.cpp
+    unweighted_hetero_digraph.cpp
+    unweighted_hetero_graph.cpp
+    weighted_hetero_node.cpp
+    weighted_hetero_digraph.cpp
+    weighted_hetero_graph.cpp
     supergraph.cpp
 )
 target_link_libraries(graphcomponents PUBLIC spdlog::spdlog)

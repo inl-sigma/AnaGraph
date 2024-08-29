@@ -3,6 +3,8 @@
 #ifndef WEIGHTED_HETERO_DIGRAPH_INTERFACE_HPP
 #define WEIGHTED_HETERO_DIGRAPH_INTERFACE_HPP
 
+#include <unordered_set>
+
 namespace anagraph {
 namespace interface {
 
