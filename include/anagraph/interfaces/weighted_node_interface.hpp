@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef UNWEIGHTED_NODE_HPP
-#define UNWEIGHTED_NODE_HPP
+#ifndef WEIGHTED_NODE_INTERFACE_HPP
+#define WEIGHTED_NODE_INTERFACE_HPP
 
 #include <unordered_map>
 
@@ -76,4 +76,4 @@ public:
 } // namespace interface
 } // namespace anagraph
 
-#endif // UNWEIGHTED_NODE_HPP
+#endif // WEIGHTED_NODE_INTERFACE_HPP
