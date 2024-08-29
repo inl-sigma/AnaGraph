@@ -1,0 +1,35 @@
+include(GoogleTest)
+
+function(add_component_test_executable name)
+    add_executable(${name} ${name}.cpp)
+    target_link_libraries(${name} GTest::gtest_main graphcomponents)
+    target_compile_features(${name} PUBLIC cxx_std_20)
+    target_compile_definitions(${name} PRIVATE PROJECT_SOURCE_DIR="${PROJECT_SOURCE_DIR}")
+    if (USE_ASAN)
+        target_compile_options(${name} PUBLIC -Wall -fsanitize=address)
+        target_link_options(${name} PUBLIC -fsanitize=address)
+    else()
+        target_compile_options(${name} PUBLIC -Wall)
+    endif()
+    gtest_discover_tests(${name})
+endfunction(add_component_test_executable name)
+
+add_component_test_executable(weighted_node_test)
+add_component_test_executable(weighted_digraph_test)
+add_component_test_executable(weighted_graph_test)
+
+add_component_test_executable(unweighted_node_test)
+add_component_test_executable(unweighted_digraph_test)
+add_component_test_executable(unweighted_graph_test)
+
+add_component_test_executable(weighted_hetero_node_test)
+add_component_test_executable(weighted_hetero_digraph_test)
+add_component_test_executable(weighted_hetero_graph_test)
+
+add_component_test_executable(unweighted_hetero_node_test)
+add_component_test_executable(unweighted_hetero_digraph_test)
+add_component_test_executable(unweighted_hetero_graph_test)
+
+add_component_test_executable(weighted_supernode_test)
+add_component_test_executable(weighted_superdigraph_test)
+add_component_test_executable(weighted_supergraph_test)
