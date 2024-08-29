@@ -1,4 +1,4 @@
-#include "anagraph/components/heterogeneous_graph.hpp"
+#include "anagraph/components/weighted_hetero_graph.hpp"
 
 #include <gtest/gtest.h>
 #include <spdlog/spdlog.h>
@@ -13,22 +13,22 @@ namespace {
 
 TEST(WeightedHeteroGraphTest, GetNode) {
     using namespace anagraph;
-    WeightedHeteroGraph<int> graph;
+    graph_structure::WeightedHeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
 
-    const WeightedHeteroNode<int>& node1 = graph.getNode(0);
+    const graph_structure::WeightedHeteroNode<int>& node1 = graph.getNode(0);
     EXPECT_EQ(node1.getId(), 0);
-    const WeightedHeteroNode<int>& node2 = graph.getNode(1);
+    const graph_structure::WeightedHeteroNode<int>& node2 = graph.getNode(1);
     EXPECT_EQ(node2.getId(), 1);
-    const WeightedHeteroNode<int>& node3 = graph.getNode(2);
+    const graph_structure::WeightedHeteroNode<int>& node3 = graph.getNode(2);
     EXPECT_EQ(node3.getId(), 2);
 }
 
 TEST(WeightedHeteroGraphTest, SetNode) {
     using namespace anagraph;
-    WeightedHeteroGraph<int> graph;
+    graph_structure::WeightedHeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -38,7 +38,7 @@ TEST(WeightedHeteroGraphTest, SetNode) {
 
 TEST(WeightedHeteroGraphTest, RemoveNode) {
     using namespace anagraph;
-    WeightedHeteroGraph<int> graph;
+    graph_structure::WeightedHeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -49,7 +49,7 @@ TEST(WeightedHeteroGraphTest, RemoveNode) {
 
 TEST(WeightedHeteroGraphTest, GetIDs) {
     using namespace anagraph;
-    WeightedHeteroGraph<int> graph;
+    graph_structure::WeightedHeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -71,7 +71,7 @@ TEST(WeightedHeteroGraphTest, AddEdge) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
 
-    WeightedHeteroGraph<int> graph;
+    graph_structure::WeightedHeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -87,7 +87,7 @@ TEST(WeightedHeteroGraphTest, AddEdge) {
 
 TEST(WeightedHeteroGraphTest, RemoveEdge) {
     using namespace anagraph;
-    WeightedHeteroGraph<int> graph;
+    graph_structure::WeightedHeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -103,7 +103,7 @@ TEST(WeightedHeteroGraphTest, RemoveEdge) {
 TEST(WeightedHeteroGraphTest, GetAdjacents) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
-    WeightedHeteroGraph<int> graph;
+    graph_structure::WeightedHeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -123,7 +123,7 @@ TEST(WeightedHeteroGraphTest, GetAdjacents) {
 TEST(WeightedHeteroGraphTest, GetSubgraph) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
-    WeightedHeteroGraph<int> graph;
+    graph_structure::WeightedHeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -135,7 +135,7 @@ TEST(WeightedHeteroGraphTest, GetSubgraph) {
 
     std::unordered_set<int> indices = {0, 1, 3};
     spdlog::debug("create subgraph");
-    WeightedHeteroGraph<int> subgraph = graph.getSubgraph(indices);
+    graph_structure::WeightedHeteroGraph<int> subgraph = graph.getSubgraph(indices);
 
     spdlog::debug("calculate subgraph size");
     EXPECT_EQ(subgraph.size(), static_cast<size_t>(3));
@@ -148,7 +148,7 @@ TEST(WeightedHeteroGraphTest, GetSubgraph) {
 TEST(WeightedHeteroGraphTest, Reorganize) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
-    WeightedHeteroGraph<int> graph;
+    graph_structure::WeightedHeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(2);
     graph.setNode(4);
@@ -170,7 +170,7 @@ TEST(WeightedHeteroGraphTest, Reorganize) {
 
 TEST(WeightedHeteroGraphTest, GetAttributes) {
     using namespace anagraph;
-    WeightedHeteroGraph<std::string> graph;
+    graph_structure::WeightedHeteroGraph<std::string> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -185,7 +185,7 @@ TEST(WeightedHeteroGraphTest, GetAttributes) {
 
 TEST(WeightedHeteroGraphTest, SetAttributes) {
     using namespace anagraph;
-    WeightedHeteroGraph<std::string> graph;
+    graph_structure::WeightedHeteroGraph<std::string> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -202,7 +202,7 @@ TEST(WeightedHeteroGraphTest, SetAttributes) {
 TEST(WeightedHeteroGraphTest, AnyAttributes) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
-    WeightedHeteroGraph<std::any> graph;
+    graph_structure::WeightedHeteroGraph<std::any> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -226,7 +226,7 @@ TEST(WeightedHeteroGraphTest, AnyAttributes) {
 
 TEST(WeightedHeteroGraphTest, toDigraph) {
     using namespace anagraph;
-    WeightedHeteroGraph<int> graph;
+    graph_structure::WeightedHeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -238,7 +238,7 @@ TEST(WeightedHeteroGraphTest, toDigraph) {
 
     graph.setAttributes(0, 42);
 
-    WeightedHeteroDigraph<int> digraph = graph.toDigraph();
+    graph_structure::WeightedHeteroDigraph<int> digraph = graph.toDigraph();
     EXPECT_EQ(digraph.size(), static_cast<size_t>(4));
     EXPECT_DOUBLE_EQ(digraph.getWeight(0, 1), 5.0);
     EXPECT_DOUBLE_EQ(digraph.getWeight(1, 0), 5.0);
@@ -251,7 +251,7 @@ TEST(WeightedHeteroGraphTest, toDigraph) {
 
 TEST(WeightedHeteroGraphTest, ReadGraph) {
     using namespace anagraph;
-    WeightedHeteroGraph<int> graph;
+    graph_structure::WeightedHeteroGraph<int> graph;
     const std::string inputPath = datasetDirectory + "/graph.txt";
     graph.readGraph(inputPath, FileExtension::TXT);
 
@@ -266,7 +266,7 @@ TEST(WeightedHeteroGraphTest, ReadGraph) {
 
 TEST(WeightedHeteroGraphTest, WriteGraph) {
     using namespace anagraph;
-    WeightedHeteroGraph<int> graph;
+    graph_structure::WeightedHeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);

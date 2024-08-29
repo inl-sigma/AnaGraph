@@ -1,4 +1,4 @@
-#include "anagraph/components/heterogeneous_graph.hpp"
+#include "anagraph/components/unweighted_hetero_graph.hpp"
 
 #include <gtest/gtest.h>
 #include <spdlog/spdlog.h>
@@ -13,22 +13,22 @@ namespace {
 
 TEST(HeteroGraphTest, GetNode) {
     using namespace anagraph;
-    HeteroGraph<int> graph;
+    graph_structure::HeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
 
-    const HeteroNode<int>& node1 = graph.getNode(0);
+    const graph_structure::HeteroNode<int>& node1 = graph.getNode(0);
     EXPECT_EQ(node1.getId(), 0);
-    const HeteroNode<int>& node2 = graph.getNode(1);
+    const graph_structure::HeteroNode<int>& node2 = graph.getNode(1);
     EXPECT_EQ(node2.getId(), 1);
-    const HeteroNode<int>& node3 = graph.getNode(2);
+    const graph_structure::HeteroNode<int>& node3 = graph.getNode(2);
     EXPECT_EQ(node3.getId(), 2);
 }
 
 TEST(HeteroGraphTest, SetNode) {
     using namespace anagraph;
-    HeteroGraph<int> graph;
+    graph_structure::HeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -38,7 +38,7 @@ TEST(HeteroGraphTest, SetNode) {
 
 TEST(HeteroGraphTest, RemoveNode) {
     using namespace anagraph;
-    HeteroGraph<int> graph;
+    graph_structure::HeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -49,7 +49,7 @@ TEST(HeteroGraphTest, RemoveNode) {
 
 TEST(HeteroGraphTest, GetIDs) {
     using namespace anagraph;
-    HeteroGraph<int> graph;
+    graph_structure::HeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -70,7 +70,7 @@ TEST(HeteroGraphTest, GetIDs) {
 TEST(HeteroGraphTest, GetAdjacents) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
-    HeteroGraph<int> graph;
+    graph_structure::HeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -91,7 +91,7 @@ TEST(HeteroGraphTest, AddEdge) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
 
-    HeteroGraph<int> graph;
+    graph_structure::HeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -113,7 +113,7 @@ TEST(HeteroGraphTest, AddEdge) {
 
 TEST(HeteroGraphTest, RemoveEdge) {
     using namespace anagraph;
-    HeteroGraph<int> graph;
+    graph_structure::HeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -130,7 +130,7 @@ TEST(HeteroGraphTest, RemoveEdge) {
 TEST(HeteroGraphTest, GetSubgraph) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
-    HeteroGraph<int> graph;
+    graph_structure::HeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -142,7 +142,7 @@ TEST(HeteroGraphTest, GetSubgraph) {
 
     std::unordered_set<int> indices = {0, 1, 3};
     spdlog::debug("create subgraph");
-    HeteroGraph<int> subgraph = graph.getSubgraph(indices);
+    graph_structure::HeteroGraph<int> subgraph = graph.getSubgraph(indices);
 
     spdlog::debug("calculate subgraph size");
     EXPECT_EQ(subgraph.size(), static_cast<size_t>(3));
@@ -157,7 +157,7 @@ TEST(HeteroGraphTest, GetSubgraph) {
 TEST(HeteroGraphTest, Reorganize) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
-    HeteroGraph<int> graph;
+    graph_structure::HeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(2);
     graph.setNode(4);
@@ -178,7 +178,7 @@ TEST(HeteroGraphTest, Reorganize) {
 
 TEST(HeteroGraphTest, GetAttributes) {
     using namespace anagraph;
-    HeteroGraph<std::string> graph;
+    graph_structure::HeteroGraph<std::string> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -196,7 +196,7 @@ TEST(HeteroGraphTest, GetAttributes) {
 
 TEST(HeteroGraphTest, SetAttributes) {
     using namespace anagraph;
-    HeteroGraph<std::string> graph;
+    graph_structure::HeteroGraph<std::string> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -213,7 +213,7 @@ TEST(HeteroGraphTest, SetAttributes) {
 TEST(HeteroGraphTest, AnyAttributes) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
-    HeteroGraph<std::any> graph;
+    graph_structure::HeteroGraph<std::any> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
@@ -237,7 +237,7 @@ TEST(HeteroGraphTest, AnyAttributes) {
 
 TEST(HeteroGraphTest, ReadGraph) {
     using namespace anagraph;
-    HeteroGraph<int> graph;
+    graph_structure::HeteroGraph<int> graph;
     const std::string inputPath = datasetDirectory + "/graph.txt";
     graph.readGraph(inputPath, FileExtension::TXT);
 
@@ -259,7 +259,7 @@ TEST(HeteroGraphTest, ReadGraph) {
 
 TEST(HeteroGraphTest, WriteGraph) {
     using namespace anagraph;
-    HeteroGraph<int> graph;
+    graph_structure::HeteroGraph<int> graph;
     graph.setNode(0);
     graph.setNode(1);
     graph.setNode(2);
