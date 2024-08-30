@@ -19,12 +19,11 @@ void WeightedSuperDigraph::setNode(int id) {
     usedNodes.insert(id);
 }
 
-void WeightedSuperDigraph::setNode(WeightedSupernode &node) {
+void WeightedSuperDigraph::setNode(const WeightedSupernode &node) {
     // If the ID is not initialized, add it to the end
     int nodeId;
     if (!node.isUsed()) {
         nodeId = nodes.size();
-        node.setId(nodeId);
     } else {
         nodeId = node.getId();
     }
@@ -32,6 +31,7 @@ void WeightedSuperDigraph::setNode(WeightedSupernode &node) {
         nodes.resize(nodeId + 1);
     }
     nodes[nodeId] = node;
+    nodes[nodeId].setId(nodeId);
     usedNodes.insert(nodeId);
 }
 
@@ -42,6 +42,30 @@ WeightedSupernode WeightedSuperDigraph::getNode(int id) const {
 void WeightedSuperDigraph::removeNode(int id) {
     nodes[id].clear();
     usedNodes.erase(id);
+}
+
+void WeightedSuperDigraph::mergeNode(int first, int second, std::function<WeightedSupernode(WeightedSupernode, WeightedSupernode)> mergeFunc) {
+    if (!mergeFunc) {
+        throw std::bad_function_call();
+    }
+    if (!usedNodes.contains(first) || !usedNodes.contains(second)) {
+        throw std::out_of_range("Node does not exist");
+    }
+    const WeightedSupernode &firstNode = getNode(first);
+    const WeightedSupernode &secondNode = getNode(second);
+    const WeightedSupernode mergedNode = mergeFunc(firstNode, secondNode);
+    setNode(mergedNode);
+}
+
+void WeightedSuperDigraph::mergeNode(int first, int second) {
+    if (!mergeNodeFunc) {
+        throw std::bad_function_call();
+    }
+    mergeNode(first, second, mergeNodeFunc);
+}
+
+void WeightedSuperDigraph::setMergeNodeFunction(std::function<WeightedSupernode(WeightedSupernode, WeightedSupernode)> mergeFunc) {
+    mergeNodeFunc = mergeFunc;
 }
 
 std::unordered_set<int> WeightedSuperDigraph::getIds() const {

@@ -47,7 +47,7 @@ public:
      *
      * @param other The WeightedSupernode object to be moved.
      */
-    WeightedSupernode(WeightedSupernode&&) = default;
+    WeightedSupernode(WeightedSupernode&&) noexcept = default;
 
     /**
      * @brief Assignment operator for WeightedSupernode.
