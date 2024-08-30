@@ -21,8 +21,6 @@ WeightedNode& WeightedNode::operator=(const WeightedNode& node) {
     return *this;
 }
 
-const int WeightedNode::UNUSED_ID = -1;
-
 int WeightedNode::getId() const{
     return id;
 }

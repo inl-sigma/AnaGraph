@@ -4,7 +4,6 @@
 
 namespace anagraph {
 
-const int WeightedSupernode::UNUSED_ID = -1;
 const int WeightedSupernode::ROOT = -1;
 
 int WeightedSupernode::getId() const {

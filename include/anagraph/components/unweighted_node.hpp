@@ -14,8 +14,6 @@ private:
     std::unordered_set<int> adjacents;
 
 public:
-    static const int UNUSED_ID; /**< The default value for an unused node */
-
     /**
      * @brief Default constructor for the Node class.
      */

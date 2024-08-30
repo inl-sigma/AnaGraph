@@ -19,7 +19,6 @@ namespace graph_structure {
 template <typename T>
 class WeightedHeteroNode : public interface::IWeightedHeteroNode<T> {
 private:
-    static const int UNUSED_ID; /**< The default value for an unused node */
     WeightedNode weightedNode;
     T attributes;
     bool isAttrEnabled;
