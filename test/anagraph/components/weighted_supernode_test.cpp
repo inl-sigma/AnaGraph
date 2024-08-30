@@ -2,8 +2,6 @@
 
 #include <gtest/gtest.h>
 
-#include <cassert>
-
 TEST(WeightedSupernodeTest, DefaultConstructor) {
     using namespace anagraph;
     WeightedSupernode node1;
