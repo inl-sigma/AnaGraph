@@ -13,7 +13,9 @@ add_library(graphcomponents STATIC
     weighted_hetero_node.cpp
     weighted_hetero_digraph.cpp
     weighted_hetero_graph.cpp
-    supergraph.cpp
+    weighted_supernode.cpp
+    weighted_directed_supergraph.cpp
+    weighted_supergraph.cpp
 )
 target_link_libraries(graphcomponents PUBLIC spdlog::spdlog)
 target_include_directories(graphcomponents PUBLIC ${PROJECT_SOURCE_DIR}/include)
