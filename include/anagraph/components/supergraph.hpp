@@ -15,15 +15,14 @@
 
 namespace anagraph {
 
-class WeightedSupernode : interface::IWeightedNode {
+class WeightedSupernode : public interface::IWeightedNode {
 private:
     graph_structure::WeightedNode node;
     int parent = ROOT; /**< parent is implemented as type int, because this relation is a kind of attributed edge */
     std::unordered_set<int> children;
 
 public:
-    // todo : declare the constants as utils?
-    static const int UNUSED_ID; /**< UNUSED_ID is a constant that represents that the node is not used */
+    // todo : declare the constants in interface
     static const int ROOT; /**< ROOT is a constant that represents that the node has no parent node */
     /**
      * @brief Construct a new WeightedSupernode object.

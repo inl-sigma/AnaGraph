@@ -21,7 +21,6 @@ namespace graph_structure {
 template <typename T>
 class HeteroNode : public interface::IHeteroNode<T> {
 private:
-    static const int UNUSED_ID; /**< The default value for an unused node */
     Node node;
     T attributes;
     bool isAttrEnabled;

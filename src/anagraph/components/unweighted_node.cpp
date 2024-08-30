@@ -5,8 +5,6 @@
 namespace anagraph {
 namespace graph_structure {
 
-const int Node::UNUSED_ID = -1;
-
 int Node::getId() const {
     return id;
 }

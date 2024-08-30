@@ -21,7 +21,6 @@ private:
     std::unordered_map<int, double> adjacents; /**< The adjacent nodes of the node */
 
 public:
-    static const int UNUSED_ID; /**< The default value for an unused node */
     /**
      * @brief Constructs a weightedNode object.
      */

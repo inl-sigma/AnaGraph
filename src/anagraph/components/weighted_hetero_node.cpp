@@ -16,9 +16,6 @@ WeightedHeteroNode<T>& WeightedHeteroNode<T>::operator=(const WeightedHeteroNode
 }
 
 template <typename T>
-const int WeightedHeteroNode<T>::UNUSED_ID = -1;
-
-template <typename T>
 int WeightedHeteroNode<T>::getId() const{
     return weightedNode.getId();
 }
