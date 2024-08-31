@@ -57,7 +57,7 @@ public:
      *
      * @param other The WeightedSuperDigraph object to be moved.
      */
-    WeightedSuperDigraph(WeightedSuperDigraph&&) = default;
+    WeightedSuperDigraph(WeightedSuperDigraph&&) noexcept = default;
 
     /**
      * @brief Assignment operator for WeightedSuperDigraph.

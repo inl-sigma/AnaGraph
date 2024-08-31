@@ -50,7 +50,7 @@ public:
      *
      * @param other The WeightedSuperDigraph object to be moved.
      */
-    WeightedSupergraph(WeightedSupergraph&&) = default;
+    WeightedSupergraph(WeightedSupergraph&&) noexcept = default;
 
     /**
      * @brief Assignment operator for WeightedSuperDigraph.
@@ -86,6 +86,33 @@ public:
      * @param id The node to remove
      */
     void removeNode(int id) override;
+
+    /**
+     * @brief Merge two nodes.
+     * @param first The first node to merge
+     * @param second The second node to merge
+     * @param mergeFunc The function/rule to merge two nodes
+     * 
+     * @note this function will merge the nodes and update the edges by mergeFunc.
+     */
+    void mergeNode(int first, int second, std::function<WeightedSupernode(WeightedSupernode, WeightedSupernode)> mergeFunc);
+
+    /**
+     * @brief Merge two nodes.
+     * @param first The first node to merge
+     * @param second The second node to merge
+     * 
+     * @note this function will merge the nodes and update the edges by the function set by setMergeNodeFunc.
+     * 
+     * @throw std::bad_function_call if the merge function is not set.
+     */
+    void mergeNode(int first, int second);
+
+    /**
+     * @brief Set the function to merge two nodes.
+     * @param mergeFunc The function/rule to merge two nodes
+     */
+    void setMergeNodeFunction(std::function<WeightedSupernode(WeightedSupernode, WeightedSupernode)> mergeFunc);
 
     /**
      * @brief Get the id of the graph.
