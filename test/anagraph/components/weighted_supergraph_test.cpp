@@ -301,6 +301,82 @@ TEST(WeightedSupergraphTest, GetAdjacents) {
     EXPECT_EQ(adjacents7.size(), static_cast<size_t>(0));
 }
 
+TEST(WeightedSupergraphTest, Merge) {
+    using namespace anagraph::graph_structure;
+    spdlog::set_level(spdlog::level::debug);
+    WeightedSupergraph graph;
+    graph.setNode(1);
+    graph.setNode(2);
+    graph.setNode(3);
+    graph.setNode(4);
+    graph.setNode(5);
+
+    graph.addEdge(1, 3, 1.0);
+    graph.addEdge(1, 5, 2.0);
+    graph.addEdge(2, 4, 1.5);
+    graph.addEdge(2, 5, 1.0);
+
+    graph.mergeNode(1, 2, [](WeightedSupernode first, WeightedSupernode second) {
+        WeightedSupernode node;
+        std::unordered_map<int, double> adjacents1 = first.getAdjacents();
+        std::unordered_map<int, double> adjacents2 = second.getAdjacents();
+        for (const auto &[id, weight] : adjacents1) {
+            node.setAdjacent(id, weight);
+        }
+        for (const auto &[id, weight] : adjacents2) {
+            node.updateAdjacent(id, weight);
+        }
+        return node;
+    });
+
+    EXPECT_EQ(graph.size(), static_cast<size_t>(6));
+    EXPECT_EQ(graph.getWeight(6, 3), 1.0);
+    EXPECT_EQ(graph.getWeight(3, 6), 1.0);
+    EXPECT_EQ(graph.getWeight(6, 4), 1.5);
+    EXPECT_EQ(graph.getWeight(4, 6), 1.5);
+    EXPECT_EQ(graph.getWeight(6, 5), 3.0);
+    EXPECT_EQ(graph.getWeight(5, 6), 3.0);
+}
+
+TEST(WeightedSupergraphTest, setMergeNodeFunction) {
+    using namespace anagraph::graph_structure;
+    WeightedSupergraph graph;
+    graph.setNode(1);
+    graph.setNode(2);
+    graph.setNode(3);
+    graph.setNode(4);
+    graph.setNode(5);
+
+    graph.addEdge(1, 3, 1.0);
+    graph.addEdge(1, 5, 2.0);
+    graph.addEdge(2, 4, 1.5);
+    graph.addEdge(2, 5, 1.0);
+
+    EXPECT_THROW(graph.mergeNode(1, 2), std::bad_function_call);
+
+    graph.setMergeNodeFunction([](WeightedSupernode first, WeightedSupernode second) {
+        WeightedSupernode node;
+        std::unordered_map<int, double> adjacents1 = first.getAdjacents();
+        std::unordered_map<int, double> adjacents2 = second.getAdjacents();
+        for (const auto &[id, weight] : adjacents1) {
+            node.setAdjacent(id, weight);
+            
+        }
+        for (const auto &[id, weight] : adjacents2) {
+            node.updateAdjacent(id, weight);
+        }
+        return node;
+    });
+    graph.mergeNode(1, 2);
+    EXPECT_EQ(graph.size(), static_cast<size_t>(6));
+    EXPECT_EQ(graph.getWeight(6, 3), 1.0);
+    EXPECT_EQ(graph.getWeight(3, 6), 1.0);
+    EXPECT_EQ(graph.getWeight(6, 4), 1.5);
+    EXPECT_EQ(graph.getWeight(4, 6), 1.5);
+    EXPECT_EQ(graph.getWeight(6, 5), 3.0);
+    EXPECT_EQ(graph.getWeight(5, 6), 3.0);
+}
+
 TEST(WeightedSupergraphTest, Size) {
     using namespace anagraph::graph_structure;
     spdlog::set_level(spdlog::level::debug);
