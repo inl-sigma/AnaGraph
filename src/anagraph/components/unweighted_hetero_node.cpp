@@ -1,5 +1,7 @@
 #include "anagraph/components/unweighted_hetero_node.hpp"
 
+#include <spdlog/spdlog.h>
+
 #include <any>
 #include <stdexcept>
 #include <string>
@@ -9,32 +11,36 @@ namespace graph_structure {
 
 template <typename T>
 int HeteroNode<T>::getId() const {
-    return node.getId();
+    return id;
 }
 
 template <typename T>
 void HeteroNode<T>::setId(int id) {
-    node.setId(id);
+    if (id < 0) {
+        spdlog::warn("Node ID cannot be negative. ID not set.");
+    } else {
+        this->id = id;
+    }
 }
 
 template <typename T>
 bool HeteroNode<T>::isUsed() const {
-    return node.isUsed();
+    return id != interface::IHeteroNode<T>::UNUSED_ID;
 }
 
 template <typename T>
 const std::unordered_set<int>& HeteroNode<T>::getAdjacents() const {
-    return node.getAdjacents();
+    return adjacentIds;
 }
 
 template <typename T>
 void HeteroNode<T>::setAdjacent(int adjacent) {
-    node.setAdjacent(adjacent);
+    adjacentIds.insert(adjacent);
 }
 
 template <typename T>
 void HeteroNode<T>::removeAdjacent(int adjacent) {
-    node.removeAdjacent(adjacent);
+    adjacentIds.erase(adjacent);
 }
 
 template <typename T>
@@ -52,8 +58,22 @@ void HeteroNode<T>::setAttributes(T attributes) {
 }
 
 template <typename T>
+const std::map<int, std::reference_wrapper<HeteroNode<T>>>& HeteroNode<T>::getAdjacentNodes() const {
+    return adjacentNodes;
+}
+
+template <typename T>
+void HeteroNode<T>::setAdjacentNode(HeteroNode<T>& adjacent) {
+    const int id = adjacent.getId();
+    adjacentIds.insert(id);
+    adjacentNodes.insert({id, adjacent});
+}
+
+template <typename T>
 void HeteroNode<T>::clear() {
-    node.clear();
+    id = interface::IHeteroNode<T>::UNUSED_ID;
+    adjacentIds.clear();
+    adjacentNodes.clear();
     attributes = T();
     isAttrEnabled = false;
 }

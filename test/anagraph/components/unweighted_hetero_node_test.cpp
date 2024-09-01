@@ -110,6 +110,26 @@ TEST(HeteroNodeTest, SetAndGetAttributes) {
     EXPECT_THROW(node3.getAttributes(), std::runtime_error);
 }
 
+TEST(HeteroNodeTest, SetAndGetAdjacentNodes) {
+    using namespace anagraph;
+    graph_structure::HeteroNode<int> node1(0);
+    graph_structure::HeteroNode<int> node2(1);
+    graph_structure::HeteroNode<int> node3(2);
+    node1.setAdjacentNode(node2);
+    node1.setAdjacentNode(node3);
+
+    const auto& adjacents = node1.getAdjacentNodes();
+    EXPECT_EQ(static_cast<int>(adjacents.size()), 2);
+    EXPECT_TRUE(adjacents.contains(1));
+    EXPECT_TRUE(adjacents.contains(2));
+
+    const auto& adj = adjacents.at(1).get();
+    node2.setAdjacentNode(node3);
+    EXPECT_EQ(static_cast<int>(adj.getAdjacents().size()), 1);
+    EXPECT_TRUE(adj.getAdjacents().contains(2));
+    EXPECT_TRUE(node2.getAdjacents().contains(2));
+}  
+
 TEST(HeteroNodeTest, Clear) {
     using namespace anagraph;
     graph_structure::HeteroNode<int> node1;

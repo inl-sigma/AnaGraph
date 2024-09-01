@@ -6,6 +6,9 @@
 #include "anagraph/components/unweighted_node.hpp"
 #include "anagraph/interfaces/unweighted_hetero_node_interface.hpp"
 
+#include <functional>
+#include <map>
+
 namespace anagraph {
 namespace graph_structure {
 
@@ -21,7 +24,9 @@ namespace graph_structure {
 template <typename T>
 class HeteroNode : public interface::IHeteroNode<T> {
 private:
-    Node node;
+    int id;
+    std::unordered_set<int> adjacentIds;
+    std::map<int, std::reference_wrapper<HeteroNode<T>>> adjacentNodes;
     T attributes;
     bool isAttrEnabled;
 
@@ -29,20 +34,61 @@ public:
     /**
      * @brief Constructs a HeteroNode object.
      */
-    HeteroNode() : node(Node()), attributes(T()), isAttrEnabled(false) {};
+    HeteroNode() : 
+        id(interface::IHeteroNode<T>::UNUSED_ID), 
+        adjacentIds(std::unordered_set<int>()), 
+        adjacentNodes(std::map<int, std::reference_wrapper<HeteroNode>>()),
+        attributes(T()), 
+        isAttrEnabled(false) 
+    {};
 
     /**
      * @brief Constructs a HeteroNode object with the specified id.
      * @param id The id of the node.
      */
-    HeteroNode(int id) : node(Node(id)), attributes(T()), isAttrEnabled(false) {};
+    HeteroNode(int id) :
+        id(id), 
+        adjacentIds(std::unordered_set<int>()), 
+        adjacentNodes(std::map<int, std::reference_wrapper<HeteroNode>>()),
+        attributes(T()), 
+        isAttrEnabled(false)
+    {};
 
     /**
      * @brief Constructs a HeteroNode object with the specified id and attributes.
      * @param id The id of the node.
      * @param attributes The attributes of the node.
      */
-    HeteroNode(int id, T attributes) : node(Node(id)), attributes(attributes), isAttrEnabled(true) {};
+    HeteroNode(int id, T attributes) :
+        id(id), 
+        adjacentIds(std::unordered_set<int>()), 
+        adjacentNodes(std::map<int, std::reference_wrapper<HeteroNode>>()),
+        attributes(attributes), 
+        isAttrEnabled(true)
+    {};
+
+    /**
+     * @brief Copy constructor for the HeteroNode object.
+     */
+    HeteroNode(const HeteroNode &node) = default;
+
+    /**
+     * @brief Move constructor for the HeteroNode object.
+     */
+    HeteroNode(HeteroNode &&node) : 
+        id(node.id), 
+        adjacentIds(std::move(node.adjacentIds)), 
+        adjacentNodes(std::move(node.adjacentNodes)),
+        attributes(node.attributes), 
+        isAttrEnabled(node.isAttrEnabled)
+    {
+        node.clear();
+    };
+
+    /**
+     * @brief Copy assignment operator for the HeteroNode object.
+     */
+    HeteroNode& operator=(const HeteroNode &node) = default;
 
     /**
      * @brief Get the id of the node.
@@ -81,6 +127,20 @@ public:
      * @param adjacent The id of the adjacent node.
      */
     void removeAdjacent(int adjacent) override;
+
+    /**
+     * @brief Get the adjacent nodes of a node.
+     * @return A map of integers representing the adjacent nodes.
+     * 
+     * This method is used to retrieve the adjacent nodes of a node.
+     */
+    const std::map<int, std::reference_wrapper<HeteroNode<T>>>& getAdjacentNodes() const;
+
+    /**
+     * @brief Set an adjacent node to the node.
+     * @param adjacent The adjacent node.
+     */
+    void setAdjacentNode(HeteroNode<T>& adjacent);
 
     /**
      * @brief Get the attribute of the node.

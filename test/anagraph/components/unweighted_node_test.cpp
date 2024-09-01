@@ -72,6 +72,25 @@ TEST(UnweightedNodeTest, SetAndGetAdjacents) {
     EXPECT_TRUE(adjacents.contains(5));
 }
 
+TEST(UnweightedNodeTest, SetAndGetAdjacentNodes) {
+    using namespace anagraph::graph_structure;
+    Node node1(1);
+    Node node2(2);
+    Node node3(3);
+    node1.setAdjacentNode(node2);
+    node1.setAdjacentNode(node3);
+    const auto& adjacents = node1.getAdjacentNodes();
+    EXPECT_EQ(static_cast<int>(adjacents.size()), 2);
+    EXPECT_TRUE(adjacents.contains(2));
+    EXPECT_TRUE(adjacents.contains(3));
+
+    auto &adj = adjacents.at(2).get();
+    node2.setAdjacentNode(node3); // update after getting the adjacent node
+    EXPECT_EQ(adj.getId(), 2);
+    EXPECT_TRUE(node2.getAdjacents().contains(3));
+    EXPECT_TRUE(adj.getAdjacents().contains(3));
+}
+
 TEST(UnweightedNodeTest, RemoveAdjacent) {
     using namespace anagraph::graph_structure;
     Node node1;
