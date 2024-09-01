@@ -4,15 +4,15 @@ namespace anagraph {
 namespace graph_structure {
 
 int WeightedSupernode::getId() const {
-    return node.getId();
+    return id;
 }
 
 void WeightedSupernode::setId(int id) {
-    node.setId(id);
+    this->id = id;
 }
 
 bool WeightedSupernode::isUsed() const {
-    return node.isUsed();
+    return id != UNUSED_ID;
 }
 
 bool WeightedSupernode::isRoot() const {
@@ -44,23 +44,56 @@ void WeightedSupernode::addChild(int child) {
 }
 
 const std::unordered_map<int, double>& WeightedSupernode::getAdjacents() const {
-    return node.getAdjacents();
+    return adjacentIds;
+}
+
+double WeightedSupernode::getWeight(int adjacent) const {
+    if (adjacentIds.contains(adjacent)) {
+        return adjacentIds.at(adjacent);
+    } else {
+        return 0.0;
+    }
 }
 
 void WeightedSupernode::setAdjacent(int adjacent, double weight) {
-    node.setAdjacent(adjacent, weight);
+    adjacentIds[adjacent] = weight;
 }
 
 void WeightedSupernode::updateAdjacent(int adjacent, double weight) {
-    node.updateAdjacent(adjacent, weight);
+    if (adjacentIds.contains(adjacent)) {
+        adjacentIds[adjacent] += weight;
+    } else {
+        adjacentIds[adjacent] = weight;
+    }
 }
 
 void WeightedSupernode::removeAdjacent(int adjacent) {
-    node.removeAdjacent(adjacent);
+    adjacentIds.erase(adjacent);
+}
+
+const std::map<int, std::reference_wrapper<WeightedSupernode>>& WeightedSupernode::getAdjacentNodes() const {
+    return adjacentNodes;
+} 
+
+void WeightedSupernode::setAdjacentNode(WeightedSupernode& adjacent, double weight) {
+    const int id = adjacent.getId();
+    adjacentIds[id] = weight;
+    adjacentNodes.insert({id, adjacent});
+}
+
+void WeightedSupernode::updateAdjacentNode(WeightedSupernode& adjacent, double weight) {
+    const int id = adjacent.getId();
+    if (adjacentIds.contains(id)) {
+        adjacentIds[id] += weight;
+    } else {
+        setAdjacentNode(adjacent, weight);
+    }
 }
 
 void WeightedSupernode::clear() {
-    node.clear();
+    id = UNUSED_ID;
+    adjacentIds.clear();
+    adjacentNodes.clear();
     parent = ROOT;
     children.clear();
 }

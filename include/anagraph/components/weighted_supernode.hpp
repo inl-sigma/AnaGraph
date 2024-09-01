@@ -6,6 +6,9 @@
 #include "anagraph/components/weighted_node.hpp"
 #include "anagraph/interfaces/weighted_node_interface.hpp"
 
+#include <spdlog/spdlog.h>
+
+#include <functional>
 #include <unordered_set>
 
 namespace anagraph {
@@ -13,23 +16,42 @@ namespace graph_structure {
 
 class WeightedSupernode : public interface::IWeightedNode {
 private:
-    graph_structure::WeightedNode node;
+    inline static int nodesCount = 0; /**< The number of nodes */
+
+    int id; /**< The id of the node */
     int parent = ROOT; /**< parent is implemented as type int, because this relation is a kind of attributed edge */
+    std::unordered_map<int, double> adjacentIds; /**< The adjacent nodes of the node */
+    std::map<int, std::reference_wrapper<WeightedSupernode>> adjacentNodes; /**< The adjacent nodes of the node */
     std::unordered_set<int> children;
 
 public:
-    // todo : declare the constants in interface
     static inline const int ROOT = -1; /**< ROOT is a constant that represents that the node has no parent node */
     /**
      * @brief Construct a new WeightedSupernode object.
      */
-    WeightedSupernode() = default;
+    WeightedSupernode() :
+        id(nodesCount++),
+        parent(ROOT),
+        adjacentIds(),
+        adjacentNodes(),
+        children()
+    {};
 
     /**
      * @brief Construct a new WeightedSupernode object.
      * @param id The id of the node.
      */
-    WeightedSupernode(int id) : node(id), children(std::unordered_set<int>()) {};
+    WeightedSupernode(int id) : 
+        id(id), 
+        parent(ROOT),
+        adjacentIds(),
+        adjacentNodes(),
+        children()
+    {
+        if (id >= nodesCount) {
+            nodesCount = id + 1;
+        }
+    };
 
     /**
      * @brief Copy constructor for WeightedSupernode.
@@ -132,6 +154,13 @@ public:
     const std::unordered_map<int, double>& getAdjacents() const override;
 
     /**
+     * @brief Get the weight of an adjacent node.
+     * @param adjacent The id of the adjacent node.
+     * @return The weight of the edge between the nodes.
+     */
+    double getWeight(int adjacent) const;
+
+    /**
      * @brief Set the adjacent node of a node.
      * @param adjacent The id of the adjacent node.
      * @param weight The weight of the edge between the nodes.
@@ -150,6 +179,28 @@ public:
      * @param adjacent The id of the adjacent node.
      */
     void removeAdjacent(int adjacent) override;
+
+    /**
+     * @brief Get the adjacent nodes of a node.
+     * @return A map of integers representing the adjacent nodes.
+     * 
+     * This method is used to access the adjacent nodes of a node.
+     */
+    const std::map<int, std::reference_wrapper<WeightedSupernode>>& getAdjacentNodes() const;
+
+    /**
+     * @brief Set an adjacent node to the node.
+     * @param adjacent The id of the adjacent node.
+     * @param weight The weight of the edge between the nodes.
+     */
+    void setAdjacentNode(WeightedSupernode& adjacent, double weight);
+
+    /**
+     * @brief Update the weight of an adjacent node.
+     * @param adjacent The id of the adjacent node.
+     * @param weight The new weight of the edge between the nodes.
+     */
+    void updateAdjacentNode(WeightedSupernode& adjacent, double weight);
 
     /**
      * @brief Clear the node.
