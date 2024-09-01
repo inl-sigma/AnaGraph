@@ -18,6 +18,8 @@ namespace graph_structure {
  * The supergraph is used to represent a kind of hierarchy of graph.
  */
 class WeightedSupergraph : public interface::IWeightedGraph {
+using mergeLambda = std::function<WeightedSupernode(WeightedSupernode &, WeightedSupernode &)>;
+
 private:
     WeightedSuperDigraph digraph;
 
@@ -79,7 +81,7 @@ public:
      * @param id The node to get
      * @return The node
      */
-    WeightedSupernode getNode(int id) const;
+    const WeightedSupernode& getNode(int id) const;
 
     /**
      * @brief Remove a node from the graph.
@@ -95,7 +97,7 @@ public:
      * 
      * @note this function will merge the nodes and update the edges by mergeFunc.
      */
-    void mergeNode(int first, int second, std::function<WeightedSupernode(WeightedSupernode, WeightedSupernode)> mergeFunc);
+    void mergeNode(int first, int second, mergeLambda mergeFunc);
 
     /**
      * @brief Merge two nodes.
@@ -112,7 +114,7 @@ public:
      * @brief Set the function to merge two nodes.
      * @param mergeFunc The function/rule to merge two nodes
      */
-    void setMergeNodeFunction(std::function<WeightedSupernode(WeightedSupernode, WeightedSupernode)> mergeFunc);
+    void setMergeNodeFunction(mergeLambda mergeFunc);
 
     /**
      * @brief Get the id of the graph.

@@ -13,7 +13,7 @@ void WeightedSupergraph::setNode(WeightedSupernode &node) {
     digraph.setNode(node);
 }
 
-WeightedSupernode WeightedSupergraph::getNode(int id) const {
+const WeightedSupernode& WeightedSupergraph::getNode(int id) const {
     return digraph.getNode(id);
 }
 
@@ -39,7 +39,7 @@ void WeightedSupergraph::removeEdge(int src, int dst) {
     digraph.removeEdge(dst, src);
 }
 
-void WeightedSupergraph::mergeNode(int first, int second, std::function<WeightedSupernode(WeightedSupernode, WeightedSupernode)> mergeFunc) {
+void WeightedSupergraph::mergeNode(int first, int second, mergeLambda mergeFunc) {
     digraph.mergeNode(first, second, mergeFunc);
 }
 
@@ -47,7 +47,7 @@ void WeightedSupergraph::mergeNode(int first, int second) {
     digraph.mergeNode(first, second);
 }
 
-void WeightedSupergraph::setMergeNodeFunction(std::function<WeightedSupernode(WeightedSupernode, WeightedSupernode)> mergeFunc) {
+void WeightedSupergraph::setMergeNodeFunction(mergeLambda mergeFunc) {
     digraph.setMergeNodeFunction(mergeFunc);
 }
 

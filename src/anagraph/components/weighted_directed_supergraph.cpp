@@ -35,7 +35,7 @@ void WeightedSuperDigraph::setNode(const WeightedSupernode &node) {
     usedNodes.insert(nodeId);
 }
 
-WeightedSupernode WeightedSuperDigraph::getNode(int id) const {
+const WeightedSupernode& WeightedSuperDigraph::getNode(int id) const {
     return nodes[id];
 }
 
@@ -44,16 +44,14 @@ void WeightedSuperDigraph::removeNode(int id) {
     usedNodes.erase(id);
 }
 
-void WeightedSuperDigraph::mergeNode(int first, int second, std::function<WeightedSupernode(WeightedSupernode, WeightedSupernode)> mergeFunc) {
+void WeightedSuperDigraph::mergeNode(int first, int second, mergeLambda mergeFunc) {
     if (!mergeFunc) {
         throw std::bad_function_call();
     }
     if (!usedNodes.contains(first) || !usedNodes.contains(second)) {
         throw std::out_of_range("Node does not exist");
     }
-    const WeightedSupernode &firstNode = getNode(first);
-    const WeightedSupernode &secondNode = getNode(second);
-    const WeightedSupernode mergedNode = mergeFunc(firstNode, secondNode);
+    const WeightedSupernode mergedNode = mergeFunc(nodes[first], nodes[second]);
     setNode(mergedNode);
 }
 
@@ -64,7 +62,7 @@ void WeightedSuperDigraph::mergeNode(int first, int second) {
     mergeNode(first, second, mergeNodeFunc);
 }
 
-void WeightedSuperDigraph::setMergeNodeFunction(std::function<WeightedSupernode(WeightedSupernode, WeightedSupernode)> mergeFunc) {
+void WeightedSuperDigraph::setMergeNodeFunction(mergeLambda mergeFunc) {
     mergeNodeFunc = mergeFunc;
 }
 
@@ -78,11 +76,11 @@ void WeightedSuperDigraph::addEdge(int src, int dst, double weight) {
         setNode(maxId);
     }
     const int minId = std::min(src, dst);
-    const auto &minNode = getNode(minId);
-    if (!minNode.isUsed()) {
+    if (!usedNodes.contains(minId)) {
         setNode(minId);
     }
-    nodes[src].setAdjacent(dst, weight);
+    spdlog::debug("Adding edge from {} to {} with weight {}", src, dst, weight);
+    nodes[src].setAdjacentNode(nodes[dst], weight);
 }
 
 void WeightedSuperDigraph::removeEdge(int src, int dst) {
@@ -98,14 +96,8 @@ double WeightedSuperDigraph::getWeight(int src, int dst) const {
     if (maxId >= static_cast<int>(nodes.size())) {
         throw std::out_of_range("Node does not exist");
     }
-    const auto &node = getNode(src);
-    const auto adjacents = node.getAdjacents();
-    if (!adjacents.contains(dst)) {
-        spdlog::debug("Edge does not exist between {} and {}", src, dst);
-        return 0.0;
-    } else {
-        return adjacents.at(dst);
-    }
+    auto &node = getNode(src);
+    return node.getWeight(dst);
 }
 
 void WeightedSuperDigraph::setWeight(int src, int dst, double weight) {
