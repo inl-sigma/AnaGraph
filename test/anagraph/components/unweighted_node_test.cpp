@@ -7,7 +7,7 @@
 TEST(UnweightedNodeTest, DefaultConstructor) {
     using namespace anagraph::graph_structure;
     Node node1;
-    EXPECT_EQ(node1.getId(), Node::UNUSED_ID);
+    EXPECT_EQ(node1.getId(), 0);
     EXPECT_TRUE(node1.getAdjacents().empty());
 }
 
@@ -56,9 +56,12 @@ TEST(UnweightedNodeTest, IsUsed) {
     Node node1;
     Node node2(1);
     Node node3(2);
-    EXPECT_FALSE(node1.isUsed());
+    EXPECT_TRUE(node1.isUsed());
     EXPECT_TRUE(node2.isUsed());
     EXPECT_TRUE(node3.isUsed());
+
+    node1.clear();
+    EXPECT_FALSE(node1.isUsed());
 }
 
 TEST(UnweightedNodeTest, SetAndGetAdjacents) {

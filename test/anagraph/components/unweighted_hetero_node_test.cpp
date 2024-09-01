@@ -7,7 +7,7 @@
 TEST(HeteroNodeTest, DefaultConstructor) {
     using namespace anagraph;
     graph_structure::HeteroNode<int> node1;
-    EXPECT_EQ(node1.getId(), node1.UNUSED_ID);
+    EXPECT_EQ(node1.getId(), 0);
     EXPECT_TRUE(node1.getAdjacents().empty());
 }
 
@@ -69,9 +69,12 @@ TEST(HeteroNodeTest, IsUsed) {
     graph_structure::HeteroNode<int> node1;
     graph_structure::HeteroNode<int> node2(1);
     graph_structure::HeteroNode<int> node3(2, 42);
-    EXPECT_FALSE(node1.isUsed());
+    EXPECT_TRUE(node1.isUsed());
     EXPECT_TRUE(node2.isUsed());
     EXPECT_TRUE(node3.isUsed());
+    
+    node1.clear();
+    EXPECT_FALSE(node1.isUsed());
 }
 
 TEST(HeteroNodeTest, SetAndGetAdjacents) {
