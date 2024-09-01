@@ -71,8 +71,7 @@ void WeightedHeteroDigraph<T>::addEdge(int src, int dst, double weight) {
         setNode(maxId);
     }
     const int minId = std::min(src, dst);
-    const auto minNode = getNode(minId);
-    if (!minNode.isUsed()) {
+    if (!usedNodes.contains(minId)) {
         setNode(minId);
     }
     nodes[src].updateAdjacent(dst, weight);

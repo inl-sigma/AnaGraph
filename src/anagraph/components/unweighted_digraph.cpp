@@ -57,8 +57,7 @@ void Digraph::addEdge(int src, int dst) {
         setNode(maxId);
     }
     const int minId = std::min(src, dst);
-    const auto minNode = getNode(minId);
-    if (!minNode.isUsed()) {
+    if (!usedNodes.contains(minId)) {
         setNode(minId);
     }
     nodes[src].setAdjacent(dst);
