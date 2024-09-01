@@ -76,7 +76,7 @@ public:
      * @brief Get the adjacent nodes of a node.
      * @param id The source node
      */
-    virtual const std::unordered_set<int> getAdjacents(int id) const = 0;
+    virtual const std::unordered_set<int>& getAdjacents(int id) const = 0;
 
     /**
      * @brief Get the number of nodes in the graph.

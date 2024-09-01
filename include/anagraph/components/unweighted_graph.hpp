@@ -46,7 +46,7 @@ public:
      * 
      * @todo override interface method after implementing the method
      */
-    Node getNode(int id) const;
+    Node& getNode(int id);
 
     /**
      * @brief Set a node to the graph.

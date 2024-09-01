@@ -11,7 +11,7 @@ Graph::Graph(std::string filePath, FileExtension extName) {
     readGraph(filePath, extName);
 }
 
-Node Graph::getNode(int id) const {
+Node& Graph::getNode(int id) {
     return digraph.getNode(id);
 }
 
@@ -76,7 +76,8 @@ void Graph::readGraph(std::string filePath, FileExtension extName) {
 void Graph::writeGraph(std::string filePath, FileExtension extName) const {
     auto digraph = toDigraph();
     for (auto id : digraph.getIds()) {
-        for (auto adj : digraph.getAdjacents(id)) {
+        auto adjacents = digraph.getAdjacents(id);
+        for (auto adj : adjacents) {
             if (id > adj) {
                 digraph.removeEdge(id, adj);
             }
