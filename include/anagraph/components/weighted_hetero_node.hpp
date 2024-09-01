@@ -22,6 +22,8 @@ namespace graph_structure {
 template <typename T>
 class WeightedHeteroNode : public interface::IWeightedHeteroNode<T> {
 private:
+    static inline int nodesCount = 0; /**< The number of nodes */
+
     int id; /**< The id of the node */
     std::unordered_map<int, double> adjacentIds; /**< The adjacent nodes of the node */
     std::map<int, std::reference_wrapper<WeightedHeteroNode<T>>> adjacentNodes; /**< The adjacent nodes of the node */
@@ -33,7 +35,7 @@ public:
      * @brief Constructs a weightedNode object.
      */
     WeightedHeteroNode() : 
-        id(interface::IWeightedHeteroNode<T>::UNUSED_ID),
+        id(nodesCount++),
         adjacentIds(std::unordered_map<int, double>()),
         adjacentNodes(std::map<int, std::reference_wrapper<WeightedHeteroNode>>()), 
         attributes(T()), 
@@ -50,7 +52,9 @@ public:
         adjacentNodes(std::map<int, std::reference_wrapper<WeightedHeteroNode>>()), 
         attributes(T()), 
         isAttrEnabled(false) 
-    {};
+    {
+        if (id >= nodesCount) {nodesCount = id + 1;}
+    };
 
     /**
      * @brief Constructs a weightedNode object with the specified id and attributes.
@@ -63,7 +67,9 @@ public:
         adjacentNodes(std::map<int, std::reference_wrapper<WeightedHeteroNode>>()), 
         attributes(attributes), 
         isAttrEnabled(true) 
-    {};
+    {
+        if (id >= nodesCount) {nodesCount = id + 1;}
+    };
 
     /**
      * @brief Copy constructor for the weightedNode object.

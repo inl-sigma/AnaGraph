@@ -13,6 +13,8 @@ namespace graph_structure {
 
 class Node : public interface::INode {
 private:
+    static inline int nodesCount = 0; /**< The number of nodes */
+
     int id;
     std::unordered_set<int> adjacentIds;
     std::map<int, std::reference_wrapper<Node>> adjacentNodes;
@@ -21,14 +23,24 @@ public:
     /**
      * @brief Default constructor for the Node class.
      */
-    Node() : id(UNUSED_ID), adjacentIds(std::unordered_set<int>()), adjacentNodes(std::map<int, std::reference_wrapper<Node>>()) {}
+    Node() : 
+        id(nodesCount++), 
+        adjacentIds(std::unordered_set<int>()), 
+        adjacentNodes(std::map<int, std::reference_wrapper<Node>>()) 
+    {}
 
     /**
      * @brief Constructs a new Node object with the given ID.
      *
      * @param id The ID of the node.
      */
-    Node(int id) : id(id), adjacentIds(std::unordered_set<int>()), adjacentNodes(std::map<int, std::reference_wrapper<Node>>()) {}
+    Node(int id) : 
+        id(id),
+        adjacentIds(std::unordered_set<int>()),
+        adjacentNodes(std::map<int, std::reference_wrapper<Node>>())
+    {
+        if (id >= nodesCount) {nodesCount = id + 1;}
+    }
 
     /**
      * @brief Copy constructor for the Node class.

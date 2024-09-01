@@ -24,6 +24,8 @@ namespace graph_structure {
 template <typename T>
 class HeteroNode : public interface::IHeteroNode<T> {
 private:
+    static inline int nodesCount = 0;
+
     int id;
     std::unordered_set<int> adjacentIds;
     std::map<int, std::reference_wrapper<HeteroNode<T>>> adjacentNodes;
@@ -35,7 +37,7 @@ public:
      * @brief Constructs a HeteroNode object.
      */
     HeteroNode() : 
-        id(interface::IHeteroNode<T>::UNUSED_ID), 
+        id(nodesCount++), 
         adjacentIds(std::unordered_set<int>()), 
         adjacentNodes(std::map<int, std::reference_wrapper<HeteroNode>>()),
         attributes(T()), 
@@ -52,7 +54,9 @@ public:
         adjacentNodes(std::map<int, std::reference_wrapper<HeteroNode>>()),
         attributes(T()), 
         isAttrEnabled(false)
-    {};
+    {
+        if (id >= nodesCount) {nodesCount = id + 1;}
+    };
 
     /**
      * @brief Constructs a HeteroNode object with the specified id and attributes.
@@ -65,7 +69,9 @@ public:
         adjacentNodes(std::map<int, std::reference_wrapper<HeteroNode>>()),
         attributes(attributes), 
         isAttrEnabled(true)
-    {};
+    {
+        if (id >= nodesCount) {nodesCount = id + 1;}
+    };
 
     /**
      * @brief Copy constructor for the HeteroNode object.

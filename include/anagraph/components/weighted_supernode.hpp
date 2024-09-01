@@ -48,9 +48,7 @@ public:
         adjacentNodes(),
         children()
     {
-        if (id >= nodesCount) {
-            nodesCount = id + 1;
-        }
+        if (id >= nodesCount) {nodesCount = id + 1;}
     };
 
     /**
