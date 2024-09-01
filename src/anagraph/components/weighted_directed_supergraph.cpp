@@ -1,72 +1,11 @@
-#include "anagraph/components/supergraph.hpp"
+#include "anagraph/components/weighted_directed_supergraph.hpp"
 
 #include <spdlog/spdlog.h>
 
+#include <stdexcept>
+
 namespace anagraph {
-
-const int WeightedSupernode::ROOT = -1;
-
-int WeightedSupernode::getId() const {
-    return node.getId();
-}
-
-void WeightedSupernode::setId(int id) {
-    node.setId(id);
-}
-
-bool WeightedSupernode::isUsed() const {
-    return node.isUsed();
-}
-
-bool WeightedSupernode::isRoot() const {
-    return parent == ROOT;
-}
-
-int WeightedSupernode::getParent() const {
-    return parent;
-}
-
-void WeightedSupernode::setParent(int parent) {
-    this->parent = parent;
-}
-
-bool WeightedSupernode::isLeaf() const {
-    return children.empty();
-}
-
-std::unordered_set<int> WeightedSupernode::getChildren() const {
-    return children;
-}
-
-void WeightedSupernode::removeChild(int child) {
-    children.erase(child);
-}
-
-void WeightedSupernode::addChild(int child) {
-    children.insert(child);
-}
-
-const std::unordered_map<int, double>& WeightedSupernode::getAdjacents() const {
-    return node.getAdjacents();
-}
-
-void WeightedSupernode::setAdjacent(int adjacent, double weight) {
-    node.setAdjacent(adjacent, weight);
-}
-
-void WeightedSupernode::updateAdjacent(int adjacent, double weight) {
-    node.updateAdjacent(adjacent, weight);
-}
-
-void WeightedSupernode::removeAdjacent(int adjacent) {
-    node.removeAdjacent(adjacent);
-}
-
-void WeightedSupernode::clear() {
-    node.clear();
-    parent = ROOT;
-    children.clear();
-}
+namespace graph_structure {
 
 WeightedSuperDigraph::WeightedSuperDigraph(std::string filepath, FileExtension extName) {
     readGraph(filepath, extName);
@@ -80,12 +19,11 @@ void WeightedSuperDigraph::setNode(int id) {
     usedNodes.insert(id);
 }
 
-void WeightedSuperDigraph::setNode(WeightedSupernode &node) {
+void WeightedSuperDigraph::setNode(const WeightedSupernode &node) {
     // If the ID is not initialized, add it to the end
     int nodeId;
     if (!node.isUsed()) {
         nodeId = nodes.size();
-        node.setId(nodeId);
     } else {
         nodeId = node.getId();
     }
@@ -93,16 +31,39 @@ void WeightedSuperDigraph::setNode(WeightedSupernode &node) {
         nodes.resize(nodeId + 1);
     }
     nodes[nodeId] = node;
+    nodes[nodeId].setId(nodeId);
     usedNodes.insert(nodeId);
 }
 
-WeightedSupernode WeightedSuperDigraph::getNode(int id) const {
+const WeightedSupernode& WeightedSuperDigraph::getNode(int id) const {
     return nodes[id];
 }
 
 void WeightedSuperDigraph::removeNode(int id) {
     nodes[id].clear();
     usedNodes.erase(id);
+}
+
+void WeightedSuperDigraph::mergeNode(int first, int second, mergeLambda mergeFunc) {
+    if (!mergeFunc) {
+        throw std::bad_function_call();
+    }
+    if (!usedNodes.contains(first) || !usedNodes.contains(second)) {
+        throw std::out_of_range("Node does not exist");
+    }
+    const WeightedSupernode mergedNode = mergeFunc(nodes[first], nodes[second]);
+    setNode(mergedNode);
+}
+
+void WeightedSuperDigraph::mergeNode(int first, int second) {
+    if (!mergeNodeFunc) {
+        throw std::bad_function_call();
+    }
+    mergeNode(first, second, mergeNodeFunc);
+}
+
+void WeightedSuperDigraph::setMergeNodeFunction(mergeLambda mergeFunc) {
+    mergeNodeFunc = mergeFunc;
 }
 
 std::unordered_set<int> WeightedSuperDigraph::getIds() const {
@@ -115,11 +76,11 @@ void WeightedSuperDigraph::addEdge(int src, int dst, double weight) {
         setNode(maxId);
     }
     const int minId = std::min(src, dst);
-    const auto &minNode = getNode(minId);
-    if (!minNode.isUsed()) {
+    if (!usedNodes.contains(minId)) {
         setNode(minId);
     }
-    nodes[src].setAdjacent(dst, weight);
+    spdlog::debug("Adding edge from {} to {} with weight {}", src, dst, weight);
+    nodes[src].setAdjacentNode(nodes[dst], weight);
 }
 
 void WeightedSuperDigraph::removeEdge(int src, int dst) {
@@ -135,14 +96,8 @@ double WeightedSuperDigraph::getWeight(int src, int dst) const {
     if (maxId >= static_cast<int>(nodes.size())) {
         throw std::out_of_range("Node does not exist");
     }
-    const auto &node = getNode(src);
-    const auto adjacents = node.getAdjacents();
-    if (!adjacents.contains(dst)) {
-        spdlog::debug("Edge does not exist between {} and {}", src, dst);
-        return 0.0;
-    } else {
-        return adjacents.at(dst);
-    }
+    auto &node = getNode(src);
+    return node.getWeight(dst);
 }
 
 void WeightedSuperDigraph::setWeight(int src, int dst, double weight) {
@@ -306,167 +261,5 @@ void WeightedSuperDigraph::writeGraph(std::string filePath, FileExtension extNam
     }
 }
 
-WeightedSupergraph::WeightedSupergraph(std::string filepath, FileExtension extName) {
-    readGraph(filepath, extName);
-}
-
-void WeightedSupergraph::setNode(WeightedSupernode &node) {
-    digraph.setNode(node);
-}
-
-WeightedSupernode WeightedSupergraph::getNode(int id) const {
-    return digraph.getNode(id);
-}
-
-void WeightedSupergraph::setNode(int id) {
-    digraph.setNode(id);
-}
-
-void WeightedSupergraph::removeNode(int id) {
-    digraph.removeNode(id);
-}
-
-std::unordered_set<int> WeightedSupergraph::getIds() const {
-    return digraph.getIds();
-}
-
-void WeightedSupergraph::addEdge(int src, int dst, double weight) {
-    digraph.addEdge(src, dst, weight);
-    digraph.addEdge(dst, src, weight);
-}
-
-void WeightedSupergraph::removeEdge(int src, int dst) {
-    digraph.removeEdge(src, dst);
-    digraph.removeEdge(dst, src);
-}
-
-double WeightedSupergraph::getWeight(int src, int dst) const {
-    return digraph.getWeight(src, dst);
-}
-
-void WeightedSupergraph::setWeight(int src, int dst, double weight) {
-    digraph.setWeight(src, dst, weight);
-    digraph.setWeight(dst, src, weight);
-}
-
-void WeightedSupergraph::addWeight(int src, int dst, double weight) {
-    digraph.addWeight(src, dst, weight);
-    digraph.addWeight(dst, src, weight);
-}
-
-int WeightedSupergraph::getParent(int id) const {
-    return digraph.getParent(id);
-}
-
-void WeightedSupergraph::setParent(int child, int parent) {
-    digraph.setParent(child, parent);
-}
-
-void WeightedSupergraph::updateParent(int child, int parent) {
-    digraph.updateParent(child, parent);
-}
-
-void WeightedSupergraph::removeParent(int child) {
-    digraph.removeParent(child);
-}
-
-std::unordered_set<int> WeightedSupergraph::getChildren(int id) const {
-    return digraph.getChildren(id);
-}
-
-const std::unordered_map<int, double> WeightedSupergraph::getAdjacents(int id) const {
-    return digraph.getAdjacents(id);
-}
-
-size_t WeightedSupergraph::size() const {
-    return digraph.size();
-}
-
-WeightedSuperDigraph WeightedSupergraph::toDigraph() const {
-    return digraph;
-}
-
-void WeightedSupergraph::readGraph(std::string filePath, FileExtension extName) {
-    switch (extName) {
-    case FileExtension::TXT: {
-        TextGraphParser parser;
-        readEdgeHelper(filePath + "/edges.txt", parser);
-        readHierarchyHelper(filePath + "/parents.txt", parser);
-    }
-        break;
-
-    case FileExtension::CSV: {
-        CSVGraphParser parser;
-        readEdgeHelper(filePath + "/edges.csv", parser);
-        readHierarchyHelper(filePath + "parents.csv", parser);
-    }
-        break;
-
-    // case FileExtension::GML:
-    //     readGraphHelper(filePath, GMLGraphParser());
-    //     break;
-    
-    default:
-        throw std::invalid_argument("Invalid file extension");
-        break;
-    }
-}
-
-void WeightedSupergraph::readEdgeHelper(std::string filePath, IGraphParser &parser) {
-    // read normal edges from the file
-    for (auto &[src, dst, weight] : parser.parseWeightedGraph(filePath)) {
-        addEdge(src, dst, weight);
-    }
-}
-
-void WeightedSupergraph::readHierarchyHelper(std::string filePath, IGraphParser &parser) {
-    // read the hierarchical edges from the file
-    for (auto &[parent, child] : parser.parseGraph(filePath)) {
-        setParent(child, parent);
-    }
-}
-void WeightedSupergraph::writeGraph(std::string filePath, FileExtension extName) const {
-    std::vector<WeightedEdgeObject> normalEdges;
-    std::vector<EdgeObject> hierarchicalEdges;
-    for (int src : digraph.getIds()) {
-        const auto &node = getNode(src);
-        for (auto [dst, weight] : node.getAdjacents()) {
-            if (src <= dst) {
-                normalEdges.push_back(WeightedEdgeObject(src, dst, weight));
-            }
-        }
-        if (!node.isRoot()) {
-            hierarchicalEdges.push_back(EdgeObject(node.getParent(), src));
-        }
-    }
-
-    switch (extName) {
-    case FileExtension::TXT: {
-        TextGraphWriter writer;
-        // write the normal edges to the file
-        writer.writeWeightedGraph(filePath + "/edges.txt", normalEdges);
-        // write the hierarchical edges to the file
-        writer.writeGraph(filePath + "/parents.txt", hierarchicalEdges);
-    }
-        break;
-
-    case FileExtension::CSV: {
-        CSVGraphWriter writer;
-        // write the normal edges to the file
-        writer.writeWeightedGraph(filePath + "/edges.csv", normalEdges);
-        // write the hierarchical edges to the file
-        writer.writeGraph(filePath + "/parents.csv", hierarchicalEdges);
-    }
-        break;
-
-    // case FileExtension::GML:
-    //     writeGraphHelper(filePath, GMLGraphWriter(), edges);
-    //     break;
-
-    default:
-        throw std::invalid_argument("Invalid file extension");
-        break;
-    }
-}
-
+} // namespace graph_structure
 } // namespace anagraph

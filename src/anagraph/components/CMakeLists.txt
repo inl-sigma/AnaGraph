@@ -61,7 +61,9 @@ configure_library(weightedheterograph)
 
 # Configures the "supergraph" library
 add_library(supergraph STATIC 
-    supergraph.cpp
+    weighted_supernode.cpp
+    weighted_directed_supergraph.cpp
+    weighted_supergraph.cpp
 )
 target_link_libraries(supergraph PUBLIC
     spdlog::spdlog
