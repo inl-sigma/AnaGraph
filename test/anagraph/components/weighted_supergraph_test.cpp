@@ -316,20 +316,41 @@ TEST(WeightedSupergraphTest, Merge) {
     graph.addEdge(2, 4, 1.5);
     graph.addEdge(2, 5, 1.0);
 
-    graph.mergeNode(1, 2, [](WeightedSupernode first, WeightedSupernode second) {
+    graph.mergeNode(1, 2, [](WeightedSupernode &first, WeightedSupernode &second) {
         WeightedSupernode node;
-        std::unordered_map<int, double> adjacents1 = first.getAdjacents();
-        std::unordered_map<int, double> adjacents2 = second.getAdjacents();
-        for (const auto &[id, weight] : adjacents1) {
-            node.setAdjacent(id, weight);
+        int newId = node.getId();
+        auto &adjacents1 = first.getAdjacentNodes();
+        auto &adjacents2 = second.getAdjacentNodes();
+        spdlog::debug("adjacents1.size() = {}", adjacents1.size());
+        spdlog::debug("adjacents2.size() = {}", adjacents2.size());
+        for (const auto &[id, adjNodeRef] : adjacents1) {
+            spdlog::debug("adjacents1: id = {}", id);
+            auto &adjNode = adjNodeRef.get();
+            const double weight = adjNode.getWeight(first.getId());
+            spdlog::debug("weight = {}", weight);
+            node.setAdjacentNode(adjNode, weight);
+            adjNode.setAdjacentNode(node, weight);
         }
-        for (const auto &[id, weight] : adjacents2) {
-            node.updateAdjacent(id, weight);
+        for (const auto &[id, adjNodeRef] : adjacents2) {
+            spdlog::debug("adjacents2: id = {}", id);
+            auto &adjNode = adjNodeRef.get();
+            const double weight = adjNode.getWeight(second.getId());
+            spdlog::debug("weight = {}", weight);
+            node.updateAdjacentNode(adjNode, weight);
+            adjNode.updateAdjacentNode(node, weight);
+        }
+        first.setParent(newId);
+        second.setParent(newId);
+        spdlog::info("finish merge");
+        for (auto &adj : node.getAdjacents()) {
+            spdlog::debug("adj = {}, weight= {}", adj.first, adj.second);
         }
         return node;
     });
 
     EXPECT_EQ(graph.size(), static_cast<size_t>(6));
+    EXPECT_EQ(graph.getParent(1), 6);
+    EXPECT_EQ(graph.getParent(2), 6);
     EXPECT_EQ(graph.getWeight(6, 3), 1.0);
     EXPECT_EQ(graph.getWeight(3, 6), 1.0);
     EXPECT_EQ(graph.getWeight(6, 4), 1.5);
@@ -354,19 +375,33 @@ TEST(WeightedSupergraphTest, setMergeNodeFunction) {
 
     EXPECT_THROW(graph.mergeNode(1, 2), std::bad_function_call);
 
-    graph.setMergeNodeFunction([](WeightedSupernode first, WeightedSupernode second) {
+    graph.setMergeNodeFunction([](WeightedSupernode &first, WeightedSupernode &second) {
         WeightedSupernode node;
-        std::unordered_map<int, double> adjacents1 = first.getAdjacents();
-        std::unordered_map<int, double> adjacents2 = second.getAdjacents();
-        for (const auto &[id, weight] : adjacents1) {
-            node.setAdjacent(id, weight);
-            
+        auto &adjacents1 = first.getAdjacentNodes();
+        auto &adjacents2 = second.getAdjacentNodes();
+        spdlog::debug("adjacents1.size() = {}", adjacents1.size());
+        spdlog::debug("adjacents2.size() = {}", adjacents2.size());
+        for (const auto &[id, adjNodeRef] : adjacents1) {
+            spdlog::debug("adjacents1: id = {}", id);
+            auto &adjNode = adjNodeRef.get();
+            const double weight = adjNode.getWeight(first.getId());
+            node.setAdjacentNode(adjNode, weight);
+            adjNode.setAdjacentNode(node, weight);
         }
-        for (const auto &[id, weight] : adjacents2) {
-            node.updateAdjacent(id, weight);
+        for (const auto &[id, adjNodeRef] : adjacents2) {
+            spdlog::debug("adjacents2: id = {}", id);
+            auto &adjNode = adjNodeRef.get();
+            const double weight = adjNode.getWeight(second.getId());
+            node.updateAdjacentNode(adjNode, weight);
+            adjNode.updateAdjacentNode(node, weight);
+        }
+        spdlog::info("finish merge");
+        for (auto &adj : node.getAdjacents()) {
+            spdlog::debug("adj = {}, weight= {}", adj.first, adj.second);
         }
         return node;
     });
+
     graph.mergeNode(1, 2);
     EXPECT_EQ(graph.size(), static_cast<size_t>(6));
     EXPECT_EQ(graph.getWeight(6, 3), 1.0);

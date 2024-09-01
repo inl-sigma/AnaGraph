@@ -304,7 +304,7 @@ TEST(WeightedSuperDigraphTest, Merge) {
     graph.addEdge(1, 5, 2.0);
     graph.addEdge(2, 4, 1.5);
     graph.addEdge(2, 5, 1.0);
-    graph.mergeNode(1, 2, [](WeightedSupernode first, WeightedSupernode second) {
+    graph.mergeNode(1, 2, [](WeightedSupernode &first, WeightedSupernode &second) {
         WeightedSupernode node;
         std::unordered_map<int, double> adjacents1 = first.getAdjacents();
         std::unordered_map<int, double> adjacents2 = second.getAdjacents();
@@ -340,7 +340,7 @@ TEST(WeightedSuperDigraphTest, setMergeNodeFunction) {
 
     EXPECT_THROW(graph.mergeNode(1, 2), std::bad_function_call);
 
-    graph.setMergeNodeFunction([](WeightedSupernode first, WeightedSupernode second) {
+    graph.setMergeNodeFunction([](WeightedSupernode &first, WeightedSupernode &second) {
         WeightedSupernode node;
         std::unordered_map<int, double> adjacents1 = first.getAdjacents();
         std::unordered_map<int, double> adjacents2 = second.getAdjacents();
@@ -351,10 +351,14 @@ TEST(WeightedSuperDigraphTest, setMergeNodeFunction) {
         for (const auto &[id, weight] : adjacents2) {
             node.updateAdjacent(id, weight);
         }
+        first.setParent(node.getId());
+        second.setParent(node.getId());
         return node;
     });
     graph.mergeNode(1, 2);
     EXPECT_EQ(graph.size(), static_cast<size_t>(6));
+    EXPECT_EQ(graph.getParent(1), 6);
+    EXPECT_EQ(graph.getParent(2), 6);
     EXPECT_EQ(graph.getWeight(6, 3), 1.0);
     EXPECT_EQ(graph.getWeight(6, 4), 1.5);
     EXPECT_EQ(graph.getWeight(6, 5), 3.0);
