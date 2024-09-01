@@ -7,77 +7,64 @@
 namespace anagraph {
 namespace graph_structure {
 
-Node Digraph::getNode(int id) const {
-    if (id < 0 || id >= static_cast<int>(nodes.size())) {
-        throw std::out_of_range("Node does not exist");
-    }
-    return nodes[id];
-}
-
 Digraph::Digraph(std::string filePath, FileExtension extName) {
     readGraph(filePath, extName);
 }
 
-void Digraph::setNode(int id) {
-    if (id >= static_cast<int>(nodes.size())) {
-        nodes.resize(id + 1);
+Node& Digraph::getNode(int id) {
+    if (!nodes.contains(id)) {
+        throw std::out_of_range("Node does not exist");
     }
+    return nodes.at(id);
+}
+
+void Digraph::setNode(int id) {
     nodes[id] = Node(id);
-    usedNodes.insert(id);
 }
 
 void Digraph::setNode(Node &node) {
     // If the ID is not initialized, add it to the end
-    int nodeId;
-    if (!node.isUsed()) {
-        nodeId = nodes.size();
-        node.setId(nodeId);
-    } else {
-        nodeId = node.getId();
-    }
-    if (static_cast<int>(nodeId >= static_cast<int>(nodes.size()))) {
-        nodes.resize(nodeId + 1);
-    }
+    const int nodeId = node.getId();
     nodes[nodeId] = node;
-    usedNodes.insert(nodeId);
 }
 
 void Digraph::removeNode(int id) {
-    nodes[id].clear();
-    usedNodes.erase(id);
+    nodes.erase(id);
 }
 
 std::unordered_set<int> Digraph::getIds() const {
-    return usedNodes;
+    std::unordered_set<int> ids;
+    for (auto &node : nodes) {
+        ids.insert(node.first);
+    }
+    return ids;
 }
 
 void Digraph::addEdge(int src, int dst) {
-    const int maxId = std::max(src, dst);
-    if (maxId >= static_cast<int>(nodes.size())) {
-        setNode(maxId);
+    if (!nodes.contains(src)) {
+        setNode(src);
     }
-    const int minId = std::min(src, dst);
-    if (!usedNodes.contains(minId)) {
-        setNode(minId);
+    if (!nodes.contains(dst)) {
+        setNode(dst);
     }
-    nodes[src].setAdjacent(dst);
+    nodes[src].setAdjacentNode(getNode(dst));
 }
 
 void Digraph::removeEdge(int src, int dst) {
-    if (!usedNodes.contains(src) || !usedNodes.contains(dst)) {
+    if (!nodes.contains(src) || !nodes.contains(dst)) {
         throw std::out_of_range("Node does not exist");
     }
+    spdlog::debug("remove edge {} -> {}", src, dst);
     nodes[src].removeAdjacent(dst);
 }
 
-const std::unordered_set<int> Digraph::getAdjacents(int id) const {
-    return nodes[id].getAdjacents();
+const std::unordered_set<int>& Digraph::getAdjacents(int id) const {
+    return nodes.at(id).getAdjacents();
 }
 
 Digraph Digraph::getSubgraph(std::unordered_set<int> indices) const {
     Digraph subgraph;
     subgraph.nodes = this->nodes;
-    subgraph.usedNodes = this->usedNodes;
     
     // remove unnecessary edges
     for (auto idx : indices) {
@@ -90,7 +77,7 @@ Digraph Digraph::getSubgraph(std::unordered_set<int> indices) const {
     }
 
     // remove unnecessary nodes
-    for (auto idx : usedNodes) {
+    for (auto idx : getIds()) {
         if (!indices.contains(idx)) {
             subgraph.removeNode(idx);
         }
@@ -102,50 +89,41 @@ Digraph Digraph::getSubgraph(std::unordered_set<int> indices) const {
 void Digraph::reorganize() {
     spdlog::debug("called reorganize");
 
-    // for sort and copy
-    std::set<int> oldNodes = std::set<int>(this->usedNodes.begin(), this->usedNodes.end());
-    spdlog::debug("clear usedNodes");
-    usedNodes.clear();
-
     // Create a map from old id to new id
     spdlog::debug("create idMap and update usedNodes");
     std::unordered_map<int, int> idMap;
     int newId = 0;
-    for (int oldId : oldNodes) {
+    for (auto &[oldId, node] : nodes) {
         idMap[oldId] = newId;
         // move the node to the new id, with the adjacency list is maintained
         nodes[newId] = std::move(nodes[oldId]);
-        usedNodes.insert(newId);
+        nodes[newId].setId(newId);
         newId++;
     }
 
     // Update the nodes and the adjacents
     spdlog::debug("update nodes and adjacents");
-    for (int id = 0; id < newId; id++) {
-        auto &oldNode = nodes[id];
-
-        // set the new id
-        auto newNode = Node(id);
-
-        // set the adjacents
-        for (auto &oldAdj : oldNode.getAdjacents()) {
-            if (idMap.contains(oldAdj)) {
-                newNode.setAdjacent(idMap[oldAdj]);
-            } else {
-                spdlog::warn("Node {} does not exist in the graph", oldAdj);
-            }
+    for (auto id : getIds()) {
+        if (id > newId) { // remove the node if it is not used
+            nodes.erase(id);
+            continue;
         }
 
-        nodes[id] = newNode;
+        // set the adjacents
+        auto &node = nodes.at(id);
+        auto oldAdjacents = node.getAdjacents();
+        for (auto oldAdj : oldAdjacents) {
+            node.removeAdjacent(oldAdj);
+        }
+        for (auto oldAdj : oldAdjacents) {
+            const int newAdj = idMap[oldAdj];
+            node.setAdjacentNode(nodes[newAdj]);
+        }
     }
-
-    // resize the nodes
-    spdlog::debug("resize nodes");
-    nodes.resize(idMap.size());
 }
 
 size_t Digraph::size() const {
-    return usedNodes.size();
+    return nodes.size();
 }
 
 void Digraph::readGraph(std::string filePath, FileExtension extName) {
@@ -182,9 +160,9 @@ void Digraph::readGraphHelper(std::string filePath, IGraphParser &parser) {
     // convert the graph to a list of edges
     // note : implement as function in weighted_graph.hpp if needed
     std::vector<EdgeObject> edges;
-    for (int src : usedNodes) {
-        for (auto &dst : getAdjacents(src)) {
-            edges.push_back(EdgeObject(src, dst));
+    for (auto &[src, node] : nodes) {
+        for (auto dst : node.getAdjacents()) {
+            edges.emplace_back(EdgeObject(src, dst));
         }
     }
 
