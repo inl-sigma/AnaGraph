@@ -5,26 +5,30 @@
 
 #include "anagraph/interfaces/unweighted_node_interface.hpp"
 
+#include <functional>
+#include <map>
+
 namespace anagraph {
 namespace graph_structure {
 
 class Node : public interface::INode {
 private:
     int id;
-    std::unordered_set<int> adjacents;
+    std::unordered_set<int> adjacentIds;
+    std::map<int, std::reference_wrapper<Node>> adjacentNodes;
 
 public:
     /**
      * @brief Default constructor for the Node class.
      */
-    Node() : id(UNUSED_ID), adjacents(std::unordered_set<int>()) {}
+    Node() : id(UNUSED_ID), adjacentIds(std::unordered_set<int>()), adjacentNodes(std::map<int, std::reference_wrapper<Node>>()) {}
 
     /**
      * @brief Constructs a new Node object with the given ID.
      *
      * @param id The ID of the node.
      */
-    Node(int id) : id(id), adjacents(std::unordered_set<int>()) {}
+    Node(int id) : id(id), adjacentIds(std::unordered_set<int>()), adjacentNodes(std::map<int, std::reference_wrapper<Node>>()) {}
 
     /**
      * @brief Copy constructor for the Node class.
@@ -35,7 +39,7 @@ public:
      * @brief Move constructor for the Node class.
      */
     Node(Node &&node) noexcept
-        : id(node.id), adjacents(std::move(node.adjacents)) {
+        : id(node.id), adjacentIds(std::move(node.adjacentIds)) {
         node.clear();
     }
 
@@ -81,6 +85,20 @@ public:
      * @param adjacent The id of the adjacent node.
      */
     void removeAdjacent(int adjacent) override;
+
+    /**
+     * @brief Get the adjacent nodes of a node.
+     * @return A map of integers representing the adjacent nodes.
+     * 
+     * This method is used to retrieve the adjacent nodes of a node.
+     */
+    const std::map<int, std::reference_wrapper<Node>>& getAdjacentNodes() const;
+
+    /**
+     * @brief Set an adjacent node to the node.
+     * @param adjacent The adjacent node.
+     */
+    void setAdjacentNode(Node& adjacent);
 
     /**
      * @brief Clear the node.

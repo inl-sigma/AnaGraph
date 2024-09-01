@@ -72,6 +72,26 @@ TEST(WeightedNodeTest, SetAndGetAdjacents) {
     EXPECT_EQ(adjacents.at(5), 2.0);
 }
 
+TEST(WeightedNodeTest, SetAndGetAdjacentNodes) {
+    using namespace anagraph;
+    graph_structure::WeightedNode node1(1);
+    graph_structure::WeightedNode node2(2);
+    graph_structure::WeightedNode node3(3);
+
+    node1.setAdjacentNode(node2, 1.5);
+    node1.setAdjacentNode(node3, 2.0);
+    const auto& adjacents = node1.getAdjacentNodes();
+    EXPECT_EQ(static_cast<int>(adjacents.size()), 2);
+    EXPECT_TRUE(adjacents.contains(2));
+    EXPECT_TRUE(adjacents.contains(3));
+
+    auto& adj = adjacents.at(2).get();
+    adj.setAdjacentNode(node3, 1.5);    
+    EXPECT_EQ(adj.getId(), 2);
+    EXPECT_TRUE(adj.getAdjacents().contains(3));
+    EXPECT_TRUE(node2.getAdjacents().contains(3));
+}
+
 TEST(WeightedNodeTest, UpdateAdjacent) {
     using namespace anagraph;
     graph_structure::WeightedNode node1;

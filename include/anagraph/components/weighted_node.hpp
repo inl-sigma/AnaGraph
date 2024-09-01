@@ -5,6 +5,11 @@
 
 #include "anagraph/interfaces/weighted_node_interface.hpp"
 
+#include <spdlog/spdlog.h>
+
+#include <functional>
+#include <map>
+
 namespace anagraph {
 namespace graph_structure {
 
@@ -18,7 +23,8 @@ namespace graph_structure {
 class WeightedNode : public interface::IWeightedNode {
 private:
     int id; /**< The id of the node */
-    std::unordered_map<int, double> adjacents; /**< The adjacent nodes of the node */
+    std::unordered_map<int, double> adjacentIds; /**< The adjacent nodes of the node */
+    std::map<int, std::reference_wrapper<WeightedNode>> adjacentNodes; /**< The adjacent nodes of the node */
 
 public:
     /**
@@ -35,20 +41,18 @@ public:
     /**
      * @brief Copy constructor for the weightedNode object.
      */
-    WeightedNode(const WeightedNode &node) 
-        : id(node.id), adjacents(node.adjacents) {
-    }
+    WeightedNode(const WeightedNode &node) = default;
 
     /**
      * @brief Assignment operator for the weightedNode object.
      */
-    WeightedNode& operator=(const WeightedNode& node);
+    WeightedNode& operator=(const WeightedNode& node) = default;
 
     /**
      * @brief Move constructor for the weightedNode object.
      */
     WeightedNode(WeightedNode &&node) noexcept
-        : id(node.id), adjacents(std::move(node.adjacents)) {
+        : id(node.id), adjacentIds(std::move(node.adjacentIds)), adjacentNodes(std::move(node.adjacentNodes)) {
         node.clear();
     }
 
@@ -97,6 +101,21 @@ public:
      * @param adjacent A set of integers representing the adjacent nodes.
      */
     void removeAdjacent(int adjacent) override;
+
+    /**
+     * @brief Get the adjacent nodes of a node.
+     * @return A map of integers representing the adjacent nodes.
+     * 
+     * This method is used to access the adjacent nodes of a node.
+     */
+    const std::map<int, std::reference_wrapper<WeightedNode>>& getAdjacentNodes() const;
+
+    /**
+     * @brief Set an adjacent node to the node.
+     * @param adjacent The id of the adjacent node.
+     * @param weight The weight of the edge between the nodes.
+     */
+    void setAdjacentNode(WeightedNode& adjacent, double weight);
 
     /**
      * @brief Clear the attributes of the node.
