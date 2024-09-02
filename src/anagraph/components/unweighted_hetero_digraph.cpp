@@ -15,58 +15,52 @@ HeteroDigraph<T>::HeteroDigraph(std::string filename, FileExtension extName) {
 }
 
 template <typename T>
-HeteroNode<T> HeteroDigraph<T>::getNode(int id) const {
-    return nodes[id];
+HeteroNode<T>& HeteroDigraph<T>::getNode(int id) {
+    if (!nodes.contains(id)) {
+        throw std::out_of_range("Node does not exist");
+    }
+    return nodes.at(id);
 }
 
 template <typename T>
 void HeteroDigraph<T>::setNode(int id) {
-    if (id >= static_cast<int>(nodes.size())) {
-        nodes.resize(id + 1);
-    }
     nodes[id] = HeteroNode<T>(id);
-    usedNodes.insert(id);
 }
 
 template <typename T>
 void HeteroDigraph<T>::setNode(HeteroNode<T> &node) {
-    // If the ID is not initialized, add it to the end
-    const int nodeId = (!node.isUsed()) ? nodes.size() : node.getId();
-    if (static_cast<int>(nodeId >= static_cast<int>(nodes.size()))) {
-        nodes.resize(nodeId + 1);
-    }
+    const int nodeId = node.getId();
     nodes[nodeId] = node;
-    usedNodes.insert(nodeId);
 }
 
 template <typename T>
 void HeteroDigraph<T>::removeNode(int id) {
-    nodes[id].clear();
-    usedNodes.erase(id);
+    nodes.erase(id);
 }
 
 template <typename T>
 std::unordered_set<int> HeteroDigraph<T>::getIds() const {
-    return usedNodes;
+    std::unordered_set<int> ids;
+    for (auto &[id, _] : nodes) {
+        ids.insert(id);
+    }
+    return ids;
 }
 
 template <typename T>
 void HeteroDigraph<T>::addEdge(int src, int dst) {
-    const int maxId = std::max(src, dst);
-    if (maxId >= static_cast<int>(nodes.size())) {
-        setNode(maxId);
+    if (!nodes.contains(src)) {
+        setNode(src);
     }
-    const int minId = std::min(src, dst);
-    if (!usedNodes.contains(minId)) {
-        setNode(minId);
+    if (!nodes.contains(dst)) {
+        setNode(dst);
     }
-    nodes[src].setAdjacent(dst);
+    nodes[src].setAdjacentNode(getNode(dst));
 }
 
 template <typename T>
 void HeteroDigraph<T>::removeEdge(int src, int dst) {
-    const int maxId = std::max(src, dst);
-    if (maxId >= static_cast<int>(nodes.size())) {
+    if (!nodes.contains(src) || !nodes.contains(dst)) {
         throw std::out_of_range("Node does not exist");
     }
     nodes[src].removeAdjacent(dst);
@@ -74,31 +68,28 @@ void HeteroDigraph<T>::removeEdge(int src, int dst) {
 
 template <typename T>
 const std::unordered_set<int> HeteroDigraph<T>::getAdjacents(int id) const {
-    if (id >= static_cast<int>(nodes.size())) {
-        throw std::out_of_range("Node does not exist");
-    }
-    return nodes[id].getAdjacents();
+    return nodes.at(id).getAdjacents();
 }
 
 template <typename T>
 HeteroDigraph<T> HeteroDigraph<T>::getSubgraph(std::unordered_set<int> indices) const {
     HeteroDigraph<T> subgraph;
-    // copy necessary nodes
-    for (auto idx : indices) {
-        if (idx >= static_cast<int>(nodes.size())) {
-            throw std::out_of_range("Node does not exist");
-        }
-        HeteroNode<T> node = nodes[idx];
-        subgraph.setNode(node);
-    }
-    
+    subgraph.nodes = this->nodes;
+
     // remove unnecessary edges
     for (int idx : indices) {
-        const auto &adjacents = getAdjacents(idx);
+        const auto& adjacents = getAdjacents(idx);
         for (int adj : adjacents) {
             if (!indices.contains(adj)) {
                 subgraph.removeEdge(idx, adj);
             }
+        }
+    }
+
+    // remove unnecessary nodes
+    for (int idx : getIds()) {
+        if (!indices.contains(idx)) {
+            subgraph.removeNode(idx);
         }
     }
     return subgraph;
@@ -109,57 +100,40 @@ void HeteroDigraph<T>::reorganize() {
     spdlog::debug("called reorganize");
 
     // Create a map from old id to new id
-    std::set<int> oldNodes = std::set<int>(this->usedNodes.begin(), this->usedNodes.end());
-    spdlog::debug("clear usedNodes");
-    usedNodes.clear();
-
     spdlog::debug("create idMap and update usedNodes");
     std::unordered_map<int, int> idMap;
     int newId = 0;
-
-    for (int oldId : oldNodes) {
+    for (auto &[oldId, _] : nodes) {
         idMap[oldId] = newId;
         nodes[newId] = std::move(nodes[oldId]);
-        usedNodes.insert(newId);
+        nodes[newId].setId(newId);
         newId++;
     }
 
     // Update the adjacent nodes
     spdlog::debug("update adjacents");
-    for (int id = 0; id < newId; id++) {
-        spdlog::debug("update adjacents for {}", id);
-        auto &newNode = nodes[id];
-
-        auto adjacents = newNode.getAdjacents();
-        std::unordered_set<int> newAdjacents = std::unordered_set<int>();
-
-        // update the adjacents
-        for (auto adj : adjacents) {
-            spdlog::debug("update adjacent {} from {}", adj, id);
-            newAdjacents.insert(idMap[adj]);
+    for (auto id : getIds()) {
+        if (id > newId) { // remove the node if it is not used
+            nodes.erase(id);
+            continue;
         }
 
-        // remove old adjacents
-        for (auto adj : adjacents) {
-            spdlog::debug("remove adjacent {} from {}", adj, id);
-            newNode.removeAdjacent(adj);
+        // set the adjacents
+        auto &node = nodes.at(id);
+        auto oldAdjacents = node.getAdjacents();
+        for (auto oldAdj : oldAdjacents) {
+            node.removeAdjacent(oldAdj);
         }
-
-        // add new adjacents
-        for (auto &adj : newAdjacents) {
-            spdlog::debug("add adjacent {} to {}", adj, id);
-            newNode.setAdjacent(adj);
+        for (auto oldAdj : oldAdjacents) {
+            const int newAdj = idMap[oldAdj];
+            node.setAdjacentNode(nodes[newAdj]);
         }
     }
-
-    // resize the nodes
-    spdlog::debug("resize nodes");
-    nodes.resize(idMap.size());
 }
 
 template <typename T>
 T HeteroDigraph<T>::getAttributes(int id) const {
-    return nodes[id].getAttributes();
+    return nodes.at(id).getAttributes();
 }
 
 template <typename T>
@@ -169,7 +143,7 @@ void HeteroDigraph<T>::setAttributes(int id, T attributes) {
 
 template <typename T>
 size_t HeteroDigraph<T>::size() const {
-    return usedNodes.size();
+    return nodes.size();
 }
 
 template <typename T>
@@ -200,8 +174,8 @@ void HeteroDigraph<T>::readGraph(std::string filename, FileExtension extName) {
 template <typename T>
 void HeteroDigraph<T>::writeGraph(std::string filename, FileExtension extName) const {
     std::vector<EdgeObject> edges;
-    for (int src : usedNodes) {
-        for (int dst : getAdjacents(src)) {
+    for (auto &[src, node] : nodes) {
+        for (int dst : node.getAdjacents()) {
             edges.emplace_back(EdgeObject(src, dst));
         }
     }
