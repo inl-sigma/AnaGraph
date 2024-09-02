@@ -174,6 +174,15 @@ public:
      * @brief Clear the attributes of the node.
      */
     void clear() override;
+
+    /**
+     * @brief Reset the nodes count.
+     * 
+     * This method is used to reset the nodes count.
+     */
+    static void resetNodesCount() {
+        nodesCount = 0;
+    }
 };
 
 } // namespace graph_structure
