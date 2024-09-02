@@ -5,20 +5,11 @@
 namespace anagraph {
 namespace graph_structure {
 
-WeightedGraph::WeightedGraph() {
-    digraph = WeightedDigraph();
-}
-
 WeightedGraph::WeightedGraph(std::string filePath, FileExtension extName) {
     readGraph(filePath, extName);
 }
 
-WeightedGraph& WeightedGraph::operator=(const WeightedGraph& graph) {
-    digraph = graph.digraph;
-    return *this;
-}
-
-WeightedNode WeightedGraph::getNode(int id) const {
+WeightedNode& WeightedGraph::getNode(int id) {
     return digraph.getNode(id);
 }
 
@@ -97,7 +88,8 @@ void WeightedGraph::readGraph(std::string filePath, FileExtension extName) {
 void WeightedGraph::writeGraph(std::string filePath, FileExtension extName) const {
     auto digraph = toDigraph();
     for (auto id : digraph.getIds()) {
-        for (auto [adj, _] : digraph.getAdjacents(id)) {
+        auto adjacents = digraph.getAdjacents(id);
+        for (auto [adj, _] : adjacents) {
             if (id > adj) {
                 digraph.removeEdge(id, adj);
 
