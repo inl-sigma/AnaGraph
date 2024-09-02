@@ -142,7 +142,7 @@ TEST(WeightedHeteroDigraphTest, GetSubgraph) {
     EXPECT_DOUBLE_EQ(subgraph.getWeight(0, 1), 5.0);
     EXPECT_DOUBLE_EQ(subgraph.getWeight(1, 3), 3.0);
 
-    EXPECT_DOUBLE_EQ(subgraph.getWeight(0, 2), 0.0);
+    EXPECT_THROW(subgraph.getWeight(0, 2), std::out_of_range);
 }
 
 TEST(WeightedHeteroDigraphTest, Reorganize) {
@@ -162,7 +162,7 @@ TEST(WeightedHeteroDigraphTest, Reorganize) {
     EXPECT_DOUBLE_EQ(graph.getWeight(1, 2), 3.5);
 
     EXPECT_DOUBLE_EQ(graph.getWeight(0, 2), 0.0);
-    EXPECT_DOUBLE_EQ(graph.getWeight(2, 4), 0.0);
+    EXPECT_THROW(graph.getWeight(2, 4), std::out_of_range);
 }
 
 TEST(WeightedHeteroDigraphTest, GetAttributes) {

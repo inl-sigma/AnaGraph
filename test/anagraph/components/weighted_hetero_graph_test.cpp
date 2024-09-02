@@ -143,6 +143,8 @@ TEST(WeightedHeteroGraphTest, GetSubgraph) {
     EXPECT_DOUBLE_EQ(subgraph.getWeight(1, 0), 5.0);
     EXPECT_DOUBLE_EQ(subgraph.getWeight(1, 3), 3.0);
     EXPECT_DOUBLE_EQ(subgraph.getWeight(3, 1), 3.0);
+
+    EXPECT_THROW(subgraph.getWeight(0, 2), std::out_of_range);
 }
 
 TEST(WeightedHeteroGraphTest, Reorganize) {
@@ -165,7 +167,7 @@ TEST(WeightedHeteroGraphTest, Reorganize) {
 
     EXPECT_DOUBLE_EQ(graph.getWeight(0, 2), 0.0);
     EXPECT_DOUBLE_EQ(graph.getWeight(2, 0), 0.0);
-    EXPECT_DOUBLE_EQ(graph.getWeight(2, 4), 0.0);
+    EXPECT_THROW(graph.getWeight(2, 4), std::out_of_range);
 }
 
 TEST(WeightedHeteroGraphTest, GetAttributes) {
@@ -256,12 +258,21 @@ TEST(WeightedHeteroGraphTest, ReadGraph) {
     graph.readGraph(inputPath, FileExtension::TXT);
 
     EXPECT_EQ(graph.size(), static_cast<size_t>(6));
-    EXPECT_EQ(graph.getWeight(0, 1), 1.0);
-    EXPECT_EQ(graph.getWeight(0, 2), 1.0);
-    EXPECT_EQ(graph.getWeight(1, 2), 1.0);
-    EXPECT_EQ(graph.getWeight(2, 3), 1.0);
-    EXPECT_EQ(graph.getWeight(2, 4), 1.0);
-    EXPECT_EQ(graph.getWeight(4, 5), 1.0);
+    EXPECT_DOUBLE_EQ(graph.getWeight(0, 1), 1.0);
+    EXPECT_DOUBLE_EQ(graph.getWeight(0, 2), 1.0);
+    EXPECT_DOUBLE_EQ(graph.getWeight(1, 2), 1.0);
+    EXPECT_DOUBLE_EQ(graph.getWeight(2, 3), 1.0);
+    EXPECT_DOUBLE_EQ(graph.getWeight(2, 4), 1.0);
+    EXPECT_DOUBLE_EQ(graph.getWeight(4, 5), 1.0);
+
+    EXPECT_DOUBLE_EQ(graph.getWeight(1, 0), 1.0);
+    EXPECT_DOUBLE_EQ(graph.getWeight(2, 0), 1.0);
+    EXPECT_DOUBLE_EQ(graph.getWeight(2, 1), 1.0);
+    EXPECT_DOUBLE_EQ(graph.getWeight(3, 2), 1.0);
+    EXPECT_DOUBLE_EQ(graph.getWeight(4, 2), 1.0);
+    EXPECT_DOUBLE_EQ(graph.getWeight(5, 4), 1.0);
+
+    EXPECT_THROW(graph.getWeight(0, 6), std::out_of_range);
 }
 
 TEST(WeightedHeteroGraphTest, WriteGraph) {
