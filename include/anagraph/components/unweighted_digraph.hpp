@@ -10,7 +10,6 @@
 #include "anagraph/utils/graph_utils.hpp"
 
 #include <unordered_set>
-#include <vector>
 
 namespace anagraph {
 namespace graph_structure {

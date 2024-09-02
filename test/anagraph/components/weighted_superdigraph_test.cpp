@@ -327,6 +327,7 @@ TEST(WeightedSuperDigraphTest, Merge) {
 TEST(WeightedSuperDigraphTest, setMergeNodeFunction) {
     using namespace anagraph::graph_structure;
     WeightedSuperDigraph graph;
+    spdlog::set_level(spdlog::level::debug);
     graph.setNode(1);
     graph.setNode(2);
     graph.setNode(3);

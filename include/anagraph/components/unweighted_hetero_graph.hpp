@@ -36,9 +36,7 @@ public:
     /**
      * @brief Copy constructor for the HeteroGraph object.
      */
-    HeteroGraph(const HeteroGraph<T> &graph) 
-        : digraph(graph.digraph) {
-    }
+    HeteroGraph(const HeteroGraph<T> &graph) = default;
 
     /**
      * @brief Assignment operator for the HeteroGraph object.

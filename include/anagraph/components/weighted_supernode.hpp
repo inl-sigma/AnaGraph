@@ -16,7 +16,7 @@ namespace graph_structure {
 
 class WeightedSupernode : public interface::IWeightedNode {
 private:
-    inline static int nodesCount = 0; /**< The number of nodes */
+    static inline int nodesCount = 0; /**< The number of nodes */
 
     int id; /**< The id of the node */
     int parent = ROOT; /**< parent is implemented as type int, because this relation is a kind of attributed edge */
