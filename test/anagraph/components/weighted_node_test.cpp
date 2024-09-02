@@ -7,8 +7,12 @@
 TEST(WeightedNodeTest, DefaultConstructor) {
     using namespace anagraph;
     graph_structure::WeightedNode node1;
-    EXPECT_EQ(node1.getId(), graph_structure::WeightedNode::UNUSED_ID);
+    EXPECT_EQ(node1.getId(), 0);
     EXPECT_TRUE(node1.getAdjacents().empty());
+
+    graph_structure::WeightedNode node2;
+    EXPECT_EQ(node2.getId(), 1);
+    EXPECT_TRUE(node2.getAdjacents().empty());
 }
 
 TEST(WeightedNodeTest, ConstructorWithId) {
@@ -56,9 +60,12 @@ TEST(WeightedNodeTest, IsUsed) {
     graph_structure::WeightedNode node1;
     graph_structure::WeightedNode node2(1);
     graph_structure::WeightedNode node3(2);
-    EXPECT_FALSE(node1.isUsed());
+    EXPECT_TRUE(node1.isUsed());
     EXPECT_TRUE(node2.isUsed());
     EXPECT_TRUE(node3.isUsed());
+
+    node1.clear();
+    EXPECT_FALSE(node1.isUsed());
 }
 
 TEST(WeightedNodeTest, SetAndGetAdjacents) {
