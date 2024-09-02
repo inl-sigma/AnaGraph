@@ -6,23 +6,12 @@ namespace anagraph {
 namespace graph_structure {
 
 template <typename T>
-WeightedHeteroGraph<T>::WeightedHeteroGraph() {
-    digraph = WeightedHeteroDigraph<T>();
-}
-
-template <typename T>
 WeightedHeteroGraph<T>::WeightedHeteroGraph(std::string filePath, FileExtension extName) {
     readGraph(filePath, extName);
 }
 
 template <typename T>
-WeightedHeteroGraph<T>& WeightedHeteroGraph<T>::operator=(const WeightedHeteroGraph<T>& graph) {
-    digraph = graph.digraph;
-    return *this;
-}
-
-template <typename T>
-WeightedHeteroNode<T> WeightedHeteroGraph<T>::getNode(int id) const {
+WeightedHeteroNode<T>& WeightedHeteroGraph<T>::getNode(int id) {
     return digraph.getNode(id);
 }
 
@@ -127,7 +116,8 @@ template <typename T>
 void WeightedHeteroGraph<T>::writeGraph(std::string filePath, FileExtension extName) const {
     WeightedHeteroDigraph<T> digraph = toDigraph();
     for (auto id : digraph.getIds()) {
-        for (auto [adj, _] : digraph.getAdjacents(id)) {
+        auto adjacents = digraph.getAdjacents(id);
+        for (auto [adj, _] : adjacents) {
             if (id > adj) {
                 digraph.removeEdge(id, adj);
             }
