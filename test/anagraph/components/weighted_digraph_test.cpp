@@ -164,7 +164,7 @@ TEST(WeightedDigraphTest, Reorganize) {
     EXPECT_DOUBLE_EQ(graph.getWeight(1, 2), 3.5);
 
     EXPECT_DOUBLE_EQ(graph.getWeight(0, 2), 0.0);
-    EXPECT_THROW(graph.getWeight(2, 4), std::out_of_range);
+    EXPECT_DOUBLE_EQ(graph.getWeight(2, 4), 0.0);
 }
 
 TEST(WeightedDigraphTest, ReadGraph) {
@@ -184,7 +184,8 @@ TEST(WeightedDigraphTest, ReadGraph) {
     EXPECT_EQ(graph.getWeight(4, 5), 1.0);
 
     EXPECT_DOUBLE_EQ(graph.getWeight(1, 0), 0.0);
-    EXPECT_THROW(graph.getWeight(0, 6), std::out_of_range);
+    EXPECT_DOUBLE_EQ(graph.getWeight(0, 6), 0.0);
+    EXPECT_THROW(graph.getNode(6), std::out_of_range);
 }
 
 TEST(WeightedDigraphTest, WriteGraph) {

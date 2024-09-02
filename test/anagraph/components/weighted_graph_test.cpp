@@ -163,7 +163,7 @@ TEST(WeightedGraphTest, Reorganize) {
     EXPECT_DOUBLE_EQ(graph.getWeight(2, 1), 3.5);
 
     EXPECT_DOUBLE_EQ(graph.getWeight(0, 2), 0.0);
-    EXPECT_THROW(graph.getWeight(2, 4), std::out_of_range);
+    EXPECT_DOUBLE_EQ(graph.getWeight(2, 4), 0.0);
 }
 
 TEST(WeightedGraphTest, toDigraph) {
