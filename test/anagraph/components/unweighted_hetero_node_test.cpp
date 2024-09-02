@@ -6,6 +6,7 @@
 
 TEST(HeteroNodeTest, DefaultConstructor) {
     using namespace anagraph;
+    graph_structure::HeteroNode<int>::resetNodesCount();
     graph_structure::HeteroNode<int> node1;
     EXPECT_EQ(node1.getId(), 0);
     EXPECT_TRUE(node1.getAdjacents().empty());
@@ -20,6 +21,7 @@ TEST(HeteroNodeTest, ConstructorWithId) {
 
 TEST(UnweightedNodeTest, DefaultConstructorAndIdConstructor) {
     using namespace anagraph::graph_structure;
+    HeteroNode<int>::resetNodesCount();
     HeteroNode<int> node1;
     ASSERT_EQ(node1.getId(), 0);
 
@@ -34,6 +36,10 @@ TEST(UnweightedNodeTest, DefaultConstructorAndIdConstructor) {
 
     HeteroNode<int> node5;
     ASSERT_EQ(node5.getId(), 5);
+
+    HeteroNode<int>::resetNodesCount();
+    HeteroNode<int> node6;
+    ASSERT_EQ(node6.getId(), 0);
 }
 
 TEST(HeteroNodeTest, ConstructorWithIdAndAttributes) {
