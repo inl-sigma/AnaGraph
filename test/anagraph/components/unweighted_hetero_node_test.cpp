@@ -18,6 +18,24 @@ TEST(HeteroNodeTest, ConstructorWithId) {
     EXPECT_TRUE(node2.getAdjacents().empty());
 }
 
+TEST(UnweightedNodeTest, DefaultConstructorAndIdConstructor) {
+    using namespace anagraph::graph_structure;
+    HeteroNode<int> node1;
+    ASSERT_EQ(node1.getId(), 0);
+
+    HeteroNode<int> node2(1);
+    ASSERT_EQ(node2.getId(), 1);
+
+    HeteroNode<std::any> node3;
+    ASSERT_EQ(node3.getId(), 2);
+
+    HeteroNode<int> node4(4);
+    ASSERT_EQ(node4.getId(), 4);
+
+    HeteroNode<int> node5;
+    ASSERT_EQ(node5.getId(), 5);
+}
+
 TEST(HeteroNodeTest, ConstructorWithIdAndAttributes) {
     using namespace anagraph;
     graph_structure::HeteroNode<int> node3(2, 42);

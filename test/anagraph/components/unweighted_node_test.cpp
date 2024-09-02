@@ -18,6 +18,24 @@ TEST(UnweightedNodeTest, ConstructorWithId) {
     EXPECT_TRUE(node2.getAdjacents().empty());
 }
 
+TEST(UnweightedNodeTest, DefaultConstructorAndIdConstructor) {
+    using namespace anagraph::graph_structure;
+    Node node1;
+    ASSERT_EQ(node1.getId(), 0);
+
+    Node node2(1);
+    ASSERT_EQ(node2.getId(), 1);
+
+    Node node3;
+    ASSERT_EQ(node3.getId(), 2);
+
+    Node node4(4);
+    ASSERT_EQ(node4.getId(), 4);
+
+    Node node5;
+    ASSERT_EQ(node5.getId(), 5);
+}
+
 TEST(UnweightedNodeTest, CopyConstructor) {
     using namespace anagraph::graph_structure;
     Node node1;

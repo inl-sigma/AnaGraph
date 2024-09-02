@@ -22,6 +22,25 @@ TEST(WeightedNodeTest, ConstructorWithId) {
     EXPECT_TRUE(node2.getAdjacents().empty());
 }
 
+TEST(WeightedNodeTest, DefaultConstructorAndIdConstructor) {
+    using namespace anagraph::graph_structure;
+    spdlog::set_level(spdlog::level::debug);
+    WeightedNode node1;
+    ASSERT_EQ(node1.getId(), 0);
+
+    WeightedNode node2(1);
+    ASSERT_EQ(node2.getId(), 1);
+
+    WeightedNode node3;
+    ASSERT_EQ(node3.getId(), 2);
+
+    WeightedNode node4(4);
+    ASSERT_EQ(node4.getId(), 4);
+
+    WeightedNode node5;
+    ASSERT_EQ(node5.getId(), 5);
+}
+
 TEST(WeightedNodeTest, CopyConstructor) {
     using namespace anagraph;
     graph_structure::WeightedNode node1;

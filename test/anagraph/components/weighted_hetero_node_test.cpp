@@ -26,6 +26,25 @@ TEST(WeightedHeteroNodeTest, ConstructorWithIdAndAttributes) {
     EXPECT_TRUE(node3.getAdjacents().empty());
 }
 
+TEST(WeightedHeteroNodeTest, DefaultConstructorAndIdConstructor) {
+    using namespace anagraph::graph_structure;
+    spdlog::set_level(spdlog::level::debug);
+    WeightedHeteroNode<int> node1;
+    ASSERT_EQ(node1.getId(), 0);
+
+    WeightedHeteroNode<int> node2(1);
+    ASSERT_EQ(node2.getId(), 1);
+
+    WeightedHeteroNode<int> node3;
+    ASSERT_EQ(node3.getId(), 2);
+
+    WeightedHeteroNode<int> node4(4);
+    ASSERT_EQ(node4.getId(), 4);
+
+    WeightedHeteroNode<int> node5;
+    ASSERT_EQ(node5.getId(), 5);
+}
+
 TEST(WeightedHeteroNodeTest, CopyConstructor) {
     using namespace anagraph;
     graph_structure::WeightedHeteroNode<int> node1;
