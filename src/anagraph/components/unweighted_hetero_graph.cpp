@@ -36,9 +36,9 @@ std::unordered_set<int> HeteroGraph<T>::getIds() const {
 }
 
 template <typename T>
-void HeteroGraph<T>::addEdge(int src, int dst) {
-    digraph.addEdge(src, dst);
-    digraph.addEdge(dst, src);
+void HeteroGraph<T>::setEdge(int src, int dst) {
+    digraph.setEdge(src, dst);
+    digraph.setEdge(dst, src);
 }
 
 template <typename T>
@@ -90,7 +90,7 @@ void HeteroGraph<T>::readGraph(std::string filename, FileExtension extName) {
     HeteroDigraph<T> deepCopy = digraph;
     for (int id : digraph.getIds()) {
         for (int adj : deepCopy.getAdjacents(id)) {
-            digraph.addEdge(adj, id);
+            digraph.setEdge(adj, id);
         }
     }
 }

@@ -45,7 +45,7 @@ std::unordered_set<int> WeightedHeteroDigraph<T>::getIds() const {
 }
 
 template <typename T>
-void WeightedHeteroDigraph<T>::addEdge(int src, int dst, double weight) {
+void WeightedHeteroDigraph<T>::setEdge(int src, int dst, double weight) {
     if (!nodes.contains(src)) {
         setNode(src);
     }
@@ -202,7 +202,7 @@ void WeightedHeteroDigraph<T>::readGraph(std::string filePath, FileExtension ext
 template <typename T>
 void WeightedHeteroDigraph<T>::readGraphHelper(std::string filePath, IGraphParser &parser) {
     for (auto &[src, dst, weight] : parser.parseWeightedGraph(filePath)) {
-        addEdge(src, dst, weight);
+        setEdge(src, dst, weight);
     }
 }
 

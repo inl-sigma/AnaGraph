@@ -39,7 +39,7 @@ std::unordered_set<int> Digraph::getIds() const {
     return ids;
 }
 
-void Digraph::addEdge(int src, int dst) {
+void Digraph::setEdge(int src, int dst) {
     if (!nodes.contains(src)) {
         setNode(src);
     }
@@ -150,7 +150,7 @@ void Digraph::readGraph(std::string filePath, FileExtension extName) {
 
 void Digraph::readGraphHelper(std::string filePath, IGraphParser &parser) {
     for (auto &[src, dst] : parser.parseGraph(filePath)) {
-        addEdge(src, dst);
+        setEdge(src, dst);
     }
 }
 

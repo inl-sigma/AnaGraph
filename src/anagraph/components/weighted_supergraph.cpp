@@ -29,9 +29,9 @@ std::unordered_set<int> WeightedSupergraph::getIds() const {
     return digraph.getIds();
 }
 
-void WeightedSupergraph::addEdge(int src, int dst, double weight) {
-    digraph.addEdge(src, dst, weight);
-    digraph.addEdge(dst, src, weight);
+void WeightedSupergraph::setEdge(int src, int dst, double weight) {
+    digraph.setEdge(src, dst, weight);
+    digraph.setEdge(dst, src, weight);
 }
 
 void WeightedSupergraph::removeEdge(int src, int dst) {
@@ -126,7 +126,7 @@ void WeightedSupergraph::readGraph(std::string filePath, FileExtension extName) 
 void WeightedSupergraph::readEdgeHelper(std::string filePath, IGraphParser &parser) {
     // read normal edges from the file
     for (auto &[src, dst, weight] : parser.parseWeightedGraph(filePath)) {
-        addEdge(src, dst, weight);
+        setEdge(src, dst, weight);
     }
 }
 

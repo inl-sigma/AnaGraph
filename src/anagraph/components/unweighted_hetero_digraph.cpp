@@ -48,7 +48,7 @@ std::unordered_set<int> HeteroDigraph<T>::getIds() const {
 }
 
 template <typename T>
-void HeteroDigraph<T>::addEdge(int src, int dst) {
+void HeteroDigraph<T>::setEdge(int src, int dst) {
     if (!nodes.contains(src)) {
         setNode(src);
     }
@@ -206,7 +206,7 @@ void HeteroDigraph<T>::writeGraph(std::string filename, FileExtension extName) c
 template <typename T>
 void HeteroDigraph<T>::readGraphHelper(std::string filename, IGraphParser &parser) {
     for (auto &[src, dst] : parser.parseGraph(filename)) {
-        addEdge(src, dst);
+        setEdge(src, dst);
     }
 }
 

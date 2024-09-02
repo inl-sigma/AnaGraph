@@ -67,7 +67,7 @@ TEST(WeightedHeteroGraphTest, GetIDs) {
     EXPECT_FALSE(ids.contains(7));
 }
 
-TEST(WeightedHeteroGraphTest, AddEdge) {
+TEST(WeightedHeteroGraphTest, SetEdge) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
 
@@ -76,8 +76,8 @@ TEST(WeightedHeteroGraphTest, AddEdge) {
     graph.setNode(1);
     graph.setNode(2);
 
-    graph.addEdge(0, 1, 5.0);
-    graph.addEdge(1, 2, 3.5);
+    graph.setEdge(0, 1, 5.0);
+    graph.setEdge(1, 2, 3.5);
 
     EXPECT_DOUBLE_EQ(graph.getWeight(0, 1), 5.0);
     EXPECT_DOUBLE_EQ(graph.getWeight(1, 0), 5.0);
@@ -92,8 +92,8 @@ TEST(WeightedHeteroGraphTest, RemoveEdge) {
     graph.setNode(1);
     graph.setNode(2);
 
-    graph.addEdge(0, 1, 5.0);
-    graph.addEdge(1, 2, 3.5);
+    graph.setEdge(0, 1, 5.0);
+    graph.setEdge(1, 2, 3.5);
 
     graph.removeEdge(0, 1);
     EXPECT_DOUBLE_EQ(graph.getWeight(0, 1), 0.0);
@@ -108,8 +108,8 @@ TEST(WeightedHeteroGraphTest, GetAdjacents) {
     graph.setNode(1);
     graph.setNode(2);
 
-    graph.addEdge(0, 1, 5.0);
-    graph.addEdge(0, 2, 2.5);
+    graph.setEdge(0, 1, 5.0);
+    graph.setEdge(0, 2, 2.5);
 
     const std::unordered_map<int, double>& adjacents = graph.getAdjacents(0);
     for (const auto& [id, weight] : adjacents) {
@@ -129,9 +129,9 @@ TEST(WeightedHeteroGraphTest, GetSubgraph) {
     graph.setNode(2);
     graph.setNode(3);
 
-    graph.addEdge(0, 1, 5.0);
-    graph.addEdge(0, 2, 2.5);
-    graph.addEdge(1, 3, 3.0);
+    graph.setEdge(0, 1, 5.0);
+    graph.setEdge(0, 2, 2.5);
+    graph.setEdge(1, 3, 3.0);
 
     std::unordered_set<int> indices = {0, 1, 3};
     spdlog::debug("create subgraph");
@@ -155,8 +155,8 @@ TEST(WeightedHeteroGraphTest, Reorganize) {
     graph.setNode(2);
     graph.setNode(4);
 
-    graph.addEdge(0, 2, 5.0);
-    graph.addEdge(2, 4, 3.5);
+    graph.setEdge(0, 2, 5.0);
+    graph.setEdge(2, 4, 3.5);
 
     graph.reorganize();
     EXPECT_EQ(graph.size(), static_cast<size_t>(3));
@@ -234,9 +234,9 @@ TEST(WeightedHeteroGraphTest, toDigraph) {
     graph.setNode(2);
     graph.setNode(3);
 
-    graph.addEdge(0, 1, 5.0);
-    graph.addEdge(0, 2, 2.5);
-    graph.addEdge(1, 3, 3.0);
+    graph.setEdge(0, 1, 5.0);
+    graph.setEdge(0, 2, 2.5);
+    graph.setEdge(1, 3, 3.0);
 
     graph.setAttributes(0, 42);
 
@@ -285,12 +285,12 @@ TEST(WeightedHeteroGraphTest, WriteGraph) {
     graph.setNode(4);
     graph.setNode(5);
 
-    graph.addEdge(0, 1, 1.0);
-    graph.addEdge(0, 2, 2.0);
-    graph.addEdge(1, 2, 3.0);
-    graph.addEdge(2, 3, 1.5);
-    graph.addEdge(2, 4, 2.5);
-    graph.addEdge(4, 5, 0.5);
+    graph.setEdge(0, 1, 1.0);
+    graph.setEdge(0, 2, 2.0);
+    graph.setEdge(1, 2, 3.0);
+    graph.setEdge(2, 3, 1.5);
+    graph.setEdge(2, 4, 2.5);
+    graph.setEdge(4, 5, 0.5);
 
     const std::string outputPath = datasetDirectory + "/output/weighted_hetero_graph_output.txt";
     graph.writeGraph(outputPath, FileExtension::TXT);

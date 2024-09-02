@@ -36,9 +36,9 @@ std::unordered_set<int> WeightedHeteroGraph<T>::getIds() const {
 }
 
 template <typename T>
-void WeightedHeteroGraph<T>::addEdge(int src, int dst, double weight) {
-    digraph.addEdge(src, dst, weight);
-    digraph.addEdge(dst, src, weight);
+void WeightedHeteroGraph<T>::setEdge(int src, int dst, double weight) {
+    digraph.setEdge(src, dst, weight);
+    digraph.setEdge(dst, src, weight);
 }
 
 template <typename T>
@@ -107,7 +107,7 @@ void WeightedHeteroGraph<T>::readGraph(std::string filePath, FileExtension extNa
     WeightedHeteroDigraph deepCopy = digraph;
     for (auto id : digraph.getIds()) {
         for (auto &[adj, weight] : deepCopy.getAdjacents(id)) {
-            digraph.addEdge(adj, id, weight);
+            digraph.setEdge(adj, id, weight);
         }
     }
 }

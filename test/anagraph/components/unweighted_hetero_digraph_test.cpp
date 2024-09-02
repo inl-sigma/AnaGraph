@@ -75,8 +75,8 @@ TEST(HeteroDigraphTest, GetAdjacents) {
     graph.setNode(1);
     graph.setNode(2);
 
-    graph.addEdge(0, 1);
-    graph.addEdge(0, 2);
+    graph.setEdge(0, 1);
+    graph.setEdge(0, 2);
 
     const std::unordered_set<int>& adjacents = graph.getAdjacents(0);
     EXPECT_EQ(adjacents.size(), static_cast<size_t>(2));
@@ -84,7 +84,7 @@ TEST(HeteroDigraphTest, GetAdjacents) {
     EXPECT_TRUE(adjacents.contains(2));
 }
 
-TEST(HeteroDigraphTest, AddEdge) {
+TEST(HeteroDigraphTest, SetEdge) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
 
@@ -93,8 +93,8 @@ TEST(HeteroDigraphTest, AddEdge) {
     graph.setNode(1);
     graph.setNode(2);
 
-    graph.addEdge(0, 1);
-    graph.addEdge(1, 2);
+    graph.setEdge(0, 1);
+    graph.setEdge(1, 2);
 
     auto node0 = graph.getNode(0);
     auto node1 = graph.getNode(1);
@@ -115,8 +115,8 @@ TEST(HeteroDigraphTest, RemoveEdge) {
     graph.setNode(1);
     graph.setNode(2);
 
-    graph.addEdge(0, 1);
-    graph.addEdge(1, 2);
+    graph.setEdge(0, 1);
+    graph.setEdge(1, 2);
     graph.removeEdge(0, 1);
 
     EXPECT_FALSE(graph.getAdjacents(0).contains(1));
@@ -132,9 +132,9 @@ TEST(HeteroDigraphTest, GetSubgraph) {
     graph.setNode(2);
     graph.setNode(3);
 
-    graph.addEdge(0, 1);
-    graph.addEdge(0, 2);
-    graph.addEdge(1, 3);
+    graph.setEdge(0, 1);
+    graph.setEdge(0, 2);
+    graph.setEdge(1, 3);
 
     std::unordered_set<int> indices = {0, 1, 3};
     spdlog::debug("create subgraph");
@@ -156,8 +156,8 @@ TEST(HeteroDigraphTest, Reorganize) {
     graph.setNode(2);
     graph.setNode(4);
 
-    graph.addEdge(0, 2);
-    graph.addEdge(2, 4);
+    graph.setEdge(0, 2);
+    graph.setEdge(2, 4);
 
     graph.reorganize();
     EXPECT_EQ(graph.size(), static_cast<size_t>(3));
@@ -259,12 +259,12 @@ TEST(HeteroDigraphTest, WriteGraph) {
     graph.setNode(4);
     graph.setNode(5);
 
-    graph.addEdge(0, 1);
-    graph.addEdge(0, 2);
-    graph.addEdge(1, 2);
-    graph.addEdge(2, 3);
-    graph.addEdge(2, 4);
-    graph.addEdge(4, 5);
+    graph.setEdge(0, 1);
+    graph.setEdge(0, 2);
+    graph.setEdge(1, 2);
+    graph.setEdge(2, 3);
+    graph.setEdge(2, 4);
+    graph.setEdge(4, 5);
 
     const std::string outputPath = datasetDirectory + "/output/unweighted_hetero_digraph_output.txt";
     graph.writeGraph(outputPath, FileExtension::TXT);

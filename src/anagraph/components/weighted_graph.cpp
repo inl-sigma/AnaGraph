@@ -29,9 +29,9 @@ std::unordered_set<int> WeightedGraph::getIds() const {
     return digraph.getIds();
 }
 
-void WeightedGraph::addEdge(int src, int dst, double weight) {
-    digraph.addEdge(src, dst, weight);
-    digraph.addEdge(dst, src, weight);
+void WeightedGraph::setEdge(int src, int dst, double weight) {
+    digraph.setEdge(src, dst, weight);
+    digraph.setEdge(dst, src, weight);
 }
 
 void WeightedGraph::removeEdge(int src, int dst) {
@@ -80,7 +80,7 @@ void WeightedGraph::readGraph(std::string filePath, FileExtension extName) {
     WeightedDigraph deepCopy = digraph;
     for (auto src : digraph.getIds()) {
         for (auto [adj, weight] : deepCopy.getAdjacents(src)) {
-            digraph.addEdge(adj, src, weight);
+            digraph.setEdge(adj, src, weight);
         }
     }
 }

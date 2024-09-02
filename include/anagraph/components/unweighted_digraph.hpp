@@ -76,7 +76,7 @@ public:
      * @param src The source node
      * @param dst The destination node
      */
-    void addEdge(int src, int dst) override;
+    void setEdge(int src, int dst) override;
 
     /**
      * @brief Remove an edge between two nodes.

@@ -38,7 +38,7 @@ std::unordered_set<int> WeightedDigraph::getIds() const {
     return ids;
 }
 
-void WeightedDigraph::addEdge(int src, int dst, double weight) {
+void WeightedDigraph::setEdge(int src, int dst, double weight) {
     if (!nodes.contains(src)) {
         setNode(src);
     }
@@ -169,7 +169,7 @@ void WeightedDigraph::readGraph(std::string filePath, FileExtension extName) {
 
 void WeightedDigraph::readGraphHelper(std::string filePath, IGraphParser &parser) {
     for (auto &[src, dst, weight] : parser.parseWeightedGraph(filePath)) {
-        addEdge(src, dst, weight);
+        setEdge(src, dst, weight);
     }
 }
 
