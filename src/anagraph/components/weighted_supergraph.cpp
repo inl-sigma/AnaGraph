@@ -13,7 +13,7 @@ void WeightedSupergraph::setNode(WeightedSupernode &node) {
     digraph.setNode(node);
 }
 
-const WeightedSupernode& WeightedSupergraph::getNode(int id) const {
+WeightedSupernode& WeightedSupergraph::getNode(int id) {
     return digraph.getNode(id);
 }
 
@@ -140,14 +140,14 @@ void WeightedSupergraph::writeGraph(std::string filePath, FileExtension extName)
     std::vector<WeightedEdgeObject> normalEdges;
     std::vector<EdgeObject> hierarchicalEdges;
     for (int src : digraph.getIds()) {
-        const auto &node = getNode(src);
-        for (auto [dst, weight] : node.getAdjacents()) {
+        auto adjacents = digraph.getAdjacents(src);
+        for (auto [dst, weight] : adjacents) {
             if (src <= dst) {
                 normalEdges.push_back(WeightedEdgeObject(src, dst, weight));
             }
         }
-        if (!node.isRoot()) {
-            hierarchicalEdges.push_back(EdgeObject(node.getParent(), src));
+        if (digraph.getParent(src) != WeightedSupernode::ROOT) {
+            hierarchicalEdges.push_back(EdgeObject(digraph.getParent(src), src));
         }
     }
 
