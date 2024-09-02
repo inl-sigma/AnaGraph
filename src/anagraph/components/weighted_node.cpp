@@ -5,16 +5,6 @@
 namespace anagraph {
 namespace graph_structure {
 
-WeightedNode::WeightedNode() {
-    id = UNUSED_ID;
-    adjacentIds = std::unordered_map<int, double>();
-}
-
-WeightedNode::WeightedNode(int id) {
-    setId(id);
-    adjacentIds = std::unordered_map<int, double>();
-}
-
 int WeightedNode::getId() const{
     return id;
 }
