@@ -51,10 +51,8 @@ public:
      * @return A copy of the attributes of the node
      * 
      * @todo override interface method after implementing the method
-     * 
-     * This method is used to access the attributes of a node.
      */
-    HeteroNode<T> getNode(int id) const;
+    HeteroNode<T>& getNode(int id);
 
     /**
      * @brief Set a node to the graph.

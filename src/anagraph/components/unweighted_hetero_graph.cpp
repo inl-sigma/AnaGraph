@@ -11,7 +11,7 @@ HeteroGraph<T>::HeteroGraph(std::string filePath, FileExtension extName) {
 }
 
 template <typename T>
-HeteroNode<T> HeteroGraph<T>::getNode(int id) const {
+HeteroNode<T>& HeteroGraph<T>::getNode(int id) {
     return digraph.getNode(id);
 }
 
