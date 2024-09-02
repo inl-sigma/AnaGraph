@@ -74,7 +74,7 @@ TEST(WeightedSuperDigraphTest, GetIds) {
     EXPECT_TRUE(ids.contains(4));
 }
 
-TEST(WeightedSuperDigraphTest, AddEdge) {
+TEST(WeightedSuperDigraphTest, SetEdge) {
     using namespace anagraph::graph_structure;
     spdlog::set_level(spdlog::level::debug);
     WeightedSuperDigraph graph;
@@ -82,8 +82,8 @@ TEST(WeightedSuperDigraphTest, AddEdge) {
     graph.setNode(2);
     graph.setNode(3);
 
-    graph.addEdge(1, 2, 5.0);
-    graph.addEdge(2, 3, 3.0);
+    graph.setEdge(1, 2, 5.0);
+    graph.setEdge(2, 3, 3.0);
 
     EXPECT_EQ(graph.getWeight(1, 2), 5.0);
     EXPECT_EQ(graph.getWeight(2, 3), 3.0);
@@ -97,8 +97,8 @@ TEST(WeightedSuperDigraphTest, RemoveEdge) {
     graph.setNode(2);
     graph.setNode(3);
 
-    graph.addEdge(1, 2, 5.0);
-    graph.addEdge(2, 3, 3.0);
+    graph.setEdge(1, 2, 5.0);
+    graph.setEdge(2, 3, 3.0);
 
     graph.removeEdge(1, 2);
 
@@ -114,8 +114,8 @@ TEST(WeightedSuperDigraphTest, GetWeight) {
     graph.setNode(2);
     graph.setNode(3);
 
-    graph.addEdge(1, 2, 5.0);
-    graph.addEdge(2, 3, 3.0);
+    graph.setEdge(1, 2, 5.0);
+    graph.setEdge(2, 3, 3.0);
 
     EXPECT_DOUBLE_EQ(graph.getWeight(1, 2), 5.0);
     EXPECT_DOUBLE_EQ(graph.getWeight(2, 3), 3.0);
@@ -129,8 +129,8 @@ TEST(WeightedSuperDigraphTest, SetWeight) {
     graph.setNode(2);
     graph.setNode(3);
 
-    graph.addEdge(1, 2, 5.0);
-    graph.addEdge(2, 3, 3.0);
+    graph.setEdge(1, 2, 5.0);
+    graph.setEdge(2, 3, 3.0);
 
     graph.setWeight(1, 2, 10.0);
     graph.setWeight(2, 3, 7.0);
@@ -147,8 +147,8 @@ TEST(WeightedSuperDigraphTest, AddWeight) {
     graph.setNode(2);
     graph.setNode(3);
 
-    graph.addEdge(1, 2, 5.0);
-    graph.addEdge(2, 3, 3.0);
+    graph.setEdge(1, 2, 5.0);
+    graph.setEdge(2, 3, 3.0);
 
     graph.addWeight(1, 2, 2.0);
     graph.addWeight(2, 3, -1.0);
@@ -245,13 +245,13 @@ TEST(WeightedSuperDigraphTest, GetAdjacents) {
     graph.setParent(3, 6);
     graph.setParent(4, 6);
 
-    graph.addEdge(1, 2, 1.0);
-    graph.addEdge(2, 3, -1.0);
-    graph.addEdge(2, 4, 1.5);
-    graph.addEdge(3, 5, -2.5);
-    graph.addEdge(4, 5, 2.5);
-    graph.addEdge(5, 6, 2.0);
-    graph.addEdge(5, 5, 1.0);
+    graph.setEdge(1, 2, 1.0);
+    graph.setEdge(2, 3, -1.0);
+    graph.setEdge(2, 4, 1.5);
+    graph.setEdge(3, 5, -2.5);
+    graph.setEdge(4, 5, 2.5);
+    graph.setEdge(5, 6, 2.0);
+    graph.setEdge(5, 5, 1.0);
 
     const std::unordered_map<int, double>& adjacents1 = graph.getAdjacents(1);
     EXPECT_EQ(adjacents1.size(), static_cast<size_t>(1));
@@ -300,10 +300,10 @@ TEST(WeightedSuperDigraphTest, Merge) {
     graph.setNode(4);
     graph.setNode(5);
 
-    graph.addEdge(1, 3, 1.0);
-    graph.addEdge(1, 5, 2.0);
-    graph.addEdge(2, 4, 1.5);
-    graph.addEdge(2, 5, 1.0);
+    graph.setEdge(1, 3, 1.0);
+    graph.setEdge(1, 5, 2.0);
+    graph.setEdge(2, 4, 1.5);
+    graph.setEdge(2, 5, 1.0);
     graph.mergeNode(1, 2, [](WeightedSupernode &first, WeightedSupernode &second) {
         WeightedSupernode node;
         std::unordered_map<int, double> adjacents1 = first.getAdjacents();
@@ -327,16 +327,17 @@ TEST(WeightedSuperDigraphTest, Merge) {
 TEST(WeightedSuperDigraphTest, setMergeNodeFunction) {
     using namespace anagraph::graph_structure;
     WeightedSuperDigraph graph;
+    spdlog::set_level(spdlog::level::debug);
     graph.setNode(1);
     graph.setNode(2);
     graph.setNode(3);
     graph.setNode(4);
     graph.setNode(5);
 
-    graph.addEdge(1, 3, 1.0);
-    graph.addEdge(1, 5, 2.0);
-    graph.addEdge(2, 4, 1.5);
-    graph.addEdge(2, 5, 1.0);
+    graph.setEdge(1, 3, 1.0);
+    graph.setEdge(1, 5, 2.0);
+    graph.setEdge(2, 4, 1.5);
+    graph.setEdge(2, 5, 1.0);
 
     EXPECT_THROW(graph.mergeNode(1, 2), std::bad_function_call);
 
@@ -403,9 +404,9 @@ TEST(WeightedSuperDigraphTest, WriteGraph) {
     graph.setParent(3, 6);
     graph.setParent(4, 6);
 
-    graph.addEdge(1, 2, 1.0);
-    graph.addEdge(3, 4, 3.0);
-    graph.addEdge(5, 6, 2.0);
+    graph.setEdge(1, 2, 1.0);
+    graph.setEdge(3, 4, 3.0);
+    graph.setEdge(5, 6, 2.0);
 
     const std::string outputDir = datasetDirectory + "/output/directed_supergraph_test";
     graph.writeGraph(outputDir, anagraph::FileExtension::TXT);

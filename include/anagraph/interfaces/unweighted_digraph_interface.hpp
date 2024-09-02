@@ -63,7 +63,7 @@ public:
      * @param src The source node
      * @param dst The destination node
      */
-    virtual void addEdge(int src, int dst) = 0;
+    virtual void setEdge(int src, int dst) = 0;
 
     /**
      * @brief Remove an edge between two nodes.
@@ -76,7 +76,7 @@ public:
      * @brief Get the adjacent nodes of a node.
      * @param id The source node
      */
-    virtual const std::unordered_set<int> getAdjacents(int id) const = 0;
+    virtual const std::unordered_set<int>& getAdjacents(int id) const = 0;
 
     /**
      * @brief Get the number of nodes in the graph.

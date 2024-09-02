@@ -22,6 +22,8 @@ namespace graph_structure {
  */
 class WeightedNode : public interface::IWeightedNode {
 private:
+    static inline int nodesCount = 0; /**< The number of nodes created */
+
     int id; /**< The id of the node */
     std::unordered_map<int, double> adjacentIds; /**< The adjacent nodes of the node */
     std::map<int, std::reference_wrapper<WeightedNode>> adjacentNodes; /**< The adjacent nodes of the node */
@@ -30,13 +32,23 @@ public:
     /**
      * @brief Constructs a weightedNode object.
      */
-    WeightedNode();
+    WeightedNode() : 
+        id(nodesCount++), 
+        adjacentIds(std::unordered_map<int, double>()), 
+        adjacentNodes(std::map<int, std::reference_wrapper<WeightedNode>>()) 
+    {}
 
     /**
      * @brief Constructs a weightedNode object with the specified id.
      * @param id The id of the node.
      */
-    WeightedNode(int id);
+    WeightedNode(int id) : 
+        id(id), 
+        adjacentIds(std::unordered_map<int, double>()), 
+        adjacentNodes(std::map<int, std::reference_wrapper<WeightedNode>>()) 
+    {
+        if (id >= nodesCount) {nodesCount = id + 1;}
+    }
 
     /**
      * @brief Copy constructor for the weightedNode object.
@@ -51,8 +63,11 @@ public:
     /**
      * @brief Move constructor for the weightedNode object.
      */
-    WeightedNode(WeightedNode &&node) noexcept
-        : id(node.id), adjacentIds(std::move(node.adjacentIds)), adjacentNodes(std::move(node.adjacentNodes)) {
+    WeightedNode(WeightedNode &&node) noexcept : 
+        id(node.id), 
+        adjacentIds(std::move(node.adjacentIds)), 
+        adjacentNodes(std::move(node.adjacentNodes)) 
+    {
         node.clear();
     }
 
@@ -121,6 +136,15 @@ public:
      * @brief Clear the attributes of the node.
      */
     void clear() override;
+
+    /**
+     * @brief Reset the nodes count.
+     * 
+     * This method is used to reset the nodes count.
+     */
+    static void resetNodesCount() {
+        nodesCount = 0;
+    }
 };
 
 } // namespace graph

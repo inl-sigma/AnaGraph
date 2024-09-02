@@ -9,7 +9,7 @@
 #include "anagraph/interfaces/weighted_digraph_interface.hpp"
 
 #include <functional>
-#include <vector>
+#include <map>
 
 namespace anagraph {
 namespace graph_structure {
@@ -23,11 +23,10 @@ namespace graph_structure {
  * The superdigraph is used to represent a kind of hierarchy of digraph.
  */
 class WeightedSuperDigraph : public interface::IWeightedDigraph {
-using mergeLambda = std::function<WeightedSupernode(WeightedSupernode &, WeightedSupernode &)>;
+using mergeLambda = std::function<WeightedSupernode (WeightedSupernode&, WeightedSupernode&)>;
 
 private:
-    std::vector<WeightedSupernode> nodes;
-    std::unordered_set<int> usedNodes;
+    std::map<int, WeightedSupernode> nodes;
     mergeLambda mergeNodeFunc;
 
 public:
@@ -72,6 +71,13 @@ public:
     WeightedSuperDigraph& operator=(const WeightedSuperDigraph&) = default;
 
     /**
+     * @brief Get a node from the graph.
+     * @param id The node to get
+     * @return The node
+     */
+    WeightedSupernode& getNode(int id);
+
+    /**
      * @brief Set a node to the graph.
      * @param id The node to add
      */
@@ -82,13 +88,6 @@ public:
      * @param node The node to add
      */
     void setNode(const WeightedSupernode &node);
-
-    /**
-     * @brief Get a node from the graph.
-     * @param id The node to get
-     * @return The node
-     */
-    const WeightedSupernode& getNode(int id) const;
 
     /**
      * @brief Remove a node from the graph.
@@ -134,7 +133,7 @@ public:
      * @param dst The destination node
      * @param weight The weight of the edge
      */
-    void addEdge(int src, int dst, double weight) override;
+    void setEdge(int src, int dst, double weight) override;
 
     /**
      * @brief Remove an edge between two nodes.

@@ -65,6 +65,13 @@ public:
     WeightedSupergraph& operator=(const WeightedSupergraph&) = default;
 
     /**
+     * @brief Get a node from the graph.
+     * @param id The node to get
+     * @return The node
+     */
+    WeightedSupernode& getNode(int id);
+
+    /**
      * @brief Set a node to the graph.
      * @param id The node to add
      */
@@ -75,13 +82,6 @@ public:
      * @param node The node to add
      */
     void setNode(WeightedSupernode &node);
-
-    /**
-     * @brief Get a node from the graph.
-     * @param id The node to get
-     * @return The node
-     */
-    const WeightedSupernode& getNode(int id) const;
 
     /**
      * @brief Remove a node from the graph.
@@ -127,7 +127,7 @@ public:
      * @param dst The destination node
      * @param weight The weight of the edge
      */
-    void addEdge(int src, int dst, double weight) override;
+    void setEdge(int src, int dst, double weight) override;
 
     /**
      * @brief Remove an edge between two nodes.

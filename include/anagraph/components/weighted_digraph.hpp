@@ -10,7 +10,7 @@
 #include "anagraph/utils/graph_utils.hpp"
 
 #include <unordered_set>
-#include <vector>
+#include <map>
 
 namespace anagraph {
 namespace graph_structure {
@@ -25,14 +25,13 @@ namespace graph_structure {
  */
 class WeightedDigraph : public interface::IWeightedDigraph {
 private:
-    std::vector<WeightedNode> nodes; /**< The adjacency list representing the graph. */
-    std::unordered_set<int> usedNodes; /**< The set of used nodes. */
+    std::map<int, WeightedNode> nodes; /**< The adjacency list representing the graph. */
 
 public:
     /**
      * @brief Constructs a WeightedGraph object.
      */
-    WeightedDigraph();
+    WeightedDigraph() : nodes(std::map<int, WeightedNode>()) {}
 
     /**
      * @brief Constructs a WeightedGraph object with the file.
@@ -43,14 +42,12 @@ public:
     /**
      * @brief Copy constructor for the WeightedGraph object.
      */
-    WeightedDigraph(const WeightedDigraph &graph) 
-        : nodes(graph.nodes), usedNodes(graph.usedNodes) {
-    }
+    WeightedDigraph(const WeightedDigraph &graph) = default;
 
     /**
      * @brief Assignment operator for the WeightedGraph object.
      */
-    WeightedDigraph& operator=(const WeightedDigraph& graph);
+    WeightedDigraph& operator=(const WeightedDigraph& graph) = default;
 
     /**
      * @brief Get the id of the graph.
@@ -66,7 +63,7 @@ public:
      * 
      * This method is used to access the attributes of a node.
      */
-    WeightedNode getNode(int id) const;
+    WeightedNode& getNode(int id);
 
     /**
      * @brief Set a node to the graph.
@@ -94,7 +91,7 @@ public:
      * @param dst The destination node
      * @param weight The weight of the edge
      */
-    void addEdge(int src, int dst, double weight) override;
+    void setEdge(int src, int dst, double weight) override;
 
     /**
      * @brief Remove an edge between two nodes.

@@ -16,7 +16,7 @@ namespace graph_structure {
 
 class WeightedSupernode : public interface::IWeightedNode {
 private:
-    inline static int nodesCount = 0; /**< The number of nodes */
+    static inline int nodesCount = 0; /**< The number of nodes */
 
     int id; /**< The id of the node */
     int parent = ROOT; /**< parent is implemented as type int, because this relation is a kind of attributed edge */
@@ -48,9 +48,7 @@ public:
         adjacentNodes(),
         children()
     {
-        if (id >= nodesCount) {
-            nodesCount = id + 1;
-        }
+        if (id >= nodesCount) {nodesCount = id + 1;}
     };
 
     /**
@@ -208,6 +206,15 @@ public:
      * This method is used to clear the node.
      */
     void clear() override;
+
+    /**
+     * @brief Reset the nodes count.
+     * 
+     * This method is used to reset the nodes count.
+     */
+    static void resetNodesCount() {
+        nodesCount = 0;
+    }
 };
 
 } // namespace graph_structure

@@ -33,7 +33,7 @@ public:
     /**
      * @brief Constructs a WeightedGraph object.
      */
-    WeightedGraph();
+    WeightedGraph() : digraph(WeightedDigraph()) {}
 
     /**
      * @brief Constructs a WeightedGraph object with the file.
@@ -44,14 +44,11 @@ public:
     /**
      * @brief Copy constructor for the WeightedGraph object.
      */
-    WeightedGraph(const WeightedGraph &graph) 
-        : digraph(graph.digraph) {
-    }
-
+    WeightedGraph(const WeightedGraph &graph) = default;
     /**
      * @brief Assignment operator for the WeightedGraph object.
      */
-    WeightedGraph& operator=(const WeightedGraph& digraph);
+    WeightedGraph& operator=(const WeightedGraph& digraph) = default;
 
     /** 
      * @brief Get the attributes of a node.
@@ -59,10 +56,8 @@ public:
      * @return A copy of the attributes of the node
      * 
      * @todo override interface method after implementing the method
-     * 
-     * This method is used to access the attributes of a node.
      */
-    WeightedNode getNode(int id) const;
+    WeightedNode& getNode(int id);
 
     /**
      * @brief Set a node to the graph.
@@ -95,7 +90,7 @@ public:
      * @param dst The destination node
      * @param weight The weight of the edge
      */
-    void addEdge(int src, int dst, double weight) override;
+    void setEdge(int src, int dst, double weight) override;
 
     /**
      * @brief Remove an edge between two nodes.

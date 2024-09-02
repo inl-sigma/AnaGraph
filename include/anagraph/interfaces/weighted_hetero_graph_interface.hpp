@@ -66,7 +66,7 @@ public:
      * @param dst The destination node
      * @param weight The weight of the edge
      */
-    virtual void addEdge(int src, int dst, double weight) = 0;
+    virtual void setEdge(int src, int dst, double weight) = 0;
 
     /**
      * @brief Remove an edge between two nodes.
