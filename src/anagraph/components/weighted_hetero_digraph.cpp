@@ -21,13 +21,13 @@ WeightedHeteroNode<T>& WeightedHeteroDigraph<T>::getNode(int id) {
 
 template <typename T>
 void WeightedHeteroDigraph<T>::setNode(int id) {
-    nodes[id] = WeightedHeteroNode<T>(id);
+    nodes.insert({id, WeightedHeteroNode<T>(id)});
 }
 
 template <typename T>
 void WeightedHeteroDigraph<T>::setNode(WeightedHeteroNode<T> &node) {
     const int nodeId = node.getId();
-    nodes[nodeId] = node;
+    nodes.insert({nodeId, node});
 }
 
 template <typename T>

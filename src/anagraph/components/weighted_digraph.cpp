@@ -18,12 +18,12 @@ WeightedNode& WeightedDigraph::getNode(int id) {
 }
 
 void WeightedDigraph::setNode(int id) {
-    nodes[id] = WeightedNode(id);
+    nodes.insert({id, WeightedNode(id)});
 }
 
 void WeightedDigraph::setNode(WeightedNode &node) {
     const int nodeId = node.getId();
-    nodes[nodeId] = node;
+    nodes.insert({nodeId, node});
 }
 
 void WeightedDigraph::removeNode(int id) {
@@ -32,8 +32,8 @@ void WeightedDigraph::removeNode(int id) {
 
 std::unordered_set<int> WeightedDigraph::getIds() const {
     std::unordered_set<int> ids;
-    for (auto &node : nodes) {
-        ids.insert(node.first);
+    for (auto &[id, _] : nodes) {
+        ids.insert(id);
     }
     return ids;
 }
@@ -107,7 +107,7 @@ void WeightedDigraph::reorganize() {
     spdlog::debug("create idMap and update usedNodes");
     std::unordered_map<int, int> idMap;
     int newId = 0;
-    for (auto &[oldId, node] : nodes) {
+    for (auto &[oldId, _] : nodes) {
         idMap[oldId] = newId;
         // move the node to the new id, with the adjacency list is maintained
         nodes[newId] = std::move(nodes[oldId]);

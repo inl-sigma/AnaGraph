@@ -23,9 +23,8 @@ void Digraph::setNode(int id) {
 }
 
 void Digraph::setNode(Node &node) {
-    // If the ID is not initialized, add it to the end
     const int nodeId = node.getId();
-    nodes[nodeId] = node;
+    nodes.insert({nodeId, node});
 }
 
 void Digraph::removeNode(int id) {
@@ -65,7 +64,7 @@ const std::unordered_set<int>& Digraph::getAdjacents(int id) const {
 Digraph Digraph::getSubgraph(std::unordered_set<int> indices) const {
     Digraph subgraph;
     subgraph.nodes = this->nodes;
-    
+
     // remove unnecessary edges
     for (auto idx : indices) {
         const auto &adjacents = getAdjacents(idx);
@@ -82,7 +81,6 @@ Digraph Digraph::getSubgraph(std::unordered_set<int> indices) const {
             subgraph.removeNode(idx);
         }
     }
-
     return subgraph;
 }
 
@@ -93,7 +91,7 @@ void Digraph::reorganize() {
     spdlog::debug("create idMap and update usedNodes");
     std::unordered_map<int, int> idMap;
     int newId = 0;
-    for (auto &[oldId, node] : nodes) {
+    for (auto &[oldId, _] : nodes) {
         idMap[oldId] = newId;
         // move the node to the new id, with the adjacency list is maintained
         nodes[newId] = std::move(nodes[oldId]);

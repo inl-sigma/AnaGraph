@@ -24,13 +24,13 @@ HeteroNode<T>& HeteroDigraph<T>::getNode(int id) {
 
 template <typename T>
 void HeteroDigraph<T>::setNode(int id) {
-    nodes[id] = HeteroNode<T>(id);
+    nodes.insert({id, HeteroNode<T>(id)});
 }
 
 template <typename T>
 void HeteroDigraph<T>::setNode(HeteroNode<T> &node) {
     const int nodeId = node.getId();
-    nodes[nodeId] = node;
+    nodes.insert({nodeId, node});
 }
 
 template <typename T>

@@ -16,16 +16,12 @@ WeightedSupernode& WeightedSuperDigraph::getNode(int id) {
 }
 
 void WeightedSuperDigraph::setNode(int id) {
-    spdlog::debug("called setNode");
     nodes.insert({id, WeightedSupernode(id)});
-    spdlog::debug("setNode: {}", id);
 }
 
 void WeightedSuperDigraph::setNode(const WeightedSupernode &node) {
-    spdlog::debug("called setNode");
     const int nodeId = node.getId();
-    nodes[nodeId] = node;
-    spdlog::debug("setNode: {}", nodeId);
+    nodes.insert({nodeId, node});
 }
 
 void WeightedSuperDigraph::removeNode(int id) {
