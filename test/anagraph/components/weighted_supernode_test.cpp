@@ -4,6 +4,7 @@
 
 TEST(WeightedSupernodeTest, DefaultConstructor) {
     using namespace anagraph::graph_structure;
+    WeightedSupernode::resetNodesCount();
     WeightedSupernode node1;
     ASSERT_EQ(node1.getId(), 0);
     ASSERT_TRUE(node1.isUsed());
@@ -38,6 +39,7 @@ TEST(WeightedSupernodeTest, ConstructorWithId) {
 TEST(WeightedSupernodeTest, DefaultConstructorAndIdConstructor) {
     using namespace anagraph::graph_structure;
     spdlog::set_level(spdlog::level::debug);
+    WeightedSupernode::resetNodesCount();
     WeightedSupernode node1;
     ASSERT_EQ(node1.getId(), 0);
 
@@ -52,6 +54,10 @@ TEST(WeightedSupernodeTest, DefaultConstructorAndIdConstructor) {
 
     WeightedSupernode node5;
     ASSERT_EQ(node5.getId(), 5);
+
+    WeightedSupernode::resetNodesCount();
+    WeightedSupernode node6;
+    ASSERT_EQ(node6.getId(), 0);
 }
 
 TEST(WeightedSupernodeTest, SetAndGetId) {
