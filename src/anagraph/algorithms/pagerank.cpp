@@ -256,8 +256,6 @@ std::vector<double> fora(const graph_structure::WeightedDigraph &graph, const st
         const int omegaSrc = std::ceil(residue[src] * coef);
         spdlog::debug("src = {}, omegaSrc = {}", src, omegaSrc);
         const double randomWalkWeight = residue[src] / omegaSrc;
-
-        const std::unordered_map<int, double> &adjacents = graph.getAdjacents(src);
         for (int i = 0; i < omegaSrc; i++) {
             int currentNode = src;
 
