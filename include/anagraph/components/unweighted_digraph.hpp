@@ -10,15 +10,13 @@
 #include "anagraph/utils/graph_utils.hpp"
 
 #include <unordered_set>
-#include <vector>
 
 namespace anagraph {
 namespace graph_structure {
 
 class Digraph : public interface::IDigraph {
 private:
-    std::vector<Node> nodes;
-    std::unordered_set<int> usedNodes;
+    std::map<int, Node> nodes;
 
 public:
     /**
@@ -46,7 +44,7 @@ public:
      * 
      * @todo override interface method after implementing the method
      */
-    Node getNode(int id) const;
+    Node& getNode(int id);
 
     /**
      * @brief Set a node to the graph.
@@ -78,7 +76,7 @@ public:
      * @param src The source node
      * @param dst The destination node
      */
-    void addEdge(int src, int dst) override;
+    void setEdge(int src, int dst) override;
 
     /**
      * @brief Remove an edge between two nodes.
@@ -91,7 +89,7 @@ public:
      * @brief Get the adjacent nodes of a node.
      * @param id The source node
      */
-    const std::unordered_set<int> getAdjacents(int id) const override;
+    const std::unordered_set<int>& getAdjacents(int id) const override;
 
     /**
      * @brief Get the subgraph of the graph.

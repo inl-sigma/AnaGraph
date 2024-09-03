@@ -26,7 +26,7 @@ public:
     /**
      * @brief Constructs a WeightedHeteroGraph object.
      */
-    WeightedHeteroGraph();
+    WeightedHeteroGraph() = default;
 
     /**
      * @brief Constructs a WeightedHeteroGraph object with the file.
@@ -37,14 +37,12 @@ public:
     /**
      * @brief Copy constructor for the WeightedHeteroGraph object.
      */
-    WeightedHeteroGraph(const WeightedHeteroGraph<T> &graph) 
-        : digraph(graph.digraph) {
-    }
+    WeightedHeteroGraph(const WeightedHeteroGraph<T> &graph) = default;
 
     /**
      * @brief Assignment operator for the WeightedHeteroGraph object.
      */
-    WeightedHeteroGraph<T>& operator=(const WeightedHeteroGraph<T>& graph);
+    WeightedHeteroGraph<T>& operator=(const WeightedHeteroGraph<T>& graph) = default;
 
     /** 
      * @brief Get the attributes of a node.
@@ -55,7 +53,7 @@ public:
      * 
      * This method is used to access the attributes of a node.
      */
-    WeightedHeteroNode<T> getNode(int id) const;
+    WeightedHeteroNode<T>& getNode(int id);
 
     /**
      * @brief Set a node to the graph.
@@ -88,7 +86,7 @@ public:
      * @param dst The destination node
      * @param weight The weight of the edge
      */
-    void addEdge(int src, int dst, double weight) override;
+    void setEdge(int src, int dst, double weight) override;
 
     /**
      * @brief Remove an edge between two nodes.
@@ -129,7 +127,7 @@ public:
      * @param id The source node
      * @return A pairs of integers, where the first means the adjacent node and the second means the weight of the edge.
      */
-    const std::unordered_map<int, double> getAdjacents(int id) const override;
+    const std::unordered_map<int, double>& getAdjacents(int id) const override;
 
     /**
      * @brief Get the subgraph of the graph.

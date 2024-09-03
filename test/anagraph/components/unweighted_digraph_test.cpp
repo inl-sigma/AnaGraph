@@ -67,7 +67,7 @@ TEST(DigraphTest, GetIDs) {
     EXPECT_FALSE(ids.contains(7));
 }
 
-TEST(DigraphTest, AddEdge) {
+TEST(DigraphTest, SetEdge) {
     using namespace anagraph::graph_structure;
     spdlog::set_level(spdlog::level::debug);
 
@@ -76,8 +76,8 @@ TEST(DigraphTest, AddEdge) {
     graph.setNode(1);
     graph.setNode(2);
 
-    graph.addEdge(0, 1);
-    graph.addEdge(1, 2);
+    graph.setEdge(0, 1);
+    graph.setEdge(1, 2);
 
     EXPECT_TRUE(graph.getAdjacents(0).contains(1));
     EXPECT_TRUE(graph.getAdjacents(1).contains(2));
@@ -93,8 +93,8 @@ TEST(DigraphTest, RemoveEdge) {
     graph.setNode(1);
     graph.setNode(2);
 
-    graph.addEdge(0, 1);
-    graph.addEdge(1, 2);
+    graph.setEdge(0, 1);
+    graph.setEdge(1, 2);
 
     graph.removeEdge(0, 1);
     EXPECT_FALSE(graph.getAdjacents(0).contains(1));
@@ -110,9 +110,9 @@ TEST(DigraphTest, GetSubgraph) {
     graph.setNode(2);
     graph.setNode(3);
 
-    graph.addEdge(0, 1);
-    graph.addEdge(0, 2);
-    graph.addEdge(1, 3);
+    graph.setEdge(0, 1);
+    graph.setEdge(0, 2);
+    graph.setEdge(1, 3);
 
     std::unordered_set<int> indices = {0, 1, 3};
     spdlog::debug("create subgraph");
@@ -135,8 +135,8 @@ TEST(DigraphTest, Reorganize) {
     graph.setNode(2);
     graph.setNode(4);
 
-    graph.addEdge(0, 2);
-    graph.addEdge(2, 4);
+    graph.setEdge(0, 2);
+    graph.setEdge(2, 4);
 
     graph.reorganize();
     EXPECT_EQ(graph.size(), static_cast<size_t>(3));
@@ -178,12 +178,12 @@ TEST(DigraphTest, WriteGraph) {
     graph.setNode(4);
     graph.setNode(5);
 
-    graph.addEdge(0, 1);
-    graph.addEdge(0, 2);
-    graph.addEdge(1, 2);
-    graph.addEdge(2, 3);
-    graph.addEdge(2, 4);
-    graph.addEdge(4, 5);
+    graph.setEdge(0, 1);
+    graph.setEdge(0, 2);
+    graph.setEdge(1, 2);
+    graph.setEdge(2, 3);
+    graph.setEdge(2, 4);
+    graph.setEdge(4, 5);
 
     const std::string outputPath = datasetDirectory + "/output/digraph_output.txt";
     graph.writeGraph(outputPath, anagraph::FileExtension::TXT);

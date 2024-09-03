@@ -41,14 +41,14 @@ TEST(SimilarityTest, JSdivergence) {
 TEST(SimilarityTest, DirectedAccuracy) {
     using namespace anagraph;
     graph_structure::Digraph expected;
-    expected.addEdge(1, 2);
-    expected.addEdge(2, 3);
-    expected.addEdge(3, 1);
+    expected.setEdge(1, 2);
+    expected.setEdge(2, 3);
+    expected.setEdge(3, 1);
 
     graph_structure::Digraph answer;
-    answer.addEdge(1, 2);
-    answer.addEdge(2, 3);
-    answer.addEdge(3, 1);
+    answer.setEdge(1, 2);
+    answer.setEdge(2, 3);
+    answer.setEdge(3, 1);
 
     double result = similarity::accuracy(expected, answer);
     ASSERT_DOUBLE_EQ(result, 1.0);
@@ -61,14 +61,14 @@ TEST(SimilarityTest, DirectedAccuracy) {
 TEST(SimilarityTest, UndirectedAccuracy) {
     using namespace anagraph;
     graph_structure::Graph expected;
-    expected.addEdge(1, 2);
-    expected.addEdge(2, 3);
-    expected.addEdge(3, 4);
+    expected.setEdge(1, 2);
+    expected.setEdge(2, 3);
+    expected.setEdge(3, 4);
 
     graph_structure::Graph answer;
-    answer.addEdge(1, 2);
-    answer.addEdge(2, 3);
-    answer.addEdge(3, 4);
+    answer.setEdge(1, 2);
+    answer.setEdge(2, 3);
+    answer.setEdge(3, 4);
 
     double result = similarity::accuracy(expected, answer);
     ASSERT_DOUBLE_EQ(result, 1.0);
@@ -82,14 +82,14 @@ TEST(SimilarityTest, UndirectedAccuracy) {
 TEST(SimilarityTest, DirectedPrecision) {
     using namespace anagraph;
     graph_structure::Digraph expected;
-    expected.addEdge(1, 2);
-    expected.addEdge(2, 3);
-    expected.addEdge(3, 1);
+    expected.setEdge(1, 2);
+    expected.setEdge(2, 3);
+    expected.setEdge(3, 1);
 
     graph_structure::Digraph answer;
-    answer.addEdge(1, 2);
-    answer.addEdge(2, 3);
-    answer.addEdge(3, 1);
+    answer.setEdge(1, 2);
+    answer.setEdge(2, 3);
+    answer.setEdge(3, 1);
 
     double result = similarity::precision(expected, answer);
     ASSERT_DOUBLE_EQ(result, 1.0);
@@ -102,14 +102,14 @@ TEST(SimilarityTest, DirectedPrecision) {
 TEST(SimilarityTest, UndirectedPrecision) {
     using namespace anagraph;
     graph_structure::Graph expected;
-    expected.addEdge(1, 2);
-    expected.addEdge(2, 3);
-    expected.addEdge(3, 4);
+    expected.setEdge(1, 2);
+    expected.setEdge(2, 3);
+    expected.setEdge(3, 4);
 
     graph_structure::Graph answer;
-    answer.addEdge(1, 2);
-    answer.addEdge(2, 3);
-    answer.addEdge(3, 4);
+    answer.setEdge(1, 2);
+    answer.setEdge(2, 3);
+    answer.setEdge(3, 4);
 
     double result = similarity::precision(expected, answer);
     ASSERT_DOUBLE_EQ(result, 1.0);
@@ -122,14 +122,14 @@ TEST(SimilarityTest, UndirectedPrecision) {
 TEST(SimilarityTest, DirectedRecall) {
     using namespace anagraph;
     graph_structure::Digraph expected;
-    expected.addEdge(1, 2);
-    expected.addEdge(2, 3);
-    expected.addEdge(3, 1);
+    expected.setEdge(1, 2);
+    expected.setEdge(2, 3);
+    expected.setEdge(3, 1);
 
     graph_structure::Digraph answer;
-    answer.addEdge(1, 2);
-    answer.addEdge(2, 3);
-    answer.addEdge(3, 1);
+    answer.setEdge(1, 2);
+    answer.setEdge(2, 3);
+    answer.setEdge(3, 1);
 
     double result = similarity::recall(expected, answer);
     ASSERT_DOUBLE_EQ(result, 1.0);
@@ -143,14 +143,14 @@ TEST(SimilarityTest, UndirectedRecall) {
     using namespace anagraph;
     spdlog::set_level(spdlog::level::debug);
     graph_structure::Graph expected;
-    expected.addEdge(1, 2);
-    expected.addEdge(2, 3);
-    expected.addEdge(3, 4);
+    expected.setEdge(1, 2);
+    expected.setEdge(2, 3);
+    expected.setEdge(3, 4);
 
     graph_structure::Graph answer;
-    answer.addEdge(1, 2);
-    answer.addEdge(2, 3);
-    answer.addEdge(3, 4);
+    answer.setEdge(1, 2);
+    answer.setEdge(2, 3);
+    answer.setEdge(3, 4);
 
     double result = similarity::recall(expected, answer);
     ASSERT_DOUBLE_EQ(result, 1.0);
@@ -163,14 +163,14 @@ TEST(SimilarityTest, UndirectedRecall) {
 TEST(SimilarityTest, DirectedFMeasure) {
     using namespace anagraph;
     graph_structure::Digraph expected;
-    expected.addEdge(1, 2);
-    expected.addEdge(2, 3);
-    expected.addEdge(3, 1);
+    expected.setEdge(1, 2);
+    expected.setEdge(2, 3);
+    expected.setEdge(3, 1);
 
     graph_structure::Digraph answer;
-    answer.addEdge(1, 2);
-    answer.addEdge(2, 3);
-    answer.addEdge(3, 1);
+    answer.setEdge(1, 2);
+    answer.setEdge(2, 3);
+    answer.setEdge(3, 1);
 
     double result = similarity::fMeasure(expected, answer);
     ASSERT_DOUBLE_EQ(result, 1.0);
@@ -183,14 +183,14 @@ TEST(SimilarityTest, DirectedFMeasure) {
 TEST(SimilarityTest, UndirectedFMeasure) {
     using namespace anagraph;
     graph_structure::Graph expected;
-    expected.addEdge(1, 2);
-    expected.addEdge(2, 3);
-    expected.addEdge(3, 4);
+    expected.setEdge(1, 2);
+    expected.setEdge(2, 3);
+    expected.setEdge(3, 4);
 
     graph_structure::Graph answer;
-    answer.addEdge(1, 2);
-    answer.addEdge(2, 3);
-    answer.addEdge(3, 4);
+    answer.setEdge(1, 2);
+    answer.setEdge(2, 3);
+    answer.setEdge(3, 4);
 
     double result = similarity::fMeasure(expected, answer);
     ASSERT_DOUBLE_EQ(result, 1.0);

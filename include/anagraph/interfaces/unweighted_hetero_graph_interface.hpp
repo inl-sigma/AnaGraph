@@ -50,7 +50,7 @@ public:
      * @param src The source node
      * @param dst The destination node
      */
-    virtual void addEdge(int src, int dst) = 0;
+    virtual void setEdge(int src, int dst) = 0;
 
     /**
      * @brief Remove an edge between two nodes.

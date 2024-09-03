@@ -71,7 +71,7 @@ public:
      * @param dst The destination node
      * @param weight The weight of the edge
      */
-    virtual void addEdge(int src, int dst, double weight) = 0;
+    virtual void setEdge(int src, int dst, double weight) = 0;
 
     /**
      * @brief Remove an edge between two nodes.
@@ -114,7 +114,7 @@ public:
      * @param id The source node
      * @return A pairs of integers, where the first means the adjacent node and the second means the weight of the edge.
      */
-    virtual const std::unordered_map<int, double> getAdjacents(int id) const = 0;
+    virtual const std::unordered_map<int, double>& getAdjacents(int id) const = 0;
 
     /**
      * @brief Get the number of nodes in the graph.

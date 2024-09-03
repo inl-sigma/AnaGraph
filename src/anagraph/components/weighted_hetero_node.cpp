@@ -1,5 +1,7 @@
 #include "anagraph/components/weighted_hetero_node.hpp"
 
+#include <spdlog/spdlog.h>
+
 #include <any>
 #include <stdexcept>
 #include <string>
@@ -8,49 +10,58 @@ namespace anagraph {
 namespace graph_structure {
 
 template <typename T>
-WeightedHeteroNode<T>& WeightedHeteroNode<T>::operator=(const WeightedHeteroNode<T>& node) {
-    weightedNode = node.weightedNode;
-    attributes = node.attributes;
-    isAttrEnabled = node.isAttrEnabled;
-    return *this;
-}
-
-template <typename T>
-const int WeightedHeteroNode<T>::UNUSED_ID = -1;
-
-template <typename T>
 int WeightedHeteroNode<T>::getId() const{
-    return weightedNode.getId();
+    return id;
 }
 
 template <typename T>
 void WeightedHeteroNode<T>::setId(int id) {
-    weightedNode.setId(id);
+    if (id < 0) {
+        spdlog::warn("setId: negative id({}) detected, use clear() to reset node", id);
+    } else {
+        this->id = id;
+    }
 }
 
 template <typename T>
 bool WeightedHeteroNode<T>::isUsed() const {
-    return weightedNode.isUsed();
+    return id != interface::IWeightedHeteroNode<T>::UNUSED_ID;
 }
 
 template <typename T>
 const std::unordered_map<int, double>& WeightedHeteroNode<T>::getAdjacents() const {
-    return weightedNode.getAdjacents();
+    return adjacentIds;
 }
 
 template <typename T>
 void WeightedHeteroNode<T>::setAdjacent(int adjacent, double weight) {
-    weightedNode.setAdjacent(adjacent, weight);
+    adjacentIds[adjacent] = weight;
 }
 
 template <typename T>
 void WeightedHeteroNode<T>::updateAdjacent(int adjacent, double weight) {
-    weightedNode.updateAdjacent(adjacent, weight);
+    if (adjacentIds.contains(adjacent)) {
+        adjacentIds[adjacent] += weight;
+    } else {
+        adjacentIds[adjacent] = weight;
+    }
 }
 
 template <typename T>
 void WeightedHeteroNode<T>::removeAdjacent(int adjacent) {
-    weightedNode.removeAdjacent(adjacent);
+    adjacentIds.erase(adjacent);
+}
+
+template <typename T>
+const std::map<int, std::reference_wrapper<WeightedHeteroNode<T>>>& WeightedHeteroNode<T>::getAdjacentNodes() const {
+    return adjacentNodes;
+}
+
+template <typename T>
+void WeightedHeteroNode<T>::setAdjacentNode(WeightedHeteroNode<T>& adjacent, double weight) {
+    const int id = adjacent.getId();
+    adjacentIds[id] = weight;
+    adjacentNodes.insert({id, adjacent});
 }
 
 template <typename T>
@@ -69,7 +80,9 @@ void WeightedHeteroNode<T>::setAttributes(T attributes){
 
 template <typename T>
 void WeightedHeteroNode<T>::clear() {
-    weightedNode.clear();
+    id = interface::IWeightedHeteroNode<T>::UNUSED_ID;
+    adjacentIds.clear();
+    adjacentNodes.clear();
     attributes = T();
     isAttrEnabled = false;
 }

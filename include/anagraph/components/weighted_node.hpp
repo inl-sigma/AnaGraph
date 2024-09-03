@@ -5,6 +5,11 @@
 
 #include "anagraph/interfaces/weighted_node_interface.hpp"
 
+#include <spdlog/spdlog.h>
+
+#include <functional>
+#include <map>
+
 namespace anagraph {
 namespace graph_structure {
 
@@ -17,39 +22,52 @@ namespace graph_structure {
  */
 class WeightedNode : public interface::IWeightedNode {
 private:
+    static inline int nodesCount = 0; /**< The number of nodes created */
+
     int id; /**< The id of the node */
-    std::unordered_map<int, double> adjacents; /**< The adjacent nodes of the node */
+    std::unordered_map<int, double> adjacentIds; /**< The adjacent nodes of the node */
+    std::map<int, std::reference_wrapper<WeightedNode>> adjacentNodes; /**< The adjacent nodes of the node */
 
 public:
-    static const int UNUSED_ID; /**< The default value for an unused node */
     /**
      * @brief Constructs a weightedNode object.
      */
-    WeightedNode();
+    WeightedNode() : 
+        id(nodesCount++), 
+        adjacentIds(std::unordered_map<int, double>()), 
+        adjacentNodes(std::map<int, std::reference_wrapper<WeightedNode>>()) 
+    {}
 
     /**
      * @brief Constructs a weightedNode object with the specified id.
      * @param id The id of the node.
      */
-    WeightedNode(int id);
+    WeightedNode(int id) : 
+        id(id), 
+        adjacentIds(std::unordered_map<int, double>()), 
+        adjacentNodes(std::map<int, std::reference_wrapper<WeightedNode>>()) 
+    {
+        if (id >= nodesCount) {nodesCount = id + 1;}
+    }
 
     /**
      * @brief Copy constructor for the weightedNode object.
      */
-    WeightedNode(const WeightedNode &node) 
-        : id(node.id), adjacents(node.adjacents) {
-    }
+    WeightedNode(const WeightedNode &node) = default;
 
     /**
      * @brief Assignment operator for the weightedNode object.
      */
-    WeightedNode& operator=(const WeightedNode& node);
+    WeightedNode& operator=(const WeightedNode& node) = default;
 
     /**
      * @brief Move constructor for the weightedNode object.
      */
-    WeightedNode(WeightedNode &&node) noexcept
-        : id(node.id), adjacents(std::move(node.adjacents)) {
+    WeightedNode(WeightedNode &&node) noexcept : 
+        id(node.id), 
+        adjacentIds(std::move(node.adjacentIds)), 
+        adjacentNodes(std::move(node.adjacentNodes)) 
+    {
         node.clear();
     }
 
@@ -100,9 +118,33 @@ public:
     void removeAdjacent(int adjacent) override;
 
     /**
+     * @brief Get the adjacent nodes of a node.
+     * @return A map of integers representing the adjacent nodes.
+     * 
+     * This method is used to access the adjacent nodes of a node.
+     */
+    const std::map<int, std::reference_wrapper<WeightedNode>>& getAdjacentNodes() const;
+
+    /**
+     * @brief Set an adjacent node to the node.
+     * @param adjacent The id of the adjacent node.
+     * @param weight The weight of the edge between the nodes.
+     */
+    void setAdjacentNode(WeightedNode& adjacent, double weight);
+
+    /**
      * @brief Clear the attributes of the node.
      */
     void clear() override;
+
+    /**
+     * @brief Reset the nodes count.
+     * 
+     * This method is used to reset the nodes count.
+     */
+    static void resetNodesCount() {
+        nodesCount = 0;
+    }
 };
 
 } // namespace graph

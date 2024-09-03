@@ -36,9 +36,7 @@ public:
     /**
      * @brief Copy constructor for the HeteroGraph object.
      */
-    HeteroGraph(const HeteroGraph<T> &graph) 
-        : digraph(graph.digraph) {
-    }
+    HeteroGraph(const HeteroGraph<T> &graph) = default;
 
     /**
      * @brief Assignment operator for the HeteroGraph object.
@@ -51,10 +49,8 @@ public:
      * @return A copy of the attributes of the node
      * 
      * @todo override interface method after implementing the method
-     * 
-     * This method is used to access the attributes of a node.
      */
-    HeteroNode<T> getNode(int id) const;
+    HeteroNode<T>& getNode(int id);
 
     /**
      * @brief Set a node to the graph.
@@ -86,7 +82,7 @@ public:
      * @param src The source node
      * @param dst The destination node
      */
-    void addEdge(int src, int dst) override;
+    void setEdge(int src, int dst) override;
 
     /**
      * @brief Remove an edge between two nodes.

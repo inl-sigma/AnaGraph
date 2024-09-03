@@ -9,8 +9,7 @@
 #include "anagraph/interfaces/unweighted_hetero_digraph_interface.hpp"
 #include "anagraph/utils/graph_utils.hpp"
 
-#include <unordered_set>
-#include <vector>
+#include <map>
 
 namespace anagraph {
 namespace graph_structure {
@@ -26,14 +25,13 @@ namespace graph_structure {
 template <typename T>
 class HeteroDigraph : public interface::IHeteroDigraph<T> {
 private:
-    std::vector<HeteroNode<T>> nodes; /**< The nodes of the graph */
-    std::unordered_set<int> usedNodes; /**< The set of used nodes */
+    std::map<int, HeteroNode<T>> nodes; /**< The nodes of the graph */
 
 public:
     /**
      * @brief Constructs a UnweightedHeteroDigraph object.
      */
-    HeteroDigraph() = default;
+    HeteroDigraph() : nodes(std::map<int, HeteroNode<T>>()) {};
 
     /**
      * @brief Constructs a UnweightedHeteroDigraph object with the file.
@@ -44,9 +42,7 @@ public:
     /**
      * @brief Copy constructor for the UnweightedHeteroDigraph object.
      */
-    HeteroDigraph(const HeteroDigraph<T> &graph) 
-        : nodes(graph.nodes), usedNodes(graph.usedNodes) {
-    }
+    HeteroDigraph(const HeteroDigraph<T> &graph) = default;
 
     /**
      * @brief Assignment operator for the UnweightedHeteroDigraph object.
@@ -59,10 +55,8 @@ public:
      * @return A copy of the attributes of the node
      * 
      * @todo override interface method after implementing the method
-     * 
-     * This method is used to access the attributes of a node.
      */
-    HeteroNode<T> getNode(int id) const;
+    HeteroNode<T>& getNode(int id);
 
     /**
      * @brief Set a node to the graph.
@@ -94,7 +88,7 @@ public:
      * @param src The source node
      * @param dst The destination node
      */
-    void addEdge(int src, int dst) override;
+    void setEdge(int src, int dst) override;
 
     /**
      * @brief Remove an edge between two nodes.

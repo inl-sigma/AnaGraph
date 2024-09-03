@@ -11,7 +11,7 @@ Graph::Graph(std::string filePath, FileExtension extName) {
     readGraph(filePath, extName);
 }
 
-Node Graph::getNode(int id) const {
+Node& Graph::getNode(int id) {
     return digraph.getNode(id);
 }
 
@@ -31,9 +31,9 @@ std::unordered_set<int> Graph::getIds() const {
     return digraph.getIds();
 }
 
-void Graph::addEdge(int src, int dst) {
-    digraph.addEdge(src, dst);
-    digraph.addEdge(dst, src);
+void Graph::setEdge(int src, int dst) {
+    digraph.setEdge(src, dst);
+    digraph.setEdge(dst, src);
 }
 
 void Graph::removeEdge(int src, int dst) {
@@ -68,7 +68,7 @@ void Graph::readGraph(std::string filePath, FileExtension extName) {
     Digraph deepCopy = digraph;
     for (auto id : digraph.getIds()) {
         for (auto adj : deepCopy.getAdjacents(id)) {
-            digraph.addEdge(adj, id);
+            digraph.setEdge(adj, id);
         }
     }
 }
@@ -76,7 +76,8 @@ void Graph::readGraph(std::string filePath, FileExtension extName) {
 void Graph::writeGraph(std::string filePath, FileExtension extName) const {
     auto digraph = toDigraph();
     for (auto id : digraph.getIds()) {
-        for (auto adj : digraph.getAdjacents(id)) {
+        auto adjacents = digraph.getAdjacents(id);
+        for (auto adj : adjacents) {
             if (id > adj) {
                 digraph.removeEdge(id, adj);
             }

@@ -8,83 +8,55 @@
 namespace anagraph {
 namespace graph_structure {
 
-WeightedDigraph::WeightedDigraph() {
-    usedNodes = std::unordered_set<int>();
-    nodes = std::vector<WeightedNode>();
-}
 
 WeightedDigraph::WeightedDigraph(std::string filePath, FileExtension extName) {
-    usedNodes = std::unordered_set<int>();
     readGraph(filePath, extName);
 }
 
-WeightedDigraph& WeightedDigraph::operator=(const WeightedDigraph& graph) {
-    usedNodes = graph.usedNodes;
-    nodes = graph.nodes;
-    return *this;
-}
-
-WeightedNode WeightedDigraph::getNode(int id) const {
-    return nodes[id];
+WeightedNode& WeightedDigraph::getNode(int id) {
+    return nodes.at(id);
 }
 
 void WeightedDigraph::setNode(int id) {
-    if (id >= static_cast<int>(nodes.size())) {
-        nodes.resize(id + 1);
-    }
-    nodes[id] = WeightedNode(id);
-    usedNodes.insert(id);
+    nodes.insert({id, WeightedNode(id)});
 }
 
 void WeightedDigraph::setNode(WeightedNode &node) {
-    // If the ID is not initialized, add it to the end
-    int nodeId;
-    if (!node.isUsed()) {
-        nodeId = nodes.size();
-        node.setId(nodeId);
-    } else {
-        nodeId = node.getId();
-    }
-    if (static_cast<int>(nodeId >= static_cast<int>(nodes.size()))) {
-        nodes.resize(nodeId + 1);
-    }
-    nodes[nodeId] = node;
-    usedNodes.insert(nodeId);
+    const int nodeId = node.getId();
+    nodes.insert({nodeId, node});
 }
 
 void WeightedDigraph::removeNode(int id) {
-    nodes[id].clear();
-    usedNodes.erase(id);
+    nodes.erase(id);
 }
 
 std::unordered_set<int> WeightedDigraph::getIds() const {
-    return usedNodes;
+    std::unordered_set<int> ids;
+    for (auto &[id, _] : nodes) {
+        ids.insert(id);
+    }
+    return ids;
 }
 
-void WeightedDigraph::addEdge(int src, int dst, double weight) {
-    const int maxId = std::max(src, dst);
-    if (maxId >= static_cast<int>(nodes.size())) {
-        setNode(maxId);
+void WeightedDigraph::setEdge(int src, int dst, double weight) {
+    if (!nodes.contains(src)) {
+        setNode(src);
     }
-    const int minId = std::min(src, dst);
-    const auto minNode = getNode(minId);
-    if (!minNode.isUsed()) {
-        setNode(minId);
+    if (!nodes.contains(dst)) {
+        setNode(dst);
     }
-    nodes[src].updateAdjacent(dst, weight);
+    nodes[src].setAdjacentNode(getNode(dst), weight);
 }
 
 void WeightedDigraph::removeEdge(int src, int dst) {
-    const int maxId = std::max(src, dst);
-    if (maxId >= static_cast<int>(nodes.size())) {
+    if (!nodes.contains(src)) {
         throw std::out_of_range("Node does not exist");
     }
     nodes[src].removeAdjacent(dst);
 }
 
 double WeightedDigraph::getWeight(int src, int dst) const {
-    const int maxId = std::max(src, dst);
-    if (maxId >= static_cast<int>(nodes.size())) {
+    if (!nodes.contains(src) || !nodes.contains(dst)) {
         throw std::out_of_range("Node does not exist");
     }
     const auto &adjacents = getAdjacents(src);
@@ -97,36 +69,25 @@ double WeightedDigraph::getWeight(int src, int dst) const {
 }
 
 void WeightedDigraph::setWeight(int src, int dst, double weight) {
-    const int maxId = std::max(src, dst);
-    if (maxId >= static_cast<int>(nodes.size())) {
-        throw std::out_of_range("Node does not exist, use setNode() instead");
-    }
     nodes[src].setAdjacent(dst, weight);
 }
 
 void WeightedDigraph::addWeight(int src, int dst, double weight) {
-    const int maxId = std::max(src, dst);
-    if (maxId >= static_cast<int>(nodes.size())) {
-        throw std::out_of_range("Node does not exist");
-    }
     nodes[src].updateAdjacent(dst, weight);
 }
 
-const std::unordered_map<int, double> WeightedDigraph::getAdjacents(int id) const {
-    if (id >= static_cast<int>(nodes.size())) {
-        throw std::out_of_range("Node does not exist");
-    }
-    return nodes[id].getAdjacents();
+const std::unordered_map<int, double>& WeightedDigraph::getAdjacents(int id) const {
+    return nodes.at(id).getAdjacents();
 }
 
 WeightedDigraph WeightedDigraph::getSubgraph(std::unordered_set<int> indices) const {
     WeightedDigraph subgraph;
     // copy necessary nodes
     for (auto idx : indices) {
-        if (idx >= static_cast<int>(nodes.size())) {
+        if (!nodes.contains(idx)) {
             throw std::out_of_range("Node does not exist");
         }
-        WeightedNode node = nodes[idx];
+        WeightedNode node = nodes.at(idx);
         subgraph.setNode(node);
     }
     
@@ -145,50 +106,41 @@ WeightedDigraph WeightedDigraph::getSubgraph(std::unordered_set<int> indices) co
 void WeightedDigraph::reorganize() {
     spdlog::debug("called reorganize");
 
-    // for sort and copy
-    std::set<int> oldNodes = std::set<int>(this->usedNodes.begin(), this->usedNodes.end());
-    spdlog::debug("clear usedNodes");
-    usedNodes.clear();
-
     // Create a map from old id to new id
     spdlog::debug("create idMap and update usedNodes");
     std::unordered_map<int, int> idMap;
     int newId = 0;
-    for (int oldId : oldNodes) {
+    for (auto &[oldId, _] : nodes) {
         idMap[oldId] = newId;
         // move the node to the new id, with the adjacency list is maintained
         nodes[newId] = std::move(nodes[oldId]);
-        usedNodes.insert(newId);
+        nodes[newId].setId(newId);
         newId++;
     }
 
     // Update the nodes and the adjacents
     spdlog::debug("update nodes and adjacents");
-    for (int id = 0; id < newId; id++) {
-        auto &oldNode = nodes[id];
-
-        // set the new id
-        auto newNode = WeightedNode(id);
-
-        // set the adjacents
-        for (auto [oldAdj, weight] : oldNode.getAdjacents()) {
-            if (idMap.contains(oldAdj)) {
-                newNode.setAdjacent(idMap[oldAdj], weight);
-            } else {
-                spdlog::warn("Node {} does not exist in the graph", oldAdj);
-            }
+    for (auto id : getIds()) {
+        if (id > newId) { // remove the node if it is not used
+            nodes.erase(id);
+            continue;
         }
 
-        nodes[id] = newNode;
+        // set the adjacents
+        auto &node = nodes.at(id);
+        auto oldAdjacents = node.getAdjacents();
+        for (auto &[oldAdj, _] : oldAdjacents) {
+            node.removeAdjacent(oldAdj);
+        }
+        for (auto &[oldAdj, weight] : oldAdjacents) {
+            const int newAdj = idMap[oldAdj];
+            node.setAdjacentNode(nodes[newAdj], weight);
+        }
     }
-
-    // resize the nodes
-    spdlog::debug("resize nodes");
-    nodes.resize(idMap.size());
 }
 
 size_t WeightedDigraph::size() const {
-    return usedNodes.size();
+    return nodes.size();
 }
 
 void WeightedDigraph::readGraph(std::string filePath, FileExtension extName) {
@@ -217,16 +169,15 @@ void WeightedDigraph::readGraph(std::string filePath, FileExtension extName) {
 
 void WeightedDigraph::readGraphHelper(std::string filePath, IGraphParser &parser) {
     for (auto &[src, dst, weight] : parser.parseWeightedGraph(filePath)) {
-        addEdge(src, dst, weight);
+        setEdge(src, dst, weight);
     }
 }
 
 void WeightedDigraph::writeGraph(std::string filePath, FileExtension extName) const {
     // convert the graph to a list of edges
-    // note : implement as function in weighted_graph.hpp if needed
     std::vector<WeightedEdgeObject> edges;
-    for (int src : usedNodes) {
-        for (auto [dst, weight] : getAdjacents(src)) {
+    for (auto &[src, node] : nodes) {
+        for (auto &[dst, weight] : node.getAdjacents()) {
             edges.push_back(WeightedEdgeObject(src, dst, weight));
         }
     }

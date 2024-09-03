@@ -18,6 +18,8 @@ class INode {
 public:
     virtual ~INode() = default;
 
+    static inline const int UNUSED_ID = -1; /**< The default value(-1) for an unused node */
+
     /**
      * @brief Get the id of the node.
      * @return The id of the node.

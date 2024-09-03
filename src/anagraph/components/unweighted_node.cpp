@@ -5,8 +5,6 @@
 namespace anagraph {
 namespace graph_structure {
 
-const int Node::UNUSED_ID = -1;
-
 int Node::getId() const {
     return id;
 }
@@ -24,20 +22,31 @@ bool Node::isUsed() const {
 }
 
 const std::unordered_set<int>& Node::getAdjacents() const {
-    return adjacents;
+    return adjacentIds;
 }
 
 void Node::setAdjacent(int adjacent) {
-    this->adjacents.insert(adjacent);
+    this->adjacentIds.insert(adjacent);
 }
 
 void Node::removeAdjacent(int adjacent) {
-    this->adjacents.erase(adjacent);
+    this->adjacentIds.erase(adjacent);
+    this->adjacentNodes.erase(adjacent);
+}
+
+const std::map<int, std::reference_wrapper<Node>>& Node::getAdjacentNodes() const {
+    return adjacentNodes;
+}
+
+void Node::setAdjacentNode(Node& adjacent) {
+    const int id = adjacent.getId();
+    adjacentIds.insert(id);
+    adjacentNodes.insert({id, adjacent});
 }
 
 void Node::clear() {
     id = UNUSED_ID;
-    adjacents.clear();
+    adjacentIds.clear();
 }
 
 } // namespace graph

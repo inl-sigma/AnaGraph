@@ -6,6 +6,9 @@
 #include "anagraph/components/weighted_node.hpp"
 #include "anagraph/interfaces/weighted_hetero_node_interface.hpp"
 
+#include <functional>
+#include <map>
+
 namespace anagraph {
 namespace graph_structure {
 
@@ -19,8 +22,11 @@ namespace graph_structure {
 template <typename T>
 class WeightedHeteroNode : public interface::IWeightedHeteroNode<T> {
 private:
-    static const int UNUSED_ID; /**< The default value for an unused node */
-    WeightedNode weightedNode;
+    static inline int nodesCount = 0; /**< The number of nodes */
+
+    int id; /**< The id of the node */
+    std::unordered_map<int, double> adjacentIds; /**< The adjacent nodes of the node */
+    std::map<int, std::reference_wrapper<WeightedHeteroNode<T>>> adjacentNodes; /**< The adjacent nodes of the node */
     T attributes;
     bool isAttrEnabled;
 
@@ -28,14 +34,26 @@ public:
     /**
      * @brief Constructs a weightedNode object.
      */
-    WeightedHeteroNode() : weightedNode(WeightedNode()), attributes(T()), isAttrEnabled(false) {
-    };
+    WeightedHeteroNode() : 
+        id(nodesCount++),
+        adjacentIds(std::unordered_map<int, double>()),
+        adjacentNodes(std::map<int, std::reference_wrapper<WeightedHeteroNode>>()), 
+        attributes(T()), 
+        isAttrEnabled(false) 
+    {};
 
     /**
      * @brief Constructs a weightedNode object with the specified id.
      * @param id The id of the node.
      */
-    WeightedHeteroNode(int id) : weightedNode(WeightedNode(id)), attributes(T()), isAttrEnabled(false) {
+    WeightedHeteroNode(int id) :
+        id(id), 
+        adjacentIds(std::unordered_map<int, double>()), 
+        adjacentNodes(std::map<int, std::reference_wrapper<WeightedHeteroNode>>()), 
+        attributes(T()), 
+        isAttrEnabled(false) 
+    {
+        if (id >= nodesCount) {nodesCount = id + 1;}
     };
 
     /**
@@ -43,28 +61,38 @@ public:
      * @param id The id of the node.
      * @param attributes The attributes of the node.
      */
-    WeightedHeteroNode(int id, T attributes) : weightedNode(WeightedNode(id)), attributes(attributes), isAttrEnabled(true) {
+    WeightedHeteroNode(int id, T attributes) : 
+        id(id), 
+        adjacentIds(std::unordered_map<int, double>()), 
+        adjacentNodes(std::map<int, std::reference_wrapper<WeightedHeteroNode>>()), 
+        attributes(attributes), 
+        isAttrEnabled(true) 
+    {
+        if (id >= nodesCount) {nodesCount = id + 1;}
     };
 
     /**
      * @brief Copy constructor for the weightedNode object.
      */
-    WeightedHeteroNode(const WeightedHeteroNode<T> &node) 
-        : weightedNode(node.weightedNode), attributes(node.attributes), isAttrEnabled(node.isAttrEnabled) {
-    }
+    WeightedHeteroNode(const WeightedHeteroNode<T> &node) = default;
 
     /**
      * @brief Move constructor for the weightedNode object.
      */
-    WeightedHeteroNode(WeightedHeteroNode<T> &&node) noexcept
-        : weightedNode(std::move(node.weightedNode)), attributes(std::move(node.attributes)), 
-        isAttrEnabled(std::move(node.isAttrEnabled)) 
-    {};
+    WeightedHeteroNode(WeightedHeteroNode<T> &&node) noexcept : 
+        id(node.id), 
+        adjacentIds(std::move(node.adjacentIds)), 
+        adjacentNodes(std::move(node.adjacentNodes)), 
+        attributes(node.attributes), 
+        isAttrEnabled(node.isAttrEnabled) 
+    {
+        node.clear();
+    };
 
     /**
      * @brief Assignment operator for the weightedNode object.
      */
-    WeightedHeteroNode<T>& operator=(const WeightedHeteroNode<T>& node);
+    WeightedHeteroNode<T>& operator=(const WeightedHeteroNode<T>& node) = default;
 
     /**
      * @brief Get the id of the node.
@@ -113,6 +141,20 @@ public:
     void removeAdjacent(int adjacent) override;
 
     /**
+     * @brief Get the adjacent nodes of a node.
+     * @return A map of integers representing the adjacent nodes.
+     * 
+     * This method is used to retrieve the adjacent nodes of a node.
+     */
+    const std::map<int, std::reference_wrapper<WeightedHeteroNode<T>>>& getAdjacentNodes() const;
+
+    /**
+     * @brief Set an adjacent node to the node.
+     * @param adjacent The adjacent node.
+     */
+    void setAdjacentNode(WeightedHeteroNode<T>& adjacent, double weight);
+
+    /**
      * @brief Get the attribute of the node.
      * @return A pointer to the attribute of the node.
      * 
@@ -132,6 +174,15 @@ public:
      * @brief Clear the attributes of the node.
      */
     void clear() override;
+
+    /**
+     * @brief Reset the nodes count.
+     * 
+     * This method is used to reset the nodes count.
+     */
+    static void resetNodesCount() {
+        nodesCount = 0;
+    }
 };
 
 } // namespace graph_structure

@@ -5,20 +5,11 @@
 namespace anagraph {
 namespace graph_structure {
 
-WeightedGraph::WeightedGraph() {
-    digraph = WeightedDigraph();
-}
-
 WeightedGraph::WeightedGraph(std::string filePath, FileExtension extName) {
     readGraph(filePath, extName);
 }
 
-WeightedGraph& WeightedGraph::operator=(const WeightedGraph& graph) {
-    digraph = graph.digraph;
-    return *this;
-}
-
-WeightedNode WeightedGraph::getNode(int id) const {
+WeightedNode& WeightedGraph::getNode(int id) {
     return digraph.getNode(id);
 }
 
@@ -38,9 +29,9 @@ std::unordered_set<int> WeightedGraph::getIds() const {
     return digraph.getIds();
 }
 
-void WeightedGraph::addEdge(int src, int dst, double weight) {
-    digraph.addEdge(src, dst, weight);
-    digraph.addEdge(dst, src, weight);
+void WeightedGraph::setEdge(int src, int dst, double weight) {
+    digraph.setEdge(src, dst, weight);
+    digraph.setEdge(dst, src, weight);
 }
 
 void WeightedGraph::removeEdge(int src, int dst) {
@@ -62,7 +53,7 @@ void WeightedGraph::addWeight(int src, int dst, double weight) {
     digraph.addWeight(dst, src, weight);
 }
 
-const std::unordered_map<int, double> WeightedGraph::getAdjacents(int id) const {
+const std::unordered_map<int, double>& WeightedGraph::getAdjacents(int id) const {
     return digraph.getAdjacents(id);
 }
 
@@ -89,7 +80,7 @@ void WeightedGraph::readGraph(std::string filePath, FileExtension extName) {
     WeightedDigraph deepCopy = digraph;
     for (auto src : digraph.getIds()) {
         for (auto [adj, weight] : deepCopy.getAdjacents(src)) {
-            digraph.addEdge(adj, src, weight);
+            digraph.setEdge(adj, src, weight);
         }
     }
 }
@@ -97,7 +88,8 @@ void WeightedGraph::readGraph(std::string filePath, FileExtension extName) {
 void WeightedGraph::writeGraph(std::string filePath, FileExtension extName) const {
     auto digraph = toDigraph();
     for (auto id : digraph.getIds()) {
-        for (auto [adj, _] : digraph.getAdjacents(id)) {
+        auto adjacents = digraph.getAdjacents(id);
+        for (auto [adj, _] : adjacents) {
             if (id > adj) {
                 digraph.removeEdge(id, adj);
 

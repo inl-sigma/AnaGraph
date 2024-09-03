@@ -8,8 +8,7 @@
 #include "anagraph/components/weighted_hetero_node.hpp"
 #include "anagraph/interfaces/weighted_hetero_digraph_interface.hpp"
 
-#include <unordered_set>
-#include <vector>
+#include <map>
 
 namespace anagraph {
 namespace graph_structure {
@@ -25,14 +24,13 @@ namespace graph_structure {
 template <typename T>
 class WeightedHeteroDigraph : public interface::IWeightedHeteroDigraph<T> {
 private:
-    std::vector<WeightedHeteroNode<T>> nodes; /**< The nodes of the graph */
-    std::unordered_set<int> usedNodes; /**< The set of used nodes */
+    std::map<int, WeightedHeteroNode<T>> nodes; /**< The nodes of the graph */
 
 public:
     /**
      * @brief Constructs a WeightedHeteroDigraph object.
      */
-    WeightedHeteroDigraph();
+    WeightedHeteroDigraph() : nodes(std::map<int, WeightedHeteroNode<T>>()) {}
 
     /**
      * @brief Constructs a WeightedHeteroDigraph object with the file.
@@ -43,14 +41,12 @@ public:
     /**
      * @brief Copy constructor for the WeightedHeteroDigraph object.
      */
-    WeightedHeteroDigraph(const WeightedHeteroDigraph<T> &graph) 
-        : nodes(graph.nodes), usedNodes(graph.usedNodes) {
-    }
+    WeightedHeteroDigraph(const WeightedHeteroDigraph<T> &graph) = default;
 
     /**
      * @brief Assignment operator for the WeightedHeteroDigraph object.
      */
-    WeightedHeteroDigraph<T>& operator=(const WeightedHeteroDigraph<T>& graph);
+    WeightedHeteroDigraph<T>& operator=(const WeightedHeteroDigraph<T>& graph) = default;
 
     /** 
      * @brief Get the attributes of a node.
@@ -58,10 +54,8 @@ public:
      * @return A copy of the attributes of the node
      * 
      * @todo override interface method after implementing the method
-     * 
-     * This method is used to access the attributes of a node.
      */
-    WeightedHeteroNode<T> getNode(int id) const;
+    WeightedHeteroNode<T>& getNode(int id);
 
     /**
      * @brief Set a node to the graph.
@@ -94,7 +88,7 @@ public:
      * @param dst The destination node
      * @param weight The weight of the edge
      */
-    void addEdge(int src, int dst, double weight) override;
+    void setEdge(int src, int dst, double weight) override;
 
     /**
      * @brief Remove an edge between two nodes.
@@ -135,7 +129,7 @@ public:
      * @param id The source node
      * @return A pairs of integers, where the first means the adjacent node and the second means the weight of the edge.
      */
-    const std::unordered_map<int, double> getAdjacents(int id) const override;
+    const std::unordered_map<int, double>& getAdjacents(int id) const override;
 
     /**
      * @brief Get the subgraph of the graph.

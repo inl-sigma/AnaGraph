@@ -6,23 +6,12 @@ namespace anagraph {
 namespace graph_structure {
 
 template <typename T>
-WeightedHeteroGraph<T>::WeightedHeteroGraph() {
-    digraph = WeightedHeteroDigraph<T>();
-}
-
-template <typename T>
 WeightedHeteroGraph<T>::WeightedHeteroGraph(std::string filePath, FileExtension extName) {
     readGraph(filePath, extName);
 }
 
 template <typename T>
-WeightedHeteroGraph<T>& WeightedHeteroGraph<T>::operator=(const WeightedHeteroGraph<T>& graph) {
-    digraph = graph.digraph;
-    return *this;
-}
-
-template <typename T>
-WeightedHeteroNode<T> WeightedHeteroGraph<T>::getNode(int id) const {
+WeightedHeteroNode<T>& WeightedHeteroGraph<T>::getNode(int id) {
     return digraph.getNode(id);
 }
 
@@ -47,9 +36,9 @@ std::unordered_set<int> WeightedHeteroGraph<T>::getIds() const {
 }
 
 template <typename T>
-void WeightedHeteroGraph<T>::addEdge(int src, int dst, double weight) {
-    digraph.addEdge(src, dst, weight);
-    digraph.addEdge(dst, src, weight);
+void WeightedHeteroGraph<T>::setEdge(int src, int dst, double weight) {
+    digraph.setEdge(src, dst, weight);
+    digraph.setEdge(dst, src, weight);
 }
 
 template <typename T>
@@ -76,7 +65,7 @@ void WeightedHeteroGraph<T>::addWeight(int src, int dst, double weight) {
 }
 
 template <typename T>
-const std::unordered_map<int, double> WeightedHeteroGraph<T>::getAdjacents(int id) const {
+const std::unordered_map<int, double>& WeightedHeteroGraph<T>::getAdjacents(int id) const {
     return digraph.getAdjacents(id);
 }
 
@@ -118,7 +107,7 @@ void WeightedHeteroGraph<T>::readGraph(std::string filePath, FileExtension extNa
     WeightedHeteroDigraph deepCopy = digraph;
     for (auto id : digraph.getIds()) {
         for (auto &[adj, weight] : deepCopy.getAdjacents(id)) {
-            digraph.addEdge(adj, id, weight);
+            digraph.setEdge(adj, id, weight);
         }
     }
 }
@@ -127,7 +116,8 @@ template <typename T>
 void WeightedHeteroGraph<T>::writeGraph(std::string filePath, FileExtension extName) const {
     WeightedHeteroDigraph<T> digraph = toDigraph();
     for (auto id : digraph.getIds()) {
-        for (auto [adj, _] : digraph.getAdjacents(id)) {
+        auto adjacents = digraph.getAdjacents(id);
+        for (auto [adj, _] : adjacents) {
             if (id > adj) {
                 digraph.removeEdge(id, adj);
             }
