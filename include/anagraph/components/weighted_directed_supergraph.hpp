@@ -219,7 +219,7 @@ public:
      * 
      * @note this function returns the edges of the node without considering the hierarchy.
      */
-    const std::unordered_map<int, double> getAdjacents(int id) const override;
+    const std::unordered_map<int, double>& getAdjacents(int id) const override;
 
     /**
      * @brief Get the number of nodes in the graph.

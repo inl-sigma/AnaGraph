@@ -65,7 +65,7 @@ void WeightedHeteroGraph<T>::addWeight(int src, int dst, double weight) {
 }
 
 template <typename T>
-const std::unordered_map<int, double> WeightedHeteroGraph<T>::getAdjacents(int id) const {
+const std::unordered_map<int, double>& WeightedHeteroGraph<T>::getAdjacents(int id) const {
     return digraph.getAdjacents(id);
 }
 

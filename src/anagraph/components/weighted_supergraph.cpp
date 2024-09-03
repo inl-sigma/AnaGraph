@@ -85,7 +85,7 @@ std::unordered_set<int> WeightedSupergraph::getChildren(int id) const {
     return digraph.getChildren(id);
 }
 
-const std::unordered_map<int, double> WeightedSupergraph::getAdjacents(int id) const {
+const std::unordered_map<int, double>& WeightedSupergraph::getAdjacents(int id) const {
     return digraph.getAdjacents(id);
 }
 

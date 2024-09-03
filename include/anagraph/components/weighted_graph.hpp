@@ -131,7 +131,7 @@ public:
      * @param id The source node
      * @return A pairs of integers, where the first means the adjacent node and the second means the weight of the edge.
      */
-    const std::unordered_map<int, double> getAdjacents(int id) const override;
+    const std::unordered_map<int, double>& getAdjacents(int id) const override;
 
     /**
      * @brief Get the subgraph of the graph.

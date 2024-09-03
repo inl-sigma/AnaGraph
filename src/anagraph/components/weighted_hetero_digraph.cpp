@@ -94,7 +94,7 @@ void WeightedHeteroDigraph<T>::addWeight(int src, int dst, double weight) {
 }
 
 template <typename T>
-const std::unordered_map<int, double> WeightedHeteroDigraph<T>::getAdjacents(int id) const {
+const std::unordered_map<int, double>& WeightedHeteroDigraph<T>::getAdjacents(int id) const {
     if (!nodes.contains(id)) {
         throw std::out_of_range("Node does not exist");
     }

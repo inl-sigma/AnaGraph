@@ -53,7 +53,7 @@ void WeightedGraph::addWeight(int src, int dst, double weight) {
     digraph.addWeight(dst, src, weight);
 }
 
-const std::unordered_map<int, double> WeightedGraph::getAdjacents(int id) const {
+const std::unordered_map<int, double>& WeightedGraph::getAdjacents(int id) const {
     return digraph.getAdjacents(id);
 }
 
