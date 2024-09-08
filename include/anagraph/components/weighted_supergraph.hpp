@@ -244,6 +244,35 @@ public:
      */
     void writeGraph(std::string filePath, FileExtension extName) const override;
 
+    class Iterator {
+    private:
+        WeightedSuperDigraph::Iterator it;
+
+    public:
+        Iterator(WeightedSuperDigraph::Iterator it) : it(it) {}
+
+        WeightedSupernode& operator*() {
+            return *it;
+        }
+
+        Iterator& operator++() {
+            ++it;
+            return *this;
+        }
+
+        bool operator!=(const Iterator& other) const {
+            return it != other.it;
+        }
+    };
+
+    Iterator begin() {
+        return Iterator(digraph.begin());
+    }
+
+    Iterator end() {
+        return Iterator(digraph.end());
+    }
+
 private:
     /**
      * @brief Read the graph from a file.
