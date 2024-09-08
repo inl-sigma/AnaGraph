@@ -411,3 +411,18 @@ TEST(WeightedSuperDigraphTest, WriteGraph) {
     const std::string outputDir = datasetDirectory + "/output/directed_supergraph_test";
     graph.writeGraph(outputDir, anagraph::FileExtension::TXT);
 }
+
+TEST(WeightedSuperDigraphTest, GraphIterator) {
+    using namespace anagraph::graph_structure;
+    WeightedSuperDigraph graph;
+    graph.setNode(0);
+    graph.setNode(1);
+    graph.setNode(2);
+    graph.setNode(3);
+
+    int nodeId = 0;
+    for (auto &node : graph) {
+        EXPECT_EQ(node.getId(), nodeId);
+        nodeId++;
+    }
+}

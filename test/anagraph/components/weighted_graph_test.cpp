@@ -236,3 +236,18 @@ TEST(WeightedGraphTest, WriteGraph) {
     const std::string outputPath = datasetDirectory + "/output/weighted_graph_output.txt";
     graph.writeGraph(outputPath, FileExtension::TXT);
 }
+
+TEST(WeightedGraphTest, GraphIterator) {
+    using namespace anagraph::graph_structure;
+    WeightedGraph graph;
+    graph.setNode(0);
+    graph.setNode(1);
+    graph.setNode(2);
+    graph.setNode(3);
+
+    int nodeId = 0;
+    for (auto &node : graph) {
+        EXPECT_EQ(node.getId(), nodeId);
+        nodeId++;
+    }
+}

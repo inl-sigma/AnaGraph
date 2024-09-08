@@ -188,3 +188,18 @@ TEST(DigraphTest, WriteGraph) {
     const std::string outputPath = datasetDirectory + "/output/digraph_output.txt";
     graph.writeGraph(outputPath, anagraph::FileExtension::TXT);
 }
+
+TEST(DigraphTest, GraphIterator) {
+    using namespace anagraph::graph_structure;
+    Digraph graph;
+    graph.setNode(0);
+    graph.setNode(1);
+    graph.setNode(2);
+    graph.setNode(3);
+
+    int nodeId = 0;
+    for (auto &node : graph) {
+        EXPECT_EQ(node.getId(), nodeId);
+        nodeId++;
+    }
+}
