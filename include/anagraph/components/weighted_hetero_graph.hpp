@@ -187,6 +187,35 @@ public:
      * @todo write graph as a heterogeneous graph, not a weighted graph
      */
     void writeGraph(std::string filename, FileExtension extName) const override;
+
+    class Iterator {
+    private:
+        WeightedHeteroDigraph<T>::Iterator it;
+
+    public:
+        Iterator(WeightedHeteroDigraph<T>::Iterator it) : it(it) {}
+
+        WeightedHeteroNode<T>& operator*() {
+            return *it;
+        }
+
+        Iterator& operator++() {
+            ++it;
+            return *this;
+        }
+
+        bool operator!=(const Iterator& other) const {
+            return it != other.it;
+        }
+    };
+
+    Iterator begin() {
+        return Iterator(digraph.begin());
+    }
+
+    Iterator end() {
+        return Iterator(digraph.end());
+    }
 };
 
 } // namespace graph_structure

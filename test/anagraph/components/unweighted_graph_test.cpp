@@ -197,3 +197,18 @@ TEST(GraphTest, WriteGraph) {
     const std::string outputPath = datasetDirectory + "/output/graph_output.txt";
     graph.writeGraph(outputPath, anagraph::FileExtension::TXT);
 }
+
+TEST(GraphTest, GraphIterator) {
+    using namespace anagraph::graph_structure;
+    Graph graph;
+    graph.setNode(0);
+    graph.setNode(1);
+    graph.setNode(2);
+    graph.setNode(3);
+
+    int nodeId = 0;
+    for (auto &node : graph) {
+        EXPECT_EQ(node.getId(), nodeId);
+        nodeId++;
+    }
+}

@@ -269,3 +269,18 @@ TEST(HeteroDigraphTest, WriteGraph) {
     const std::string outputPath = datasetDirectory + "/output/unweighted_hetero_digraph_output.txt";
     graph.writeGraph(outputPath, FileExtension::TXT);
 }
+
+TEST(HeteroDigraphTest, GraphIterator) {
+    using namespace anagraph::graph_structure;
+    HeteroDigraph<int> graph;
+    graph.setNode(0);
+    graph.setNode(1);
+    graph.setNode(2);
+    graph.setNode(3);
+
+    int nodeId = 0;
+    for (auto &node : graph) {
+        EXPECT_EQ(node.getId(), nodeId);
+        nodeId++;
+    }
+}

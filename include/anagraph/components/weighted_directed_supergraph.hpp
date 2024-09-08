@@ -244,6 +244,35 @@ public:
      */
     void writeGraph(std::string filePath, FileExtension extName) const override;
 
+    class Iterator {
+    private:
+        std::map<int, WeightedSupernode>::iterator it;
+
+    public:
+        Iterator(std::map<int, WeightedSupernode>::iterator it) : it(it) {}
+
+        WeightedSupernode& operator*() {
+            return it->second;
+        }
+
+        Iterator& operator++() {
+            ++it;
+            return *this;
+        }
+
+        bool operator!=(const Iterator& other) const {
+            return it != other.it;
+        }
+    };
+
+    Iterator begin() {
+        return Iterator(nodes.begin());
+    }
+
+    Iterator end() {
+        return Iterator(nodes.end());
+    }
+
 private:
     /**
      * @brief Read the graph from a file.

@@ -173,6 +173,35 @@ public:
      * @param extName The extension of the file
      */
     void writeGraph(std::string filename, FileExtension extName) const override;
+
+    class Iterator {
+    private:
+        WeightedDigraph::Iterator it;
+
+    public:
+        Iterator(WeightedDigraph::Iterator it) : it(it) {}
+
+        WeightedNode& operator*() {
+            return *it;
+        }
+
+        Iterator& operator++() {
+            ++it;
+            return *this;
+        }
+
+        bool operator!=(const Iterator& other) const {
+            return it != other.it;
+        }
+    };
+
+    Iterator begin() {
+        return Iterator(digraph.begin());
+    };
+
+    Iterator end() {
+        return Iterator(digraph.end());
+    };
 };
     
 } // namespace graph
