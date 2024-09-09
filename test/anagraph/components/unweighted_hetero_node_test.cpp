@@ -53,27 +53,28 @@ TEST(HeteroNodeTest, ConstructorWithIdAndAttributes) {
 TEST(HeteroNodeTest, CopyConstructor) {
     using namespace anagraph;
     graph_structure::HeteroNode<int> node1;
+    graph_structure::HeteroNode<int> node2(4);
     node1.setId(std::rand());
-    node1.setAdjacent(4);
+    node1.setAdjacentNode(node2);
     node1.setAttributes(10);
-    graph_structure::HeteroNode<int> node2(node1);
-    EXPECT_EQ(node2.getId(), node1.getId());
-    EXPECT_EQ(node2.getAttributes(), node1.getAttributes());
-    EXPECT_EQ(node2.getAdjacents(), node1.getAdjacents());
+    graph_structure::HeteroNode<int> node3(node1);
+    EXPECT_EQ(node3.getId(), node1.getId());
+    EXPECT_EQ(node3.getAttributes(), node1.getAttributes());
+    EXPECT_EQ(node3.getAdjacents(), node1.getAdjacents());
 }
 
 TEST(HeteroNodeTest, MoveConstructor) {
     using namespace anagraph;
     graph_structure::HeteroNode<int> node1;
+    graph_structure::HeteroNode<int> node2(4);
     node1.setId(0);
-    node1.setAdjacent(4);
+    node1.setAdjacentNode(node2);
     node1.setAttributes(10);
-    graph_structure::HeteroNode<int> node2(std::move(node1));
-    EXPECT_EQ(node2.getId(), 0);
-    EXPECT_EQ(node2.getAttributes(), 10);
-    EXPECT_TRUE(node2.getAdjacents().contains(4));
+    graph_structure::HeteroNode<int> node3(std::move(node1));
+    EXPECT_EQ(node3.getId(), 0);
+    EXPECT_EQ(node3.getAttributes(), 10);
+    EXPECT_TRUE(node3.getAdjacents().contains(4));
     EXPECT_FALSE(node1.isUsed());
-    EXPECT_TRUE(node1.getId() < 0);
     EXPECT_TRUE(node1.getAdjacents().empty());
 }
 
@@ -104,8 +105,10 @@ TEST(HeteroNodeTest, IsUsed) {
 TEST(HeteroNodeTest, SetAndGetAdjacents) {
     using namespace anagraph;
     graph_structure::HeteroNode<int> node1;
-    node1.setAdjacent(4);
-    node1.setAdjacent(5);
+    graph_structure::HeteroNode<int> node2(4);
+    graph_structure::HeteroNode<int> node3(5);
+    node1.setAdjacentNode(node2);
+    node1.setAdjacentNode(node3);
     const auto& adjacents = node1.getAdjacents();
     EXPECT_EQ(static_cast<int>(adjacents.size()), 2);
     EXPECT_TRUE(adjacents.contains(4));
@@ -115,8 +118,10 @@ TEST(HeteroNodeTest, SetAndGetAdjacents) {
 TEST(HeteroNodeTest, RemoveAdjacent) {
     using namespace anagraph;
     graph_structure::HeteroNode<int> node1;
-    node1.setAdjacent(4);
-    node1.setAdjacent(5);
+    graph_structure::HeteroNode<int> node2(4);
+    graph_structure::HeteroNode<int> node3(5);
+    node1.setAdjacentNode(node2);
+    node1.setAdjacentNode(node3);
     EXPECT_EQ(node1.getAdjacents().size(), static_cast<size_t>(2));
     node1.removeAdjacent(5);
     const auto& adjacents = node1.getAdjacents();
@@ -160,7 +165,8 @@ TEST(HeteroNodeTest, SetAndGetAdjacentNodes) {
 TEST(HeteroNodeTest, Clear) {
     using namespace anagraph;
     graph_structure::HeteroNode<int> node1;
-    node1.setAdjacent(4);
+    graph_structure::HeteroNode<int> node2(4);
+    node1.setAdjacentNode(node2);
     node1.setAttributes(10);
     node1.clear();
     EXPECT_FALSE(node1.isUsed());

@@ -45,21 +45,23 @@ TEST(UnweightedNodeTest, DefaultConstructorAndIdConstructor) {
 TEST(UnweightedNodeTest, CopyConstructor) {
     using namespace anagraph::graph_structure;
     Node node1;
+    Node node2;
     node1.setId(std::rand());
-    node1.setAdjacent(4);
-    Node node2(node1);
-    EXPECT_EQ(node2.getId(), node1.getId());
-    EXPECT_EQ(node2.getAdjacents(), node1.getAdjacents());
+    node1.setAdjacentNode(node2);
+    Node node3(node1);
+    EXPECT_EQ(node3.getId(), node1.getId());
+    EXPECT_EQ(node3.getAdjacents(), node1.getAdjacents());
 }
 
 TEST(UnweightedNodeTest, MoveConstructor) {
     using namespace anagraph::graph_structure;
     Node node1;
+    Node node2;
     node1.setId(0);
-    node1.setAdjacent(4);
-    Node node2(std::move(node1));
-    EXPECT_EQ(node2.getId(), 0);
-    EXPECT_TRUE(node2.getAdjacents().contains(4));
+    node1.setAdjacentNode(node2);
+    Node node3(std::move(node1));
+    EXPECT_EQ(node3.getId(), 0);
+    EXPECT_TRUE(node3.getAdjacents().contains(1));
     EXPECT_FALSE(node1.isUsed());
     EXPECT_TRUE(node1.getAdjacents().empty());
 }
@@ -88,17 +90,6 @@ TEST(UnweightedNodeTest, IsUsed) {
     EXPECT_FALSE(node1.isUsed());
 }
 
-TEST(UnweightedNodeTest, SetAndGetAdjacents) {
-    using namespace anagraph::graph_structure;
-    Node node1;
-    node1.setAdjacent(4);
-    node1.setAdjacent(5);
-    const auto& adjacents = node1.getAdjacents();
-    EXPECT_EQ(static_cast<int>(adjacents.size()), 2);
-    EXPECT_TRUE(adjacents.contains(4));
-    EXPECT_TRUE(adjacents.contains(5));
-}
-
 TEST(UnweightedNodeTest, SetAndGetAdjacentNodes) {
     using namespace anagraph::graph_structure;
     Node node1(1);
@@ -110,6 +101,11 @@ TEST(UnweightedNodeTest, SetAndGetAdjacentNodes) {
     EXPECT_EQ(static_cast<int>(adjacents.size()), 2);
     EXPECT_TRUE(adjacents.contains(2));
     EXPECT_TRUE(adjacents.contains(3));
+    
+    const auto& adjacentIds = node1.getAdjacents();
+    EXPECT_EQ(static_cast<int>(adjacentIds.size()), 2);
+    EXPECT_TRUE(adjacentIds.contains(2));
+    EXPECT_TRUE(adjacentIds.contains(3));
 
     auto &adj = adjacents.at(2).get();
     node2.setAdjacentNode(node3); // update after getting the adjacent node
@@ -121,8 +117,10 @@ TEST(UnweightedNodeTest, SetAndGetAdjacentNodes) {
 TEST(UnweightedNodeTest, RemoveAdjacent) {
     using namespace anagraph::graph_structure;
     Node node1;
-    node1.setAdjacent(4);
-    node1.setAdjacent(5);
+    Node node2(4);
+    Node node3(5);
+    node1.setAdjacentNode(node2);
+    node1.setAdjacentNode(node3);
     EXPECT_EQ(static_cast<int>(node1.getAdjacents().size()), 2);
     node1.removeAdjacent(5);
     const auto& adjacents = node1.getAdjacents();
@@ -133,7 +131,8 @@ TEST(UnweightedNodeTest, RemoveAdjacent) {
 TEST(UnweightedNodeTest, Clear) {
     using namespace anagraph::graph_structure;
     Node node1;
-    node1.setAdjacent(4);
+    Node node2(4);
+    node1.setAdjacentNode(node2);
     node1.clear();
     EXPECT_FALSE(node1.isUsed());
     EXPECT_EQ(node1.getId(), Node::UNUSED_ID);

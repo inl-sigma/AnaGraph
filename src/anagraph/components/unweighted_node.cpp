@@ -21,27 +21,23 @@ bool Node::isUsed() const {
     return id != UNUSED_ID;
 }
 
-const std::unordered_set<int>& Node::getAdjacents() const {
-    return adjacentIds;
-}
-
-void Node::setAdjacent(int adjacent) {
-    this->adjacentIds.insert(adjacent);
-}
-
-void Node::removeAdjacent(int adjacent) {
-    this->adjacentIds.erase(adjacent);
-    this->adjacentNodes.erase(adjacent);
-}
-
 const std::map<int, std::reference_wrapper<Node>>& Node::getAdjacentNodes() const {
     return adjacentNodes;
+}
+
+const std::unordered_set<int>& Node::getAdjacents() const {
+    return adjacentIds;
 }
 
 void Node::setAdjacentNode(Node& adjacent) {
     const int id = adjacent.getId();
     adjacentIds.insert(id);
     adjacentNodes.insert({id, adjacent});
+}
+
+void Node::removeAdjacent(int adjacent) {
+    this->adjacentIds.erase(adjacent);
+    this->adjacentNodes.erase(adjacent);
 }
 
 void Node::clear() {

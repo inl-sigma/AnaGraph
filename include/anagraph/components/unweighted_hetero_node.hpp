@@ -116,6 +116,14 @@ public:
 
     /**
      * @brief Get the adjacent nodes of a node.
+     * @return A map of integers representing the adjacent nodes.
+     * 
+     * This method is used to retrieve the adjacent nodes of a node.
+     */
+    const std::map<int, std::reference_wrapper<HeteroNode<T>>>& getAdjacentNodes() const;
+
+    /**
+     * @brief Get the adjacent nodes of a node.
      * @return A set of integers representing the adjacent nodes.
      * 
      * This method is used to retrieve the adjacent nodes of a node.
@@ -124,29 +132,15 @@ public:
 
     /**
      * @brief Set an adjacent node to the node.
-     * @param adjacent The id of the adjacent node.
+     * @param adjacent The adjacent node.
      */
-    void setAdjacent(int adjacent) override;
+    void setAdjacentNode(HeteroNode<T>& adjacent);
 
     /**
      * @brief Remove an adjacent node from the node.
      * @param adjacent The id of the adjacent node.
      */
     void removeAdjacent(int adjacent) override;
-
-    /**
-     * @brief Get the adjacent nodes of a node.
-     * @return A map of integers representing the adjacent nodes.
-     * 
-     * This method is used to retrieve the adjacent nodes of a node.
-     */
-    const std::map<int, std::reference_wrapper<HeteroNode<T>>>& getAdjacentNodes() const;
-
-    /**
-     * @brief Set an adjacent node to the node.
-     * @param adjacent The adjacent node.
-     */
-    void setAdjacentNode(HeteroNode<T>& adjacent);
 
     /**
      * @brief Get the attribute of the node.
