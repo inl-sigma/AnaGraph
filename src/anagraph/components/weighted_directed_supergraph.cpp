@@ -89,14 +89,14 @@ void WeightedSuperDigraph::setWeight(int src, int dst, double weight) {
     if (!nodes.contains(src)) {
         throw std::out_of_range("Node does not exist");
     }
-    nodes[src].setAdjacent(dst, weight);
+    nodes[src].setWeight(dst, weight);
 }
 
 void WeightedSuperDigraph::addWeight(int src, int dst, double weight) {
     if (!nodes.contains(src)) {
         throw std::out_of_range("Node does not exist");
     }
-    nodes[src].updateAdjacent(dst, weight);
+    nodes[src].updateWeight(dst, weight);
 }
 
 int WeightedSuperDigraph::getParent(int id) const {

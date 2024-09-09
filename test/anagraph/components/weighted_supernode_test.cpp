@@ -87,7 +87,7 @@ TEST(WeightedSupernodeTest, AddAndGetChildren) {
 TEST(WeightedSupernodeTest, SetAndGetAdjacent) {
     using namespace anagraph::graph_structure;
     WeightedSupernode node1;
-    node1.setAdjacent(5, 1.5);
+    node1.setWeight(5, 1.5);
     ASSERT_EQ(node1.getAdjacents().size(), static_cast<size_t>(1));
     ASSERT_EQ(node1.getAdjacents().count(5), static_cast<size_t>(1));
     ASSERT_EQ(node1.getAdjacents().at(5), 1.5);
@@ -116,18 +116,18 @@ TEST(WeightedNodeTest, SetAndGetAdjacentNodes) {
 TEST(WeightedSupernodeTest, UpdateAdjacent) {
     using namespace anagraph::graph_structure;
     WeightedSupernode node1;
-    node1.setAdjacent(5, 1.5);
+    node1.setWeight(5, 1.5);
     ASSERT_EQ(node1.getAdjacents().at(5), 1.5);
-    node1.updateAdjacent(5, 2.5);
+    node1.updateWeight(5, 2.5);
     ASSERT_EQ(node1.getAdjacents().at(5), 4.0);
-    node1.setAdjacent(5, 2.5);
+    node1.setWeight(5, 2.5);
     ASSERT_EQ(node1.getAdjacents().at(5), 2.5);
 }
 
 TEST(WeightedSupernodeTest, RemoveAdjacent) {
     using namespace anagraph::graph_structure;
     WeightedSupernode node1;
-    node1.setAdjacent(5, 1.5);
+    node1.setWeight(5, 1.5);
     ASSERT_EQ(node1.getAdjacents().at(5), 1.5);
     node1.removeAdjacent(5);
     ASSERT_TRUE(node1.getAdjacents().empty());
@@ -136,7 +136,7 @@ TEST(WeightedSupernodeTest, RemoveAdjacent) {
 TEST(WeightedSupernodeTest, GetWeight) {
     using namespace anagraph::graph_structure;
     WeightedSupernode node1;
-    node1.setAdjacent(5, 1.5);
+    node1.setWeight(5, 1.5);
     ASSERT_EQ(node1.getWeight(5), 1.5);
     ASSERT_EQ(node1.getWeight(6), 0.0);
 }
@@ -147,7 +147,7 @@ TEST(WeightedSupernodeTest, Clear) {
     node1.setId(2);
     node1.setParent(1);
     node1.addChild(3);
-    node1.setAdjacent(5, 1.5);
+    node1.setWeight(5, 1.5);
     node1.clear();
     ASSERT_EQ(node1.getId(), WeightedSupernode::UNUSED_ID);
     ASSERT_FALSE(node1.isUsed());

@@ -82,7 +82,7 @@ void WeightedHeteroDigraph<T>::setWeight(int src, int dst, double weight) {
     if (!nodes.contains(src)) {
         setNode(src);
     }
-    nodes[src].setAdjacent(dst, weight);
+    nodes[src].setWeight(dst, weight);
 }
 
 template <typename T>
@@ -90,7 +90,7 @@ void WeightedHeteroDigraph<T>::addWeight(int src, int dst, double weight) {
     if (!nodes.contains(src)) {
         setNode(src);
     }
-    nodes[src].updateAdjacent(dst, weight);
+    nodes[src].updateWeight(dst, weight);
 }
 
 template <typename T>

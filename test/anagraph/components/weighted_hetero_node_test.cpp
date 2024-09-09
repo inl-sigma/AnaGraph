@@ -55,7 +55,7 @@ TEST(WeightedHeteroNodeTest, CopyConstructor) {
     using namespace anagraph;
     graph_structure::WeightedHeteroNode<int> node1;
     node1.setId(std::rand());
-    node1.setAdjacent(4, 1.5);
+    node1.setWeight(4, 1.5);
     node1.setAttributes(10);
     graph_structure::WeightedHeteroNode<int> node2(node1);
     EXPECT_EQ(node2.getId(), node1.getId());
@@ -67,7 +67,7 @@ TEST(WeightedHeteroNodeTest, MoveConstructor) {
     using namespace anagraph;
     graph_structure::WeightedHeteroNode<int> node1;
     node1.setId(0);
-    node1.setAdjacent(4, 1.5);
+    node1.setWeight(4, 1.5);
     node1.setAttributes(10);
     graph_structure::WeightedHeteroNode<int> node2(std::move(node1));
     EXPECT_EQ(node2.getId(), 0);
@@ -105,8 +105,8 @@ TEST(WeightedHeteroNodeTest, IsUsed) {
 TEST(WeightedHeteroNodeTest, SetAndGetAdjacents) {
     using namespace anagraph;
     graph_structure::WeightedHeteroNode<int> node1;
-    node1.setAdjacent(4, 1.5);
-    node1.setAdjacent(5, 2.0);
+    node1.setWeight(4, 1.5);
+    node1.setWeight(5, 2.0);
     const auto& adjacents = node1.getAdjacents();
     EXPECT_EQ(static_cast<int>(adjacents.size()), 2);
     EXPECT_EQ(adjacents.at(4), 1.5);
@@ -136,9 +136,9 @@ TEST(WeightedHeteroNodeTest, SetAndGetAdjacentNodes) {
 TEST(WeightedHeteroNodeTest, UpdateAdjacent) {
     using namespace anagraph;
     graph_structure::WeightedHeteroNode<int> node1;
-    node1.setAdjacent(4, 1.5);
-    node1.updateAdjacent(4, 0.5);
-    node1.updateAdjacent(5, 1.5);
+    node1.setWeight(4, 1.5);
+    node1.updateWeight(4, 0.5);
+    node1.updateWeight(5, 1.5);
     const auto& adjacents = node1.getAdjacents();
     EXPECT_EQ(adjacents.at(4), 2.0);
     EXPECT_EQ(adjacents.at(5), 1.5);
@@ -147,8 +147,8 @@ TEST(WeightedHeteroNodeTest, UpdateAdjacent) {
 TEST(WeightedHeteroNodeTest, RemoveAdjacent) {
     using namespace anagraph;
     graph_structure::WeightedHeteroNode<int> node1;
-    node1.setAdjacent(4, 1.5);
-    node1.setAdjacent(5, 2.0);
+    node1.setWeight(4, 1.5);
+    node1.setWeight(5, 2.0);
     EXPECT_EQ(node1.getAdjacents().size(), static_cast<size_t>(2));
     node1.removeAdjacent(5);
     const auto& adjacents = node1.getAdjacents();
@@ -172,7 +172,7 @@ TEST(WeightedHeteroNodeTest, SetAndGetAttributes) {
 TEST(WeightedHeteroNodeTest, Clear) {
     using namespace anagraph;
     graph_structure::WeightedHeteroNode<int> node1;
-    node1.setAdjacent(4, 1.5);
+    node1.setWeight(4, 1.5);
     node1.setAttributes(10);
     node1.clear();
     EXPECT_FALSE(node1.isUsed());

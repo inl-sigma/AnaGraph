@@ -69,11 +69,11 @@ double WeightedDigraph::getWeight(int src, int dst) const {
 }
 
 void WeightedDigraph::setWeight(int src, int dst, double weight) {
-    nodes[src].setAdjacent(dst, weight);
+    nodes[src].setWeight(dst, weight);
 }
 
 void WeightedDigraph::addWeight(int src, int dst, double weight) {
-    nodes[src].updateAdjacent(dst, weight);
+    nodes[src].updateWeight(dst, weight);
 }
 
 const std::unordered_map<int, double>& WeightedDigraph::getAdjacents(int id) const {

@@ -143,6 +143,14 @@ public:
 
     /**
      * @brief Get the adjacent nodes of a node.
+     * @return A map of integers representing the adjacent nodes.
+     * 
+     * This method is used to access the adjacent nodes of a node.
+     */
+    const std::map<int, std::reference_wrapper<WeightedSupernode>>& getAdjacentNodes() const;
+
+    /**
+     * @brief Get the adjacent nodes of a node.
      * @return A map of integers representing the adjacent nodes and their corresponding weights.
      * 
      * @note this function returns the adjacent nodes of the node without considering the hierarchy.
@@ -150,41 +158,6 @@ public:
      * This method is used to retrieve the adjacent nodes of a node.
      */
     const std::unordered_map<int, double>& getAdjacents() const override;
-
-    /**
-     * @brief Get the weight of an adjacent node.
-     * @param adjacent The id of the adjacent node.
-     * @return The weight of the edge between the nodes.
-     */
-    double getWeight(int adjacent) const;
-
-    /**
-     * @brief Set the adjacent node of a node.
-     * @param adjacent The id of the adjacent node.
-     * @param weight The weight of the edge between the nodes.
-     */
-    void setAdjacent(int adjacent, double weight) override;
-
-    /**
-     * @brief Update the weight of an adjacent node.
-     * @param adjacent The id of the adjacent node.
-     * @param weight The new weight of the edge between the nodes.
-     */
-    void updateAdjacent(int adjacent, double weight) override;
-
-    /**
-     * @brief Remove an adjacent node from the node.
-     * @param adjacent The id of the adjacent node.
-     */
-    void removeAdjacent(int adjacent) override;
-
-    /**
-     * @brief Get the adjacent nodes of a node.
-     * @return A map of integers representing the adjacent nodes.
-     * 
-     * This method is used to access the adjacent nodes of a node.
-     */
-    const std::map<int, std::reference_wrapper<WeightedSupernode>>& getAdjacentNodes() const;
 
     /**
      * @brief Set an adjacent node to the node.
@@ -199,6 +172,33 @@ public:
      * @param weight The new weight of the edge between the nodes.
      */
     void updateAdjacentNode(WeightedSupernode& adjacent, double weight);
+
+    /**
+     * @brief Remove an adjacent node from the node.
+     * @param adjacent The id of the adjacent node.
+     */
+    void removeAdjacent(int adjacent) override;
+
+    /**
+     * @brief Get the weight of an adjacent node.
+     * @param adjacent The id of the adjacent node.
+     * @return The weight of the edge between the nodes.
+     */
+    double getWeight(int adjacent) const;
+
+    /**
+     * @brief Set the adjacent node of a node.
+     * @param adjacent The id of the adjacent node.
+     * @param weight The weight of the edge between the nodes.
+     */
+    void setWeight(int adjacent, double weight) override;
+
+    /**
+     * @brief Update the weight of an adjacent node.
+     * @param adjacent The id of the adjacent node.
+     * @param weight The new weight of the edge between the nodes.
+     */
+    void updateWeight(int adjacent, double weight) override;
 
     /**
      * @brief Clear the node.

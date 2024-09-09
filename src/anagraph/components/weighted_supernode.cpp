@@ -43,37 +43,13 @@ void WeightedSupernode::addChild(int child) {
     children.insert(child);
 }
 
+const std::map<int, std::reference_wrapper<WeightedSupernode>>& WeightedSupernode::getAdjacentNodes() const {
+    return adjacentNodes;
+}
+
 const std::unordered_map<int, double>& WeightedSupernode::getAdjacents() const {
     return adjacentIds;
 }
-
-double WeightedSupernode::getWeight(int adjacent) const {
-    if (adjacentIds.contains(adjacent)) {
-        return adjacentIds.at(adjacent);
-    } else {
-        return 0.0;
-    }
-}
-
-void WeightedSupernode::setAdjacent(int adjacent, double weight) {
-    adjacentIds[adjacent] = weight;
-}
-
-void WeightedSupernode::updateAdjacent(int adjacent, double weight) {
-    if (adjacentIds.contains(adjacent)) {
-        adjacentIds[adjacent] += weight;
-    } else {
-        adjacentIds[adjacent] = weight;
-    }
-}
-
-void WeightedSupernode::removeAdjacent(int adjacent) {
-    adjacentIds.erase(adjacent);
-}
-
-const std::map<int, std::reference_wrapper<WeightedSupernode>>& WeightedSupernode::getAdjacentNodes() const {
-    return adjacentNodes;
-} 
 
 void WeightedSupernode::setAdjacentNode(WeightedSupernode& adjacent, double weight) {
     const int id = adjacent.getId();
@@ -88,6 +64,30 @@ void WeightedSupernode::updateAdjacentNode(WeightedSupernode& adjacent, double w
     } else {
         setAdjacentNode(adjacent, weight);
     }
+}
+
+double WeightedSupernode::getWeight(int adjacent) const {
+    if (adjacentIds.contains(adjacent)) {
+        return adjacentIds.at(adjacent);
+    } else {
+        return 0.0;
+    }
+}
+
+void WeightedSupernode::setWeight(int adjacent, double weight) {
+    adjacentIds[adjacent] = weight;
+}
+
+void WeightedSupernode::updateWeight(int adjacent, double weight) {
+    if (adjacentIds.contains(adjacent)) {
+        adjacentIds[adjacent] += weight;
+    } else {
+        adjacentIds[adjacent] = weight;
+    }
+}
+
+void WeightedSupernode::removeAdjacent(int adjacent) {
+    adjacentIds.erase(adjacent);
 }
 
 void WeightedSupernode::clear() {
