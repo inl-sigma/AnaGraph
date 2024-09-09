@@ -21,30 +21,12 @@ bool WeightedNode::isUsed() const {
     return id != UNUSED_ID;
 }
 
-const std::unordered_map<int, double>& WeightedNode::getAdjacents() const {
-    return adjacentIds;
-}
-
-void WeightedNode::setAdjacent(int adjacent, double weight) {
-    adjacentIds[adjacent] = weight;
-}
-
-void WeightedNode::updateAdjacent(int adjacent, double weight) {
-    if (!adjacentIds.contains(adjacent)) {
-        spdlog::debug("updateAdjacent: adding edge between {} and {}", id, adjacent);
-        adjacentIds[adjacent] = weight;
-    } else {
-        spdlog::debug("updateAdjacent: updating edge between {} and {}", id, adjacent);
-        adjacentIds[adjacent] += weight;
-    }
-}
-
-void WeightedNode::removeAdjacent(int adjacent) {
-    adjacentIds.erase(adjacent);
-}
-
 const std::map<int, std::reference_wrapper<WeightedNode>>& WeightedNode::getAdjacentNodes() const {
     return adjacentNodes;
+}
+
+const std::unordered_map<int, double>& WeightedNode::getAdjacents() const {
+    return adjacentIds;
 }
 
 void WeightedNode::setAdjacentNode(WeightedNode& adjacent, double weight) {
@@ -55,6 +37,33 @@ void WeightedNode::setAdjacentNode(WeightedNode& adjacent, double weight) {
     }
     adjacentIds[id] = weight;
     adjacentNodes.insert({id, adjacent});
+}
+
+void WeightedNode::removeAdjacent(int adjacent) {
+    adjacentIds.erase(adjacent);
+}
+
+double WeightedNode::getWeight(int adjacent) const {
+    if (adjacentIds.contains(adjacent)) {
+        return adjacentIds.at(adjacent);
+    } else {
+        spdlog::debug("getWeight: no edge between {} and {}", id, adjacent);
+        return 0.0;
+    }
+}
+
+void WeightedNode::setWeight(int adjacent, double weight) {
+    adjacentIds[adjacent] = weight;
+}
+
+void WeightedNode::updateWeight(int adjacent, double weight) {
+    if (!adjacentIds.contains(adjacent)) {
+        spdlog::debug("updateAdjacent: adding edge between {} and {}", id, adjacent);
+        adjacentIds[adjacent] = weight;
+    } else {
+        spdlog::debug("updateAdjacent: updating edge between {} and {}", id, adjacent);
+        adjacentIds[adjacent] += weight;
+    }
 }
 
 void WeightedNode::clear() {

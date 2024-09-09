@@ -29,13 +29,20 @@ bool HeteroNode<T>::isUsed() const {
 }
 
 template <typename T>
+const std::map<int, std::reference_wrapper<HeteroNode<T>>>& HeteroNode<T>::getAdjacentNodes() const {
+    return adjacentNodes;
+}
+
+template <typename T>
 const std::unordered_set<int>& HeteroNode<T>::getAdjacents() const {
     return adjacentIds;
 }
 
 template <typename T>
-void HeteroNode<T>::setAdjacent(int adjacent) {
-    adjacentIds.insert(adjacent);
+void HeteroNode<T>::setAdjacentNode(HeteroNode<T>& adjacent) {
+    const int id = adjacent.getId();
+    adjacentIds.insert(id);
+    adjacentNodes.insert({id, adjacent});
 }
 
 template <typename T>
@@ -55,18 +62,6 @@ template <typename T>
 void HeteroNode<T>::setAttributes(T attributes) {
     this->attributes = attributes;
     isAttrEnabled = true;
-}
-
-template <typename T>
-const std::map<int, std::reference_wrapper<HeteroNode<T>>>& HeteroNode<T>::getAdjacentNodes() const {
-    return adjacentNodes;
-}
-
-template <typename T>
-void HeteroNode<T>::setAdjacentNode(HeteroNode<T>& adjacent) {
-    const int id = adjacent.getId();
-    adjacentIds.insert(id);
-    adjacentNodes.insert({id, adjacent});
 }
 
 template <typename T>

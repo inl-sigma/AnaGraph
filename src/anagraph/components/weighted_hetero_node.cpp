@@ -29,22 +29,20 @@ bool WeightedHeteroNode<T>::isUsed() const {
 }
 
 template <typename T>
+const std::map<int, std::reference_wrapper<WeightedHeteroNode<T>>>& WeightedHeteroNode<T>::getAdjacentNodes() const {
+    return adjacentNodes;
+}
+
+template <typename T>
 const std::unordered_map<int, double>& WeightedHeteroNode<T>::getAdjacents() const {
     return adjacentIds;
 }
 
 template <typename T>
-void WeightedHeteroNode<T>::setAdjacent(int adjacent, double weight) {
-    adjacentIds[adjacent] = weight;
-}
-
-template <typename T>
-void WeightedHeteroNode<T>::updateAdjacent(int adjacent, double weight) {
-    if (adjacentIds.contains(adjacent)) {
-        adjacentIds[adjacent] += weight;
-    } else {
-        adjacentIds[adjacent] = weight;
-    }
+void WeightedHeteroNode<T>::setAdjacentNode(WeightedHeteroNode<T>& adjacent, double weight) {
+    const int id = adjacent.getId();
+    adjacentIds[id] = weight;
+    adjacentNodes.insert({id, adjacent});
 }
 
 template <typename T>
@@ -53,15 +51,27 @@ void WeightedHeteroNode<T>::removeAdjacent(int adjacent) {
 }
 
 template <typename T>
-const std::map<int, std::reference_wrapper<WeightedHeteroNode<T>>>& WeightedHeteroNode<T>::getAdjacentNodes() const {
-    return adjacentNodes;
+double WeightedHeteroNode<T>::getWeight(int adjacent) const {
+    if (adjacentIds.contains(adjacent)) {
+        return adjacentIds.at(adjacent);
+    } else {
+        spdlog::debug("getWeight: no edge between {} and {}", id, adjacent);
+        return 0.0;
+    }
 }
 
 template <typename T>
-void WeightedHeteroNode<T>::setAdjacentNode(WeightedHeteroNode<T>& adjacent, double weight) {
-    const int id = adjacent.getId();
-    adjacentIds[id] = weight;
-    adjacentNodes.insert({id, adjacent});
+void WeightedHeteroNode<T>::setWeight(int adjacent, double weight) {
+    adjacentIds[adjacent] = weight;
+}
+
+template <typename T>
+void WeightedHeteroNode<T>::updateWeight(int adjacent, double weight) {
+    if (adjacentIds.contains(adjacent)) {
+        adjacentIds[adjacent] += weight;
+    } else {
+        adjacentIds[adjacent] = weight;
+    }
 }
 
 template <typename T>

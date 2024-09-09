@@ -68,13 +68,7 @@ double WeightedHeteroDigraph<T>::getWeight(int src, int dst) const {
     if (!nodes.contains(src) || !nodes.contains(dst)) {
         throw std::out_of_range("Node does not exist");
     }
-    const auto &adjacents = getAdjacents(src);
-    if (!adjacents.contains(dst)) {
-        spdlog::debug("Edge does not exist between {} and {}", src, dst);
-        return 0.0;
-    } else {
-        return adjacents.at(dst);
-    }
+    return nodes.at(src).getWeight(dst);
 }
 
 template <typename T>
@@ -82,7 +76,7 @@ void WeightedHeteroDigraph<T>::setWeight(int src, int dst, double weight) {
     if (!nodes.contains(src)) {
         setNode(src);
     }
-    nodes[src].setAdjacent(dst, weight);
+    nodes[src].setWeight(dst, weight);
 }
 
 template <typename T>
@@ -90,7 +84,7 @@ void WeightedHeteroDigraph<T>::addWeight(int src, int dst, double weight) {
     if (!nodes.contains(src)) {
         setNode(src);
     }
-    nodes[src].updateAdjacent(dst, weight);
+    nodes[src].updateWeight(dst, weight);
 }
 
 template <typename T>

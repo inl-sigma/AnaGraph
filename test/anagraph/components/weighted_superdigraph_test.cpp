@@ -309,11 +309,11 @@ TEST(WeightedSuperDigraphTest, Merge) {
         std::unordered_map<int, double> adjacents1 = first.getAdjacents();
         std::unordered_map<int, double> adjacents2 = second.getAdjacents();
         for (const auto &[id, weight] : adjacents1) {
-            node.setAdjacent(id, weight);
+            node.setWeight(id, weight);
             
         }
         for (const auto &[id, weight] : adjacents2) {
-            node.updateAdjacent(id, weight);
+            node.updateWeight(id, weight);
         }
         return node;
     });
@@ -346,11 +346,11 @@ TEST(WeightedSuperDigraphTest, setMergeNodeFunction) {
         std::unordered_map<int, double> adjacents1 = first.getAdjacents();
         std::unordered_map<int, double> adjacents2 = second.getAdjacents();
         for (const auto &[id, weight] : adjacents1) {
-            node.setAdjacent(id, weight);
+            node.setWeight(id, weight);
             
         }
         for (const auto &[id, weight] : adjacents2) {
-            node.updateAdjacent(id, weight);
+            node.updateWeight(id, weight);
         }
         first.setParent(node.getId());
         second.setParent(node.getId());

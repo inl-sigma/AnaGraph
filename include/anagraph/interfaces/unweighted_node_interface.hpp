@@ -47,12 +47,6 @@ public:
     virtual const std::unordered_set<int>& getAdjacents() const = 0;
 
     /**
-     * @brief Set an adjacent node to the node.
-     * @param adjacent The id of the adjacent node.
-     */
-    virtual void setAdjacent(int adjacent) = 0;
-
-    /**
      * @brief Remove an adjacent node from the node.
      * @param adjacent The id of the adjacent node.
      */

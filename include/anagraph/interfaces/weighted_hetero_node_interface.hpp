@@ -47,18 +47,25 @@ public:
     virtual const std::unordered_map<int, double>& getAdjacents() const = 0;
 
     /**
+     * @brief Get the weight of an adjacent node.
+     * @param adjacent The id of the adjacent node.
+     * @return The weight of the edge between the nodes.
+     */
+    virtual double getWeight(int adjacent) const = 0;
+
+    /**
      * @brief Set the adjacent node of a node.
      * @param adjacent The id of the adjacent node.
      * @param weight The weight of the edge between the nodes.
      */
-    virtual void setAdjacent(int adjacent, double weight) = 0;
+    virtual void setWeight(int adjacent, double weight) = 0;
 
     /**
      * @brief Update the weight of an adjacent node.
      * @param adjacent The id of the adjacent node.
      * @param weight The new weight of the edge between the nodes.
      */
-    virtual void updateAdjacent(int adjacent, double weight) = 0;
+    virtual void updateWeight(int adjacent, double weight) = 0;
 
     /**
      * @brief Remove an adjacent node from the node.
