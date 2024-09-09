@@ -184,7 +184,7 @@ public:
      * @param adjacent The id of the adjacent node.
      * @return The weight of the edge between the nodes.
      */
-    double getWeight(int adjacent) const;
+    double getWeight(int adjacent) const override;
 
     /**
      * @brief Set the adjacent node of a node.

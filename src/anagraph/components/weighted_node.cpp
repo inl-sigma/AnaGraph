@@ -43,6 +43,15 @@ void WeightedNode::removeAdjacent(int adjacent) {
     adjacentIds.erase(adjacent);
 }
 
+double WeightedNode::getWeight(int adjacent) const {
+    if (adjacentIds.contains(adjacent)) {
+        return adjacentIds.at(adjacent);
+    } else {
+        spdlog::debug("getWeight: no edge between {} and {}", id, adjacent);
+        return 0.0;
+    }
+}
+
 void WeightedNode::setWeight(int adjacent, double weight) {
     adjacentIds[adjacent] = weight;
 }

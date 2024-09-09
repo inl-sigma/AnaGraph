@@ -119,6 +119,13 @@ public:
     void removeAdjacent(int adjacent) override;
 
     /**
+     * @brief Get the weight of an adjacent node.
+     * @param adjacent The id of the adjacent node.
+     * @return The weight of the edge between the nodes.
+     */
+    double getWeight(int adjacent) const override;
+
+    /**
      * @brief Set the adjacent node of a node.
      * @param adjacent The id of the adjacent node.
      * @param weight The weight of the edge between the nodes.

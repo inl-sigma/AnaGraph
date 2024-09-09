@@ -51,6 +51,16 @@ void WeightedHeteroNode<T>::removeAdjacent(int adjacent) {
 }
 
 template <typename T>
+double WeightedHeteroNode<T>::getWeight(int adjacent) const {
+    if (adjacentIds.contains(adjacent)) {
+        return adjacentIds.at(adjacent);
+    } else {
+        spdlog::debug("getWeight: no edge between {} and {}", id, adjacent);
+        return 0.0;
+    }
+}
+
+template <typename T>
 void WeightedHeteroNode<T>::setWeight(int adjacent, double weight) {
     adjacentIds[adjacent] = weight;
 }
