@@ -16,3 +16,4 @@ endfunction(add_algorithm_test_executable name)
 
 add_algorithm_test_executable(pagerank_test)
 add_algorithm_test_executable(similarity_test)
+add_algorithm_test_executable(shingle_test)

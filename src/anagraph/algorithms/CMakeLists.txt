@@ -1,6 +1,7 @@
 add_library(graphalgorithms STATIC
     pagerank.cpp
     similarity.cpp
+    shingle.cpp
 )
 target_link_libraries(graphalgorithms PUBLIC spdlog::spdlog graphcomponents)
 target_include_directories(graphalgorithms PUBLIC ${PROJECT_SOURCE_DIR}/include)
