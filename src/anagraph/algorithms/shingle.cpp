@@ -7,18 +7,18 @@
 #include <spdlog/spdlog.h>
 
 namespace {
-    const int SEPARATE_THR = 500;
-    const int MAX_DEPTH = 10;
+    const int maxCandidateGroupSize = 500; // 500
+    const int recursionLimit = 10; // 10
 
-    void append_indices_to_candidates(int left, int right, std::vector<int>& indices, std::vector<std::vector<int>>& candidates) {
+    void AppendIndicesToCandidates(int left, int right, std::vector<int>& indices, std::vector<std::vector<int>>& candidates) {
         const int size = right - left;
         std::vector<int> temp(size); 
         std::copy(indices.begin() + left, indices.begin() + right, temp.begin());
         candidates.push_back(temp);
     }
 
-    void sort_indices_by_shingle(std::vector<int>& indices, std::unordered_map<int, int>& shingles, int left, int right) {
-        spdlog::debug("called sort_indices_by_shingle at left: {}, right: {}", left, right);
+    void SortIndicesByShingle(std::vector<int>& indices, std::unordered_map<int, int>& shingles, int left, int right) {
+        spdlog::debug("called SortIndicesByShingle at left: {}, right: {}", left, right);
         if (left < right) {
             int l = left;
             int r = right;
@@ -41,24 +41,25 @@ namespace {
                 l++;
                 r--;
             }
-            sort_indices_by_shingle(indices, shingles, left, r);
-            sort_indices_by_shingle(indices, shingles, l, right);
+            SortIndicesByShingle(indices, shingles, left, r);
+            SortIndicesByShingle(indices, shingles, l, right);
         }
     }
 
-    void recursive_shingle(
+    template <typename T>
+    void recursiveSplitIndices(
         int left, int right, int depth, 
         std::vector<std::vector<int>> &candidates, 
         std::vector<std::vector<int>> &hashes, 
-        const anagraph::graph_structure::Graph &graph, 
+        const T& graph, 
         std::vector<int> &indices
     ) {
-        if (depth == MAX_DEPTH) {
-            for (int i = left; i < right; i += SEPARATE_THR) {
-                if (i + SEPARATE_THR - 1 < right) {
-                    append_indices_to_candidates(i, i + SEPARATE_THR, indices, candidates);
+        if (depth == recursionLimit) {
+            for (int i = left; i < right; i += maxCandidateGroupSize) {
+                if (i + maxCandidateGroupSize - 1 < right) {
+                    AppendIndicesToCandidates(i, i + maxCandidateGroupSize, indices, candidates);
                 } else {
-                    append_indices_to_candidates(i, right, indices, candidates);
+                    AppendIndicesToCandidates(i, right, indices, candidates);
                 }
             }
             return;
@@ -74,26 +75,59 @@ namespace {
             shingles[root] = min_hash;
         }
 
-        sort_indices_by_shingle(indices, shingles, left, right - 1);
+        SortIndicesByShingle(indices, shingles, left, right - 1);
 
         int prv = left;
         for (int i = left + 1; i < right; i++) {
             int idx = indices[i];
             int prevIdx = indices[i - 1];
             if (shingles[idx] != shingles[prevIdx]) {
-                if (i - prv <= SEPARATE_THR) {
-                    append_indices_to_candidates(prv, i, indices, candidates);
+                if (i - prv <= maxCandidateGroupSize) {
+                    AppendIndicesToCandidates(prv, i, indices, candidates);
                 } else {
-                    recursive_shingle(prv, i, ++depth, candidates, hashes, graph, indices);
+                    recursiveSplitIndices(prv, i, ++depth, candidates, hashes, graph, indices);
                 }
                 prv = i;
             }
         }
-        if (right - prv <= SEPARATE_THR) {
-            append_indices_to_candidates(prv, right, indices, candidates);
+        if (right - prv <= maxCandidateGroupSize) {
+            AppendIndicesToCandidates(prv, right, indices, candidates);
         } else {
-            recursive_shingle(prv, right, ++depth, candidates, hashes, graph, indices);
+            recursiveSplitIndices(prv, right, ++depth, candidates, hashes, graph, indices);
         }
+    }
+
+    template <typename T>
+    std::vector<std::vector<int>> minHashTemplate(const T &graph) {
+        const int size = graph.size();
+
+        if (size == 0) {
+            return std::vector<std::vector<int>>();
+        }
+
+        std::vector<int> indices(size);
+        std::iota(indices.begin(), indices.end(), 0);
+
+        std::random_device seed_gen;
+        std::mt19937 engine(seed_gen());
+
+        std::vector<std::vector<int>> hashes(recursionLimit, std::vector<int>(size));
+        for (int i = 0; i < recursionLimit; i++) {
+            std::iota(hashes[i].begin(), hashes[i].end(), 0);
+            std::shuffle(hashes[i].begin(), hashes[i].end(), engine);
+        }
+
+        std::vector<std::vector<int>> candidates;
+        int left_init = 0;
+        int right_init = size;
+        recursiveSplitIndices<T>(left_init, right_init, 0, candidates, hashes, graph, indices);
+
+        for (auto& candidate : candidates) {
+            // sort candidate by node id, because SortIndicesByShingle may change the order
+            std::sort(candidate.begin(), candidate.end());
+        }
+
+        return candidates;
     }
 }
 
@@ -101,35 +135,11 @@ namespace anagraph {
 namespace hashes {
 
 std::vector<std::vector<int>> minHash(const graph_structure::Graph &graph) {
-    const int size = graph.size();
+    return minHashTemplate<graph_structure::Graph>(graph);
+}
 
-    if (size == 0) {
-        return std::vector<std::vector<int>>();
-    }
-
-    std::vector<int> indices(size);
-    std::iota(indices.begin(), indices.end(), 0);
-
-    std::random_device seed_gen;
-    std::mt19937 engine(seed_gen());
-
-    std::vector<std::vector<int>> hashes(MAX_DEPTH, std::vector<int>(size));
-    for (int i = 0; i < MAX_DEPTH; i++) {
-        std::iota(hashes[i].begin(), hashes[i].end(), 0);
-        std::shuffle(hashes[i].begin(), hashes[i].end(), engine);
-    }
-
-    std::vector<std::vector<int>> candidates;
-    int left_init = 0;
-    int right_init = size;
-    recursive_shingle(left_init, right_init, 0, candidates, hashes, graph, indices);
-
-    for (auto& candidate : candidates) {
-        // sort candidate by node id
-        std::sort(candidate.begin(), candidate.end());
-    }
-
-    return candidates;
+std::vector<std::vector<int>> minHash(const graph_structure::Digraph &graph) {
+    return minHashTemplate<graph_structure::Digraph>(graph);
 }
 
 } // namespace hashes
